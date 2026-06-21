@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-# TOAN BO CODE WEB SHOP THANH SON - CHAY TREN RENDER.COM
-# (Copy toan bo file nay vao app.py va deploy len Render)
-
-from flask import Flask, render_template_string, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template_string, request, redirect, url_for, session, flash
 import hashlib
 import json
 import os
 import datetime
-import random
 
 app = Flask(__name__)
 app.secret_key = "thanhson_super_secret_key_2026"
@@ -17,12 +12,11 @@ SHOP_NAME = "SHOP UY TÍN HÀNG ĐẦU"
 ZALO = "0362281930"
 CURRENCY = "VND"
 
-# File luu tru (Render se luu tam thoi, can dung PostgreSQL de luu vinh vien)
+# File luu tru
 PRODUCT_FILE = "web_products.json"
 ORDER_FILE = "web_orders.json"
 USER_FILE = "web_users.json"
 
-# Khoi tao file
 def init_files():
     for f in [PRODUCT_FILE, ORDER_FILE, USER_FILE]:
         if not os.path.exists(f):
@@ -79,8 +73,6 @@ def create_order(product_id, quantity, buyer_name, phone, payment_method="ZaloPa
     product = get_product_by_id(product_id)
     if not product or product["stock"] < quantity:
         return None
-    
-    # Tru stock
     product["stock"] -= quantity
     product["sold"] += quantity
     products = load_products()
@@ -89,7 +81,6 @@ def create_order(product_id, quantity, buyer_name, phone, payment_method="ZaloPa
             products[i] = product
             break
     save_products(products)
-    
     order_id = hashlib.md5(f"{buyer_name}{phone}{datetime.datetime.now()}".encode()).hexdigest()[:10].upper()
     total = product["price"] * quantity
     order = {
@@ -144,7 +135,7 @@ def login_user(username_or_email, password):
                 return u
     return None
 
-# === TEMPLATE HTML (GIAO DIEN WEB) ===
+# === TEMPLATE HTML ===
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="vi">
@@ -173,11 +164,6 @@ HTML_TEMPLATE = """
         .login-form input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
         .login-form button { width: 100%; padding: 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
         .flash { padding: 10px; background: #f1c40f; margin: 10px 0; border-radius: 4px; }
-        .order-list { margin-top: 20px; }
-        .order-item { border-bottom: 1px solid #eee; padding: 10px 0; }
-        .admin-panel { background: #ecf0f1; padding: 20px; border-radius: 8px; margin-top: 20px; }
-        .admin-panel input, .admin-panel textarea, .admin-panel select { width: 100%; padding: 8px; margin: 5px 0; }
-        .admin-panel button { background: #e67e22; color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; }
         .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #7f8c8d; }
         .register-link { text-align: center; margin-top: 10px; }
     </style>
@@ -200,7 +186,6 @@ HTML_TEMPLATE = """
         {% endwith %}
 
         {% if not session.user %}
-        <!-- FORM DANG NHAP -->
         <div class="login-form">
             <h2>Đăng nhập</h2>
             <form method="POST" action="{{ url_for('login') }}">
@@ -213,7 +198,6 @@ HTML_TEMPLATE = """
             </div>
         </div>
         {% else %}
-        <!-- MENU CHINH -->
         <div class="menu">
             <a href="{{ url_for('index') }}">Trang chủ</a>
             <a href="{{ url_for('category', cat='Android') }}">Android</a>
@@ -225,7 +209,6 @@ HTML_TEMPLATE = """
             {% endif %}
         </div>
 
-        <!-- HIEN THI SAN PHAM -->
         <div class="products">
             {% for p in products %}
             <div class="product-card">
@@ -253,7 +236,7 @@ HTML_TEMPLATE = """
 </html>
 """
 
-# === ROUTES (CAC TRANG WEB) ===
+# === ROUTES ===
 @app.route('/')
 def index():
     products = load_products()
@@ -299,8 +282,6 @@ def register():
         else:
             flash('Tên đăng nhập hoặc email đã tồn tại!')
         return redirect(url_for('index'))
-    
-    # Form dang ky
     return '''
     <div style="max-width:400px; margin:40px auto; padding:30px; background:#f9f9f9; border-radius:8px;">
         <h2>Đăng ký tài khoản</h2>
@@ -327,16 +308,13 @@ def buy():
     if 'user' not in session:
         flash('Vui lòng đăng nhập để mua hàng!')
         return redirect(url_for('index'))
-    
     product_id = request.form.get('product_id')
     try:
         quantity = int(request.form.get('quantity', 1))
     except:
         quantity = 1
-    
     user = session['user']
     order = create_order(product_id, quantity, user['full_name'] or user['username'], user.get('phone', 'Chưa cập nhật'))
-    
     if order:
         flash(f'Đặt hàng thành công! Mã đơn: {order["order_id"]}. Tổng: {order["total"]} {CURRENCY}. Vui lòng thanh toán qua Zalo {ZALO}.')
     else:
@@ -347,9 +325,7 @@ def buy():
 def orders():
     if 'user' not in session:
         return redirect(url_for('index'))
-    
     user_orders = [o for o in load_orders() if o['phone'] == session['user'].get('phone')]
-    
     html = '''
     <div style="max-width:800px; margin:20px auto; padding:20px; background:white; border-radius:8px;">
         <h2>Đơn hàng của tôi</h2>
@@ -373,9 +349,7 @@ def orders():
 def admin():
     if 'user' not in session or session['user']['role'] != 'admin':
         return "Bạn không có quyền truy cập!", 403
-    
     if request.method == 'POST':
-        # Them san pham
         name = request.form.get('name')
         category = request.form.get('category')
         try:
@@ -384,25 +358,20 @@ def admin():
         except:
             flash('Giá hoặc số lượng không hợp lệ!')
             return redirect(url_for('admin'))
-        
         description = request.form.get('description', '')
         features = request.form.get('features', '')
         platform = request.form.get('platform', '')
         warranty = request.form.get('warranty', '')
-        
         add_product(name, category, price, stock, description, features, platform, warranty)
         flash('Thêm sản phẩm thành công!')
         return redirect(url_for('admin'))
     
-    # Hien thi form admin + danh sach don hang + danh sach san pham
     orders = load_orders()
     products = load_products()
-    
     html = '''
     <div style="max-width:1000px; margin:20px auto; padding:20px; background:white; border-radius:8px;">
         <h2>Quản trị Shop</h2>
         <a href="/">← Trang chủ</a>
-        
         <div style="background:#ecf0f1; padding:20px; border-radius:8px; margin:20px 0;">
             <h3>Thêm sản phẩm mới</h3>
             <form method="POST">
@@ -417,7 +386,6 @@ def admin():
                 <button type="submit" style="background:#e67e22; color:white; padding:10px 20px; border:none; border-radius:4px; cursor:pointer;">Thêm sản phẩm</button>
             </form>
         </div>
-        
         <h3>Danh sách sản phẩm</h3>
         <table style="width:100%; border-collapse:collapse; margin:10px 0;">
             <tr style="background:#3498db; color:white;">
@@ -434,7 +402,6 @@ def admin():
             <td>{p['sold']}</td>
         </tr>
         '''
-    
     html += '''
         </table>
         <h3>Danh sách đơn hàng</h3>
@@ -453,14 +420,13 @@ def admin():
             <td>{o['buyer']}</td>
         </tr>
         '''
-    
     html += '''
         </table>
     </div>
     '''
     return html
 
-# === KHOI TAO DU LIEU MAU ===
+# === KHOI TAO DU LIEU ===
 def init_sample_data():
     init_files()
     if not load_products():
@@ -469,15 +435,10 @@ def init_sample_data():
             ("Aim Proxy", "iOS", 0, 6, "Kéo Là Đỏ", "Đi Rank Phòng Đều Ok", "iOS", ""),
             ("AimBot PC", "PC", 0, 9, "Esp,Aimbot,Ai player", "An Toàn Trên Acc Chính", "PC", ""),
             ("Migul Pro 1 Tháng", "iOS", 0, 9, "Nhiều Chức Năng Hơn Lite", "Antiban", "iOS", ""),
-            ("Fluorite 1 Tháng", "iOS", 0, 9, "Nhiều Chức Năng", "Chơi Được Acc Chính", "iOS", ""),
-            ("Aim Cổ", "PC", 0, 10, "Kéo Là Đỏ", "An toàn Acc Chính", "PC", ""),
-            ("HeadLock", "Android", 0, 10, "Khóa Tâm Vùng Đầu", "An Toàn Acc Chính, Cân Mọi Chế Độ", "Android", ""),
-            ("Aimlock V2", "Android", 0, 10, "Khả Năng Bám Đầu Cao Hơn V1", "Cân Mọi Map, An Toàn Cho Acc Chính", "Android", ""),
         ]
         for name, cat, price, stock, desc, features, platform, warranty in sample:
             add_product(name, cat, price, stock, desc, features, platform, warranty)
     
-    # Tao admin mac dinh
     users = load_users()
     if not any(u["username"] == "admin" for u in users):
         register_user("admin", "admin@thanhson.shop", "admin123", "Administrator", ZALO)
@@ -488,11 +449,11 @@ def init_sample_data():
                 save_users(users)
                 break
 
-# === CHAY APP ===
+init_sample_data()
+
+# === QUAN TRONG: DUNG CHO PRODUCTION ===
+# Bien 'application' la WSGI entry point cho Gunicorn
+application = app
+
 if __name__ == "__main__":
-    init_sample_data()
-    print("="*50)
-    print("SHOP THANH SON DA KHOI TAO THANH CONG!")
-    print("Dang chay tren Render.com hoac localhost")
-    print("="*50)
-    app.run(host='0.0.0.0', port=10000)
+    app.run(debug=False, host='0.0.0.0', port=10000)
