@@ -5,21 +5,21 @@ import os
 import datetime
 
 app = Flask(__name__)
-app.secret_key = "thanhson_super_secret_key_2026"
+app.secret_key = "vietanh_super_secret_key_2026"
 
 # === CAU HINH ===
 SHOP_NAME = "SHOP UY TÍN HÀNG ĐẦU"
 SHOP_OWNER = "Quản Trị Viên"
 WELCOME = "Xin Chào Quý Khách, Chúc Quý Khách Tham Khảo Vui Vẻ"
-ZALO = "0362281930"
+ZALO = "0933121845"
 CURRENCY = "VND"
 HOT_DEAL = "350.000đ"
 THONG_BAO = "Khi Mua Hàng Bị Vấn Đề Gì Hãy Liên Hệ Qua Zalo"
 
 # File luu tru
-PRODUCT_FILE = "thanhson_products.json"
-ORDER_FILE = "thanhson_orders.json"
-USER_FILE = "thanhson_users.json"
+PRODUCT_FILE = "vietanh_products.json"
+ORDER_FILE = "vietanh_orders.json"
+USER_FILE = "vietanh_users.json"
 
 def init_files():
     for f in [PRODUCT_FILE, ORDER_FILE, USER_FILE]:
@@ -214,7 +214,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ shop_name }}</title>
+    <title>{{ shop_vietanh }}</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #f5f5f5; }
@@ -262,7 +262,7 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏪 {{ shop_name }}</h1>
+            <h1>🏪 {{ shop_vietanh }}</h1>
             <div class="admin-badge">{{ shop_owner }}</div>
             <div class="zalo-badge">📱 Zalo: {{ zalo }}</div>
             {% if session.user %}
