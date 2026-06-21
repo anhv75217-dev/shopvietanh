@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTH Shop | Quản Trị</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root { --primary: #6C63FF; --secondary: #FF6584; --accent: #00D4FF; --bg: #0a0a1a; --sidebar-bg: #111128; --card-bg: #1a1a3a; --text: #f0f0ff; --text-light: #a0a0c0; --border: rgba(255,255,255,0.06); --shadow: 0 8px 32px rgba(0,0,0,0.4); --radius: 16px; --transition: 0.3s cubic-bezier(0.4,0,0.2,1); --sidebar-width: 260px; }
+[data-theme="light"] { --bg: #f0f2f8; --sidebar-bg: #ffffff; --card-bg: #ffffff; --text: #1a1a2e; --text-light: #6b7280; --border: rgba(0,0,0,0.08); --shadow: 0 8px 32px rgba(0,0,0,0.06); }
+html, body { height:100%; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; overflow-x:hidden; transition:background 0.3s, color 0.3s; }
+a { text-decoration:none; color:inherit; }
+button { cursor:pointer; border:none; font-family:inherit; transition:var(--transition); background:transparent; }
+input, select, textarea { font-family:inherit; outline:none; border:1px solid var(--border); border-radius:10px; padding:10px 14px; width:100%; font-size:14px; background:rgba(255,255,255,0.04); color:var(--text); transition:var(--transition); }
+input:focus, select:focus, textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(108,99,255,0.15); }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--primary); border-radius:10px; }
+.sidebar-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; display:none; }
+.sidebar-overlay.active { display:block; }
+.sidebar { position:fixed; top:0; left:-100%; width:var(--sidebar-width); height:100%; background:var(--sidebar-bg); border-right:1px solid var(--border); padding:20px 14px; display:flex; flex-direction:column; z-index:1000; transition:left 0.3s cubic-bezier(0.4,0,0.2,1); overflow-y:auto; }
+.sidebar.open { left:0; }
+.sidebar .logo { font-size:22px; font-weight:800; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:20px; padding-left:4px; display:flex; align-items:center; gap:8px; cursor:pointer; white-space:nowrap; }
+.sidebar .logo i { -webkit-text-fill-color:initial; color:var(--primary); }
+.sidebar .sidebar-menu { display:flex; flex-direction:column; gap:4px; flex:1; }
+.sidebar .sidebar-item { padding:8px 12px; border-radius:10px; font-weight:500; font-size:14px; color:var(--text-light); display:flex; align-items:center; gap:10px; transition:var(--transition); cursor:pointer; white-space:nowrap; }
+.sidebar .sidebar-item i { width:18px; font-size:15px; flex-shrink:0; }
+.sidebar .sidebar-item:hover { background:rgba(255,255,255,0.05); color:var(--text); }
+.sidebar .sidebar-item.active { background:var(--primary); color:#fff; box-shadow:0 4px 16px rgba(108,99,255,0.3); }
+.sidebar .sidebar-footer { margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }
+.main { flex:1; padding:16px 20px 40px; overflow-y:auto; min-height:100vh; transition:padding 0.3s; }
+.top-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+.top-header .left { display:flex; align-items:center; gap:12px; }
+.top-header .left .menu-btn { font-size:20px; color:var(--text-light); padding:6px 10px; border-radius:30px; border:1px solid var(--border); transition:var(--transition); background:transparent; }
+.top-header .left .menu-btn:hover { background:rgba(255,255,255,0.04); color:var(--text); }
+.top-header .left .logo { font-size:20px; font-weight:800; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; cursor:pointer; display:none; }
+.top-header h2 { font-size:22px; font-weight:700; color:var(--text); flex:1; }
+.top-header .actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.top-header .actions button { padding:6px 16px; border-radius:30px; font-weight:600; font-size:13px; transition:var(--transition); }
+.top-header .actions .logout-btn { background:var(--secondary); color:#fff; }
+.top-header .actions .logout-btn:hover { background:#e04a6a; transform:scale(1.02); }
+.theme-toggle { font-size:18px; color:var(--text-light); padding:6px 10px; border-radius:30px; border:1px solid var(--border); transition:var(--transition); background:transparent; }
+.theme-toggle:hover { background:rgba(255,255,255,0.04); color:var(--text); }
+.login-wrapper { position:fixed; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--bg); z-index:9999; }
+.login-wrapper .glass-box { max-width:400px; width:100%; margin:0 20px; background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:30px; text-align:center; }
+.login-wrapper .glass-box h2 { margin-bottom:8px; }
+.login-wrapper .glass-box p { color:var(--text-light); margin-bottom:16px; }
+.login-wrapper .glass-box input { margin-bottom:12px; }
+.login-wrapper .glass-box .btn-add { width:100%; }
+.login-wrapper.hidden { display:none; }
+.panel { display:none; animation:fadeIn 0.3s ease; }
+.panel.active { display:block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:20px; }
+.stat-card { background:var(--card-bg); border-radius:var(--radius); padding:16px; text-align:center; border:1px solid var(--border); }
+.stat-card h3 { font-size:26px; font-weight:800; color:var(--primary); }
+.stat-card p { color:var(--text-light); font-size:13px; }
+.glass-box { background:var(--card-bg); border-radius:var(--radius); padding:20px; border:1px solid var(--border); }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th, td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; }
+th { color:var(--text-light); font-weight:600; }
+.btn-add { background:var(--primary); color:#fff; padding:8px 20px; border-radius:30px; font-weight:600; font-size:13px; transition:var(--transition); }
+.btn-add:hover { background:#5a52d9; transform:scale(1.02); }
+.btn-del { background:rgba(255,64,129,0.15); color:var(--secondary); padding:4px 14px; border-radius:30px; font-weight:600; font-size:12px; }
+.btn-del:hover { background:var(--secondary); color:#fff; }
+.btn-success { background:#34d399; color:#fff; padding:4px 14px; border-radius:30px; font-weight:600; font-size:12px; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.form-full { grid-column:span 2; }
+.news-form { background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:20px; }
+.news-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.news-form .form-row .full { grid-column:span 2; }
+.news-list-admin .news-item { display:flex; align-items:center; gap:16px; padding:12px; border-bottom:1px solid var(--border); }
+.news-list-admin .news-item img { width:60px; height:60px; object-fit:cover; border-radius:8px; }
+.news-list-admin .news-item .info { flex:1; }
+.news-list-admin .news-item .info h4 { font-size:16px; font-weight:600; margin-bottom:4px; }
+.news-list-admin .news-item .info p { font-size:13px; color:var(--text-light); margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.news-list-admin .news-item .actions { display:flex; gap:8px; }
+.support-ticket { padding:12px; border-bottom:1px solid var(--border); }
+.support-ticket .ticket-header { display:flex; justify-content:space-between; flex-wrap:wrap; }
+.support-ticket .ticket-header strong { font-size:16px; }
+.support-ticket .ticket-status { font-weight:600; padding:2px 12px; border-radius:30px; font-size:12px; }
+.support-ticket .ticket-status.pending { background:rgba(251,191,36,0.15); color:#fbbf24; }
+.support-ticket .ticket-status.resolved { background:rgba(52,211,153,0.15); color:#34d399; }
+.support-ticket .ticket-meta { font-size:13px; color:var(--text-light); margin:4px 0; }
+.support-ticket .ticket-message { margin:6px 0; }
+#toast-container { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+.toast { background:#1f1f3a; color:var(--text); padding:10px 20px; border-radius:12px; box-shadow:var(--shadow); border-left:4px solid var(--primary); animation:slideUp 0.3s ease; font-size:13px; }
+.toast.error { border-left-color:var(--secondary); }
+@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@media (min-width:769px){ .sidebar { position:sticky; top:0; left:0; width:var(--sidebar-width); height:100vh; border-right:1px solid var(--border); border-radius:0; z-index:10; display:flex; } .sidebar-overlay { display:none !important; } .top-header .left .menu-btn { display:none; } .top-header .left .logo { display:block; } }
+@media (max-width:768px){ .sidebar { left:-100%; width:280px; border-radius:0; } .sidebar.open { left:0; } .sidebar .logo { font-size:18px; margin-bottom:12px; } .sidebar .sidebar-item { font-size:13px; padding:8px 10px; } .top-header .left .logo { display:block; font-size:18px; } .top-header .left .menu-btn { display:block; } .top-header .left { flex:0; } .top-header h2 { font-size:18px; } .main { padding:12px 14px 30px; } .top-header { flex-wrap:wrap; } .top-header .actions { justify-content:flex-end; flex:1; } .stats-grid { grid-template-columns:1fr 1fr; } .form-grid { grid-template-columns:1fr; } .form-full { grid-column:span 1; } }
+@media (max-width:480px){ .stats-grid { grid-template-columns:1fr 1fr; gap:10px; } .stat-card h3 { font-size:20px; } table { font-size:12px; } th, td { padding:6px 8px; } }
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div id="login-wrapper" class="login-wrapper">
+<div class="glass-box"><h2>🔐 Đăng nhập Admin</h2><p>Điền thông tin để truy cập</p><input type="email" id="adm-user" placeholder="Tài khoản Admin..." /><input type="password" id="adm-pass" placeholder="Mật khẩu..." /><button class="btn-add" onclick="authAdmin()">Truy cập</button></div>
+</div>
+<aside class="sidebar" id="sidebar" style="display:none;">
+<div class="logo" onclick="location.reload()"><i class="fas fa-crown"></i> <span>DTH Admin</span></div>
+<div class="sidebar-menu">
+<div class="sidebar-item active" onclick="switchTab('dashboard', this)"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></div>
+<div class="sidebar-item" onclick="switchTab('cats', this)"><i class="fas fa-list"></i> <span>Danh mục</span></div>
+<div class="sidebar-item" onclick="switchTab('prods', this)"><i class="fas fa-box"></i> <span>Sản phẩm</span></div>
+<div class="sidebar-item" onclick="switchTab('news', this)"><i class="fas fa-newspaper"></i> <span>Tin tức</span></div>
+<div class="sidebar-item" onclick="switchTab('orders', this)"><i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span></div>
+<div class="sidebar-item" onclick="switchTab('balances', this)"><i class="fas fa-wallet"></i> <span>Số dư</span></div>
+<div class="sidebar-item" onclick="switchTab('support', this)"><i class="fas fa-headset"></i> <span>Hỗ trợ</span></div>
+<div class="sidebar-item" onclick="switchTab('logs', this)"><i class="fas fa-history"></i> <span>Logs</span></div>
+</div>
+<div class="sidebar-footer"></div>
+</aside>
+<main class="main" id="main" style="display:none;">
+<header class="top-header">
+<div class="left"><button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="logo" onclick="location.reload()">DTH</div></div>
+<h2 id="panel-title">Dashboard</h2>
+<div class="actions"><button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon" id="theme-icon"></i></button><button class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Thoát</button></div>
+</header>
+<div class="container">
+<div id="panel-dashboard" class="panel active"></div>
+<div id="panel-cats" class="panel"></div>
+<div id="panel-prods" class="panel"></div>
+<div id="panel-news" class="panel"></div>
+<div id="panel-orders" class="panel"></div>
+<div id="panel-balances" class="panel"></div>
+<div id="panel-support" class="panel"></div>
+<div id="panel-logs" class="panel"></div>
+</div>
+</main>
+<div id="toast-container"></div>
+<script>
+function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+function showToast(msg, isError) {
+    if (isError === undefined) isError = false;
+    var container = document.getElementById('toast-container');
+    var t = document.createElement('div');
+    t.className = 'toast' + (isError ? ' error' : '');
+    t.innerHTML = '<span>' + msg + '</span>';
+    container.appendChild(t);
+    setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 3500);
+}
+function formatVND(num) { return Number(num).toLocaleString('vi-VN') + 'đ'; }
+function getDB(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
+function setDB(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+function toggleTheme() {
+    var html = document.documentElement;
+    var icon = document.getElementById('theme-icon');
+    if (html.getAttribute('data-theme') === 'light') {
+        html.removeAttribute('data-theme');
+        icon.className = 'fas fa-moon';
+    } else {
+        html.setAttribute('data-theme', 'light');
+        icon.className = 'fas fa-sun';
+    }
+    localStorage.setItem('dth_theme', html.getAttribute('data-theme') || 'dark');
+}
+(function() {
+    var saved = localStorage.getItem('dth_theme');
+    var icon = document.getElementById('theme-icon');
+    if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        if (icon) icon.className = 'fas fa-sun';
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (icon) icon.className = 'fas fa-moon';
+    }
+})();
+async function authAdmin() {
+    var u = document.getElementById('adm-user').value.trim();
+    var p = document.getElementById('adm-pass').value;
+    try {
+        var res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+        var data = await res.json();
+        if (data.success) {
+            document.getElementById('login-wrapper').classList.add('hidden');
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main').style.display = 'block';
+            showToast('Đăng nhập thành công!');
+            switchTab('dashboard');
+            if (window.innerWidth <= 768) toggleSidebar();
+        } else {
+            showToast('Tài khoản hoặc mật khẩu không đúng!', true);
+        }
+    } catch (err) {
+        showToast('Không kết nối được API đăng nhập!', true);
+    }
+}
+function logoutAdmin() {
+    document.getElementById('login-wrapper').classList.remove('hidden');
+    document.getElementById('sidebar').style.display = 'none';
+    document.getElementById('main').style.display = 'none';
+    document.getElementById('adm-pass').value = '';
+    showToast('Đã đăng xuất');
+    if (window.innerWidth <= 768) toggleSidebar();
+}
+var currentTab = 'dashboard';
+function switchTab(tabId, btn) {
+    if (btn === undefined) btn = null;
+    currentTab = tabId;
+    var panels = document.querySelectorAll('.panel');
+    for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+    var items = document.querySelectorAll('.sidebar-item');
+    for (var j = 0; j < items.length; j++) items[j].classList.remove('active');
+    if (btn) { btn.classList.add('active'); } else {
+        var items2 = document.querySelectorAll('.sidebar-item');
+        for (var k = 0; k < items2.length; k++) {
+            if (items2[k].textContent.trim().toLowerCase().includes(tabId)) {
+                items2[k].classList.add('active');
+            }
+        }
+    }
+    var panel = document.getElementById('panel-' + tabId);
+    if (panel) {
+        panel.classList.add('active');
+        var titleEl = document.querySelector('.sidebar-item.active span');
+        document.getElementById('panel-title').innerText = titleEl ? titleEl.innerText : 'Dashboard';
+        if (tabId === 'dashboard') loadDashboard();
+        else if (tabId === 'cats') loadCategories();
+        else if (tabId === 'prods') loadProducts();
+        else if (tabId === 'news') loadNews();
+        else if (tabId === 'orders') loadOrders();
+        else if (tabId === 'balances') loadBalances();
+        else if (tabId === 'support') loadSupport();
+        else if (tabId === 'logs') loadLogs();
+        if (window.innerWidth <= 768) toggleSidebar();
+    }
+}
+let revenueChart = null;
+async function loadDashboard(period) {
+    if (period === undefined) period = 'day';
+    var panel = document.getElementById('panel-dashboard');
+    panel.innerHTML = '<div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;"><button class="btn-add" style="padding:6px 16px; font-size:13px; ' + (period==='day'?'background:var(--accent);color:#000;':'') + '" onclick="loadDashboard(\'day\')">Ngày</button><button class="btn-add" style="padding:6px 16px; font-size:13px; ' + (period==='week'?'background:var(--accent);color:#000;':'') + '" onclick="loadDashboard(\'week\')">Tuần</button><button class="btn-add" style="padding:6px 16px; font-size:13px; ' + (period==='month'?'background:var(--accent);color:#000;':'') + '" onclick="loadDashboard(\'month\')">Tháng</button><button class="btn-add" style="padding:6px 16px; font-size:13px; ' + (period==='year'?'background:var(--accent);color:#000;':'') + '" onclick="loadDashboard(\'year\')">Năm</button></div><div class="stats-grid" id="stats-grid"><div class="stat-card"><h3 id="stat-total">0đ</h3><p>Doanh thu</p></div><div class="stat-card"><h3 id="stat-count">0</h3><p>Số đơn</p></div><div class="stat-card"><h3 id="stat-avg">0đ</h3><p>Trung bình</p></div><div class="stat-card"><h3 id="stat-users">0</h3><p>Người dùng</p></div></div><div style="background:var(--card-bg); border-radius:var(--radius); padding:16px; margin-bottom:16px; border:1px solid var(--border);"><canvas id="revenueChart" height="200"></canvas></div><p style="color:var(--text-light); font-size:13px;">Chọn các tab bên trái để quản lý chi tiết.</p>';
+    try {
+        var revRes = await fetch('/api/admin/revenue?period=' + period);
+        if (!revRes.ok) {
+            var errText = await revRes.text();
+            throw new Error('HTTP ' + revRes.status + ': ' + errText);
+        }
+        var revData = await revRes.json();
+        if (!revData.success) throw new Error(revData.error || 'Lỗi API');
+        var balRes = await fetch('/api/admin/all-balances');
+        var balances = await balRes.json();
+        document.getElementById('stat-total').innerText = formatVND(revData.total || 0);
+        document.getElementById('stat-count').innerText = revData.count || 0;
+        document.getElementById('stat-avg').innerText = formatVND(revData.avg || 0);
+        document.getElementById('stat-users').innerText = balances.length || 0;
+        var labels = revData.details.map(function(d) { return d.label; });
+        var totals = revData.details.map(function(d) { return d.total; });
+        var ctx = document.getElementById('revenueChart').getContext('2d');
+        if (revenueChart) revenueChart.destroy();
+        revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels.length ? labels : ['Không có dữ liệu'],
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: labels.length ? totals : [0],
+                    backgroundColor: 'rgba(108, 99, 255, 0.6)',
+                    borderColor: '#6C63FF',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { callback: function(v) { return formatVND(v); } } } }
+            }
+        });
+    } catch (err) {
+        document.querySelector('#stats-grid').innerHTML = '<p style="color:var(--secondary);">❌ Lỗi tải dữ liệu: ' + err.message + '</p>';
+    }
+}
+function loadCategories() {
+    var panel = document.getElementById('panel-cats');
+    var cats = getDB('m5_cats');
+    var html = '<div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;"><input type="text" id="cat-name" placeholder="Tên danh mục" style="flex:1; min-width:150px;"><input type="text" id="cat-image" placeholder="URL ảnh (không bắt buộc)" style="flex:1; min-width:150px;"><button class="btn-add" onclick="addCategory()"><i class="fas fa-plus"></i> Thêm</button></div><table><thead><tr><th>Tên</th><th>Ảnh</th><th>Hành động</th></tr></thead><tbody>';
+    if (cats.length) {
+        for (var i = 0; i < cats.length; i++) {
+            var c = cats[i];
+            html += '<tr><td>' + c.name + '</td><td><img src="' + (c.image || '') + '" style="width:36px;height:36px;object-fit:cover;border-radius:8px;" onerror="this.style.display=\'none\'"></td><td><button class="btn-del" onclick="delCategory(' + c.id + ')">Xóa</button></td></tr>';
+        }
+    } else {
+        html += '<tr><td colspan="3" style="text-align:center;">Chưa có danh mục</td></tr>';
+    }
+    html += '</tbody></table>';
+    panel.innerHTML = html;
+}
+function addCategory() {
+    var name = document.getElementById('cat-name').value.trim();
+    var image = document.getElementById('cat-image').value.trim();
+    if (!name) { showToast('Nhập tên danh mục!', true); return; }
+    var cats = getDB('m5_cats');
+    cats.push({ id: Date.now(), name: name, image: image || '' });
+    setDB('m5_cats', cats);
+    var catImages = JSON.parse(localStorage.getItem('dth_cat_images') || '{}');
+    catImages[name] = image || '';
+    localStorage.setItem('dth_cat_images', JSON.stringify(catImages));
+    loadCategories();
+    document.getElementById('cat-name').value = '';
+    document.getElementById('cat-image').value = '';
+    showToast('Đã thêm danh mục');
+}
+function delCategory(id) {
+    if (!confirm('Xóa danh mục này?')) return;
+    var cats = getDB('m5_cats');
+    var removed = null;
+    for (var i = 0; i < cats.length; i++) { if (cats[i].id == id) { removed = cats[i]; break; } }
+    var newCats = [];
+    for (var j = 0; j < cats.length; j++) { if (cats[j].id != id) newCats.push(cats[j]); }
+    setDB('m5_cats', newCats);
+    if (removed) {
+        var catImages = JSON.parse(localStorage.getItem('dth_cat_images') || '{}');
+        delete catImages[removed.name];
+        localStorage.setItem('dth_cat_images', JSON.stringify(catImages));
+    }
+    loadCategories();
+    showToast('Đã xóa danh mục');
+}
+async function loadProducts() {
+    var panel = document.getElementById('panel-prods');
+    var prods = [];
+    try {
+        var res = await fetch('/api/products');
+        if (res.ok) prods = await res.json();
+    } catch (e) {}
+    var html = '<div class="form-grid"><input type="text" id="p-name" placeholder="Tên sản phẩm"><input type="number" id="p-price" placeholder="Giá (VNĐ)"><input type="text" id="p-cat-select" placeholder="Danh mục"><input type="text" id="p-image" placeholder="URL ảnh"><textarea id="p-desc" placeholder="Mô tả" rows="2" class="form-full"></textarea><textarea id="p-stock" placeholder="Kho hàng (mỗi dòng 1 key/acc)" rows="3" class="form-full"></textarea><label style="display:flex; align-items:center; gap:10px; grid-column:span 2; background:rgba(0,0,0,0.2); padding:10px; border-radius:10px;"><input type="checkbox" id="p-manual"><span style="font-weight:600;">🛠 Sản phẩm thủ công</span></label></div><button class="btn-add" onclick="addProduct()"><i class="fas fa-plus"></i> Thêm sản phẩm</button><table style="margin-top:14px;"><thead><tr><th>Tên</th><th>Giá</th><th>Danh mục</th><th>Loại</th><th>Hành động</th></tr></thead><tbody>';
+    if (prods.length) {
+        for (var i = 0; i < prods.length; i++) {
+            var p = prods[i];
+            html += '<tr><td>' + p.name + '</td><td>' + formatVND(p.price) + '</td><td>' + (p.catId || '—') + '</td><td>' + (p.isManual ? '🛠 Thủ công' : '⚡ Tự động') + '</td><td><button class="btn-del" onclick="delProduct(\'' + p.id + '\')">Xóa</button></td></tr>';
+        }
+    } else {
+        html += '<tr><td colspan="5" style="text-align:center;">Chưa có sản phẩm</td></tr>';
+    }
+    html += '</tbody></table>';
+    panel.innerHTML = html;
+}
+async function addProduct() {
+    var name = document.getElementById('p-name').value.trim();
+    var price = parseInt(document.getElementById('p-price').value) || 0;
+    var catId = document.getElementById('p-cat-select').value.trim();
+    var image = document.getElementById('p-image').value.trim();
+    var desc = document.getElementById('p-desc').value.trim();
+    var stock = document.getElementById('p-stock').value.trim();
+    var isManual = document.getElementById('p-manual').checked ? 1 : 0;
+    if (!name || !price) { showToast('Nhập tên và giá!', true); return; }
+    try {
+        var res = await fetch('/api/admin/add-product', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, price: price, catId: catId, image: image, desc: desc, stock: stock, isManual: isManual }) });
+        var data = await res.json();
+        if (data.success) {
+            showToast('✅ Đã thêm sản phẩm');
+            var ids = ['p-name', 'p-price', 'p-cat-select', 'p-image', 'p-desc', 'p-stock'];
+            for (var i = 0; i < ids.length; i++) document.getElementById(ids[i]).value = '';
+            document.getElementById('p-manual').checked = false;
+            loadProducts();
+        } else {
+            showToast(data.message || 'Lỗi', true);
+        }
+    } catch (e) {
+        showToast('Lỗi kết nối!', true);
+    }
+}
+async function delProduct(id) {
+    if (!confirm('Xóa sản phẩm này?')) return;
+    try {
+        await fetch('/api/admin/delete-product', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) });
+        showToast('Đã xóa sản phẩm');
+        loadProducts();
+    } catch (e) {
+        showToast('Lỗi!', true);
+    }
+}
+function loadNews() {
+    var panel = document.getElementById('panel-news');
+    var news = getDB('dth_news');
+    var html = '<h3 style="margin-bottom:12px;">📝 Quản lý tin tức</h3><div class="news-form"><div class="form-row"><input type="text" id="news-title" placeholder="Tiêu đề bài viết"><input type="text" id="news-image" placeholder="URL ảnh đại diện (không bắt buộc)"><textarea id="news-content" class="full" rows="3" placeholder="Nội dung bài viết"></textarea></div><button class="btn-add" onclick="addNews()"><i class="fas fa-plus"></i> Thêm bài viết</button></div><div class="news-list-admin">';
+    if (news.length) {
+        for (var i = 0; i < news.length; i++) {
+            var item = news[i];
+            html += '<div class="news-item"><img src="' + (item.image || 'https://placehold.co/60x60/6C63FF/ffffff?text=News') + '" alt="' + item.title + '"><div class="info"><h4>' + item.title + '</h4><p>' + item.content + '</p><small style="color:var(--text-light);">' + (item.date || 'Không có ngày') + '</small></div><div class="actions"><button class="btn-del" onclick="deleteNews(\'' + item.id + '\')">Xóa</button></div></div>';
+        }
+    } else {
+        html += '<p style="color:var(--text-light); text-align:center; padding:20px;">Chưa có bài viết nào.</p>';
+    }
+    html += '</div>';
+    panel.innerHTML = html;
+}
+function addNews() {
+    var title = document.getElementById('news-title').value.trim();
+    var content = document.getElementById('news-content').value.trim();
+    var image = document.getElementById('news-image').value.trim();
+    if (!title || !content) { showToast('Vui lòng nhập tiêu đề và nội dung!', true); return; }
+    var news = getDB('dth_news');
+    var newItem = { id: Date.now().toString(), title: title, content: content, image: image || '', date: new Date().toLocaleDateString('vi-VN') };
+    news.unshift(newItem);
+    setDB('dth_news', news);
+    loadNews();
+    document.getElementById('news-title').value = '';
+    document.getElementById('news-content').value = '';
+    document.getElementById('news-image').value = '';
+    showToast('✅ Đã thêm bài viết');
+}
+function deleteNews(id) {
+    if (!confirm('Xóa bài viết này?')) return;
+    var news = getDB('dth_news');
+    var newNews = [];
+    for (var i = 0; i < news.length; i++) { if (news[i].id !== id) newNews.push(news[i]); }
+    setDB('dth_news', newNews);
+    loadNews();
+    showToast('Đã xóa bài viết');
+}
+async function loadOrders() {
+    var panel = document.getElementById('panel-orders');
+    var orders = [];
+    try {
+        var res = await fetch('/api/admin/orders');
+        if (res.ok) orders = await res.json();
+    } catch (e) {}
+    var html = '<table><thead><tr><th>Mã</th><th>Khách</th><th>Tổng</th><th>Trạng thái</th><th>Ngày tạo</th><th>Xử lý</th></tr></thead><tbody>';
+    if (orders.length) {
+        for (var i = 0; i < orders.length; i++) {
+            var o = orders[i];
+            var action = '';
+            var isManualOrder = (o.status === 'PAID' && (!o.deliveryData || o.deliveryData.trim() === '' || o.deliveryData.includes('Chờ admin')));
+            if (isManualOrder) {
+                action = '<textarea id="data-' + o.id + '" placeholder="Nhập Key/Account trả khách..." style="margin-bottom:4px; height:40px; font-size:13px;"></textarea><button class="btn-success" onclick="deliverOrder(\'' + o.id + '\')" style="padding:4px 14px; border-radius:30px; font-weight:600; background:#34d399; color:#fff; border:none; font-size:12px;"><i class="fas fa-paper-plane"></i> Giao hàng</button>';
+            } else if (o.status === 'Hoàn tất' || (o.status === 'PAID' && o.deliveryData && !o.deliveryData.includes('Chờ admin'))) {
+                action = '<span style="color:#34d399;"><i class="fas fa-check-circle"></i> Đã hoàn tất</span>';
+            } else {
+                action = '<span style="color:#fbbf24;"><i class="fas fa-spinner fa-spin"></i> ' + o.status + '</span>';
+            }
+            var createdDate = o.created_at ? new Date(o.created_at).toLocaleString('vi-VN') : new Date(Number(o.id) * 1000).toLocaleString('vi-VN');
+            html += '<tr><td>#' + o.id + '</td><td>' + (o.email || '—') + '</td><td>' + formatVND(o.total) + '</td><td>' + o.status + '</td><td>' + createdDate + '</td><td>' + action + '</td></tr>';
+        }
+    } else {
+        html += '<tr><td colspan="6" style="text-align:center;">Chưa có đơn hàng</td></tr>';
+    }
+    html += '</tbody></table>';
+    panel.innerHTML = html;
+}
+async function deliverOrder(orderId) {
+    var deliveryData = document.getElementById('data-' + orderId).value.trim();
+    if (!deliveryData) { showToast('Vui lòng nhập nội dung trả khách!', true); return; }
+    try {
+        var res = await fetch('/api/admin/update-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: orderId, deliveryData: deliveryData, autoComplete: true }) });
+        var data = await res.json();
+        if (data.success) {
+            showToast('✅ Đã trả hàng cho khách!');
+            loadOrders();
+        } else {
+            showToast('Lỗi: ' + data.message, true);
+        }
+    } catch (e) {
+        showToast('Lỗi kết nối!', true);
+    }
+}
+async function loadBalances() {
+    var panel = document.getElementById('panel-balances');
+    panel.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Đang tải...</p>';
+    try {
+        var balRes = await fetch('/api/admin/all-balances');
+        var balances = await balRes.json();
+        var topRes = await fetch('/api/admin/topup-list');
+        var topups = await topRes.json();
+        var html = '<h3 style="margin-bottom:12px;">💰 Danh sách số dư</h3><table><thead><tr><th>Email</th><th>Số dư</th><th>Hành động</th></tr></thead><tbody>';
+        if (balances.length) {
+            for (var i = 0; i < balances.length; i++) {
+                var u = balances[i];
+                html += '<tr><td>' + u.email + '</td><td style="color:var(--accent); font-weight:700;">' + formatVND(u.balance) + '</td><td><button class="btn-add" style="padding:4px 14px; font-size:12px;" onclick="adjustBalancePrompt(\'' + u.email + '\')"><i class="fas fa-edit"></i> Điều chỉnh</button></td></tr>';
+            }
+        } else {
+            html += '<tr><td colspan="3" style="text-align:center;">Chưa có user nào</td></tr>';
+        }
+        html += '</tbody></table><h3 style="margin-top:20px;">📋 Lịch sử nạp gần đây</h3><table><thead><tr><th>Email</th><th>Loại</th><th>Khai báo</th><th>Nhận</th><th>Trạng thái</th><th>Thời gian</th></tr></thead><tbody>';
+        if (topups.length) {
+            for (var j = 0; j < topups.length; j++) {
+                var t = topups[j];
+                html += '<tr><td>' + t.email + '</td><td>' + (t.card_type || t.payment_method || '—') + '</td><td>' + formatVND(t.declared_value || 0) + '</td><td>' + formatVND(t.amount_received || 0) + '</td><td>' + t.status + '</td><td style="font-size:12px; color:var(--text-light);">' + new Date(t.created_at).toLocaleString() + '</td></tr>';
+            }
+        } else {
+            html += '<tr><td colspan="6" style="text-align:center;">Chưa có giao dịch nạp</td></tr>';
+        }
+        html += '</tbody></table>';
+        panel.innerHTML = html;
+    } catch (e) {
+        panel.innerHTML = '<p style="color:var(--secondary);">Lỗi tải dữ liệu số dư</p>';
+    }
+}
+function adjustBalancePrompt(email) {
+    var amount = prompt('Nhập số tiền điều chỉnh cho ' + email + ' (dùng + để cộng, - để trừ):\nVí dụ: +50000 hoặc -20000');
+    if (amount === null) return;
+    var num = parseInt(amount);
+    if (isNaN(num)) { showToast('Số tiền không hợp lệ!', true); return; }
+    var reason = prompt('Lý do (không bắt buộc):') || '';
+    adjustBalance(email, num, reason);
+}
+async function adjustBalance(email, amount, reason) {
+    try {
+        var res = await fetch('/api/admin/adjust-balance', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, amount: amount, reason: reason }) });
+        var data = await res.json();
+        if (data.success) {
+            showToast('✅ Đã điều chỉnh số dư ' + email + ': ' + formatVND(amount));
+            loadBalances();
+        } else {
+            showToast(data.message || 'Lỗi điều chỉnh', true);
+        }
+    } catch (e) {
+        showToast('Lỗi kết nối!', true);
+    }
+}
+function loadSupport() {
+    var panel = document.getElementById('panel-support');
+    var tickets = JSON.parse(localStorage.getItem('dth_support_tickets') || '[]');
+    if (!tickets.length) {
+        panel.innerHTML = '<p style="color:var(--text-light); text-align:center; padding:20px;">Chưa có yêu cầu hỗ trợ nào.</p>';
+        return;
+    }
+    var html = '<h3 style="margin-bottom:12px;">📋 Danh sách yêu cầu hỗ trợ</h3><div class="glass-box">';
+    for (var i = 0; i < tickets.length; i++) {
+        var t = tickets[i];
+        var statusClass = t.status === 'Chờ xử lý' ? 'pending' : 'resolved';
+        html += '<div class="support-ticket"><div class="ticket-header"><strong>' + t.subject + '</strong><span class="ticket-status ' + statusClass + '">' + t.status + '</span></div><div class="ticket-meta">' + t.name + ' (' + t.email + ') - ' + t.created + '</div><div class="ticket-message">' + t.message + '</div>';
+        if (t.status === 'Chờ xử lý') {
+            html += '<button class="btn-add" style="padding:4px 14px; font-size:12px;" onclick="resolveSupport(\'' + t.id + '\')">Đánh dấu đã xử lý</button>';
+        }
+        html += '</div>';
+    }
+    html += '</div>';
+    panel.innerHTML = html;
+}
+function resolveSupport(id) {
+    var tickets = JSON.parse(localStorage.getItem('dth_support_tickets') || '[]');
+    for (var i = 0; i < tickets.length; i++) {
+        if (tickets[i].id == id) {
+            tickets[i].status = 'Đã xử lý';
+            break;
+        }
+    }
+    localStorage.setItem('dth_support_tickets', JSON.stringify(tickets));
+    loadSupport();
+    showToast('Đã cập nhật trạng thái yêu cầu');
+}
+async function loadLogs() {
+    var panel = document.getElementById('panel-logs');
+    try {
+        var res = await fetch('/api/admin/logs');
+        var logs = await res.json();
+        if (!logs.length) {
+            panel.innerHTML = '<p style="color:var(--text-light);">Chưa có log.</p>';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < logs.length; i++) {
+            var log = logs[i];
+            html += '<div style="padding:8px 12px; border-bottom:1px solid var(--border); display:flex; gap:12px; flex-wrap:wrap; font-size:13px;"><span style="color:var(--text-light);">' + new Date(log.created_at).toLocaleString() + '</span><span style="font-weight:600;">' + log.email + '</span><span>' + log.action + '</span><span style="color:var(--text-light);">' + (log.detail || '') + '</span></div>';
+        }
+        panel.innerHTML = html;
+    } catch (e) {
+        panel.innerHTML = '<p style="color:var(--secondary);">Lỗi tải logs</p>';
+    }
+}
+window.onload = function() {
+    document.getElementById('login-wrapper').classList.remove('hidden');
+    document.getElementById('sidebar').style.display = 'none';
+    document.getElementById('main').style.display = 'none';
+};
+</script>
+</body>
+</html>
