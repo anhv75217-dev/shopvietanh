@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# SHOP BAN FILE FREE FIRE - CODE HOÀN CHỈNH VỚI API KEY SEPAY CỦA BẠN
+# SHOP BAN FILE FREE FIRE - GIAO DIỆN MỚI SÁNG - HIỆN ĐẠI - DỄ NHÌN
 # API KEY: R2KFBS3YUQJFO0GNE3NMXIXNUWIQQDLHMIVJUVLIC5Z4MHANP2G5WYDGDP9TFVL1
-# ĐÃ TÍCH HỢP ĐẦY ĐỦ: ĐĂNG NHẬP, ĐĂNG KÝ, QUÊN MK, NẠP TIỀN, BANK TỰ ĐỘNG, ADMIN
 
 from flask import Flask, render_template_string, request, redirect, url_for, session, flash, jsonify
 from flask_mail import Mail, Message
@@ -25,18 +24,18 @@ app.secret_key = "freefire_shop_secret_key_2026"
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'your_email@gmail.com'      # THAY EMAIL CỦA BẠN
-app.config['MAIL_PASSWORD'] = 'your_app_password'         # THAY MẬT KHẨU APP GMAIL
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your_app_password'
 app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
 mail = Mail(app)
 
-# ==================== CẤU HÌNH SEPAY (ĐÃ THÊM API KEY CỦA BẠN) ====================
+# ==================== CẤU HÌNH SEPAY ====================
 SEPAY_CONFIG = {
-    "api_url": "https://bankhub-api.sepay.vn/v1",          # Production URL
+    "api_url": "https://bankhub-api.sepay.vn/v1",
     "api_key": "R2KFBS3YUQJFO0GNE3NMXIXNUWIQQDLHMIVJUVLIC5Z4MHANP2G5WYDGDP9TFVL1",
-    "account_number": "0933121845",                        # THAY SỐ TÀI KHOẢN MB BANK CỦA BẠN
+    "account_number": "0123456789",  # THAY SỐ TÀI KHOẢN CỦA BẠN
     "bin": "970422",
-    "account_name": "TUONG VIET ANH"                         # THAY TÊN CHỦ TÀI KHOẢN
+    "account_name": "NGUYEN VAN A"   # THAY TÊN CỦA BẠN
 }
 
 # === CẤU HÌNH SHOP ===
@@ -98,9 +97,6 @@ def generate_qr_mbbank(amount, order_id):
 
 # ==================== HÀM GỌI API SEPAY ====================
 def fetch_sepay_transactions(account_number, from_date, to_date):
-    """
-    Lấy danh sách giao dịch từ SePay sử dụng API Key
-    """
     try:
         headers = {
             "Authorization": f"Bearer {SEPAY_CONFIG['api_key']}",
@@ -128,7 +124,6 @@ def fetch_sepay_transactions(account_number, from_date, to_date):
         return []
 
 def test_sepay_connection():
-    """Kiểm tra kết nối đến SePay với API Key"""
     try:
         result = fetch_sepay_transactions(
             SEPAY_CONFIG['account_number'],
@@ -141,9 +136,6 @@ def test_sepay_connection():
         return False
 
 def check_and_process_sepay_deposit(user_id, amount, order_id):
-    """
-    Kiểm tra giao dịch từ SePay và tự động nạp tiền
-    """
     from_date = (datetime.datetime.now() - datetime.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S")
     to_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
@@ -160,7 +152,6 @@ def check_and_process_sepay_deposit(user_id, amount, order_id):
             tx_status = tx.get('status', '') or tx.get('transaction_status', 'success')
             
             if order_id in tx_desc and float(tx_amount) == float(amount) and tx_status.lower() in ['success', 'completed']:
-                # Cộng tiền user
                 conn = get_db()
                 conn.execute('UPDATE users SET balance = balance + ? WHERE user_id = ?', (amount, user_id))
                 conn.execute('''INSERT INTO deposit_history 
@@ -170,7 +161,6 @@ def check_and_process_sepay_deposit(user_id, amount, order_id):
                 conn.commit()
                 conn.close()
                 
-                # Cập nhật đơn hàng
                 conn = get_db()
                 conn.execute('UPDATE orders SET status = ? WHERE order_id = ?', ("Đã thanh toán", order_id))
                 order = conn.execute('SELECT * FROM orders WHERE order_id = ?', (order_id,)).fetchone()
@@ -513,17 +503,17 @@ def register():
             flash('Tên đăng nhập hoặc email đã tồn tại!')
         return redirect(url_for('index'))
     return '''
-    <div style="max-width:460px; margin:30px auto; padding:40px 35px; background:rgba(255,255,255,0.03); border-radius:40px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="text-align:center; font-weight:700; background:linear-gradient(135deg, #ffd700, #f7971e); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Đăng ký tài khoản</h2>
+    <div style="max-width:460px; margin:30px auto; padding:40px 35px; background:#f8fafc; border-radius:28px; border:1px solid #e9edf2;">
+        <h2 style="text-align:center; font-weight:700; color:#0f172a;">Đăng ký tài khoản</h2>
         <form method="POST">
-            <input type="text" name="username" placeholder="Tên đăng nhập" required style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <input type="email" name="email" placeholder="Email" required style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <input type="password" name="password" placeholder="Mật khẩu" required style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <input type="text" name="full_name" placeholder="Họ tên" style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <input type="text" name="phone" placeholder="Số điện thoại" style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <button type="submit" style="width:100%; padding:16px; background:linear-gradient(135deg, #f7971e, #ffd200); border:none; border-radius:60px; color:#0a0a0f; font-weight:700; cursor:pointer;">Đăng ký</button>
+            <input type="text" name="username" placeholder="Tên đăng nhập" required style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <input type="email" name="email" placeholder="Email" required style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <input type="password" name="password" placeholder="Mật khẩu" required style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <input type="text" name="full_name" placeholder="Họ tên" style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <input type="text" name="phone" placeholder="Số điện thoại" style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <button type="submit" style="width:100%; padding:14px; background:#0f172a; color:white; border:none; border-radius:60px; font-weight:600; cursor:pointer;">Đăng ký</button>
         </form>
-        <p style="text-align:center; margin-top:15px;"><a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">Quay lại trang chủ</a></p>
+        <p style="text-align:center; margin-top:15px;"><a href="/" style="color:#64748b; text-decoration:none;">Quay lại trang chủ</a></p>
     </div>
     '''
 
@@ -551,13 +541,13 @@ def forgot_password():
             flash('Lỗi gửi email!')
         return redirect(url_for('index'))
     return '''
-    <div style="max-width:460px; margin:30px auto; padding:40px 35px; background:rgba(255,255,255,0.03); border-radius:40px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="text-align:center; font-weight:700; color:#ffd700;">Quên mật khẩu</h2>
+    <div style="max-width:460px; margin:30px auto; padding:40px 35px; background:#f8fafc; border-radius:28px; border:1px solid #e9edf2;">
+        <h2 style="text-align:center; font-weight:700; color:#0f172a;">Quên mật khẩu</h2>
         <form method="POST">
-            <input type="email" name="email" placeholder="Email của bạn" required style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <button type="submit" style="width:100%; padding:16px; background:linear-gradient(135deg, #f7971e, #ffd200); border:none; border-radius:60px; color:#0a0a0f; font-weight:700; cursor:pointer;">Gửi link reset</button>
+            <input type="email" name="email" placeholder="Email của bạn" required style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <button type="submit" style="width:100%; padding:14px; background:#0f172a; color:white; border:none; border-radius:60px; font-weight:600; cursor:pointer;">Gửi link reset</button>
         </form>
-        <p style="text-align:center; margin-top:15px;"><a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">Quay lại</a></p>
+        <p style="text-align:center; margin-top:15px;"><a href="/" style="color:#64748b; text-decoration:none;">Quay lại</a></p>
     </div>
     '''
 
@@ -577,11 +567,11 @@ def reset_password(token):
         flash('Đặt lại mật khẩu thành công!')
         return redirect(url_for('index'))
     return '''
-    <div style="max-width:460px; margin:30px auto; padding:40px 35px; background:rgba(255,255,255,0.03); border-radius:40px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="text-align:center; font-weight:700; color:#ffd700;">Đặt lại mật khẩu</h2>
+    <div style="max-width:460px; margin:30px auto; padding:40px 35px; background:#f8fafc; border-radius:28px; border:1px solid #e9edf2;">
+        <h2 style="text-align:center; font-weight:700; color:#0f172a;">Đặt lại mật khẩu</h2>
         <form method="POST">
-            <input type="password" name="password" placeholder="Mật khẩu mới (≥ 6 ký tự)" required style="width:100%; padding:16px 20px; margin:10px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-            <button type="submit" style="width:100%; padding:16px; background:linear-gradient(135deg, #f7971e, #ffd200); border:none; border-radius:60px; color:#0a0a0f; font-weight:700; cursor:pointer;">Cập nhật</button>
+            <input type="password" name="password" placeholder="Mật khẩu mới (≥ 6 ký tự)" required style="width:100%; padding:14px 18px; margin:10px 0; border-radius:60px; border:1px solid #d1d5db; background:white; color:#1e293b;">
+            <button type="submit" style="width:100%; padding:14px; background:#0f172a; color:white; border:none; border-radius:60px; font-weight:600; cursor:pointer;">Cập nhật</button>
         </form>
     </div>
     '''
@@ -611,26 +601,25 @@ def orders():
         return redirect(url_for('index'))
     user_orders = get_orders_by_phone(session['user']['phone'])
     html = '''
-    <div style="max-width:900px; margin:30px auto; padding:30px; background:rgba(255,255,255,0.03); border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="color:#ffd700;">📦 Đơn hàng của tôi</h2>
-        <a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">← Quay lại</a>
+    <div style="max-width:900px; margin:30px auto; padding:30px; background:white; border-radius:32px; border:1px solid #e9edf2;">
+        <h2 style="color:#0f172a;">📦 Đơn hàng của tôi</h2>
+        <a href="/" style="color:#64748b; text-decoration:none;">← Quay lại</a>
         <div style="margin-top:20px;">
     '''
     if not user_orders:
-        html += '<p style="color:rgba(255,255,255,0.3);">Bạn chưa có đơn hàng nào.</p>'
+        html += '<p style="color:#64748b;">Bạn chưa có đơn hàng nào.</p>'
     else:
         for o in user_orders:
             html += f'''
-            <div style="border-bottom:1px solid rgba(255,255,255,0.04); padding:15px 0;">
-                <b style="color:#fff;">{o['order_id']}</b> - {o['product_name']} x{o['quantity']} - <b style="color:#ffd700;">{o['total']} {CURRENCY}</b>
-                <br>Trạng thái: <b style="color:{'#2ecc71' if o['status']=='Đã thanh toán' else '#f39c12'};">{o['status']}</b> | Ngày: {o['created']}
-                <br>File: <a href="{o['file_link']}" target="_blank" style="color:#ffd700;">{o['file_link'] or 'Chưa có'}</a>
+            <div style="border-bottom:1px solid #e9edf2; padding:15px 0;">
+                <b style="color:#0f172a;">{o['order_id']}</b> - {o['product_name']} x{o['quantity']} - <b style="color:#f59e0b;">{o['total']} {CURRENCY}</b>
+                <br>Trạng thái: <b style="color:{'#16a34a' if o['status']=='Đã thanh toán' else '#d97706'};">{o['status']}</b> | Ngày: {o['created']}
+                <br>File: <a href="{o['file_link']}" target="_blank" style="color:#f59e0b;">{o['file_link'] or 'Chưa có'}</a>
             </div>
             '''
     html += '</div></div>'
     return html
 
-# === NẠP TIỀN (GIAO DIỆN ĐẸP) ===
 @app.route('/deposit', methods=['GET', 'POST'])
 def deposit():
     if 'user' not in session:
@@ -669,271 +658,81 @@ def deposit():
                 session['user']['balance'] = user['balance'] + amount
             return redirect(url_for('deposit'))
     
-    # GIAO DIỆN NẠP TIỀN ĐẸP, HIỆN ĐẠI
     html = '''
-    <!DOCTYPE html>
-    <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nạp tiền - FF SHOP</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-                font-family: 'Inter', sans-serif;
-                background: #f0f2f5;
-                min-height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 20px;
-            }
-            .deposit-container {
-                max-width: 1100px;
-                width: 100%;
-                background: white;
-                border-radius: 32px;
-                padding: 40px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            }
-            .deposit-header {
-                text-align: center;
-                margin-bottom: 35px;
-            }
-            .deposit-header h1 {
-                font-size: 2.2em;
-                font-weight: 800;
-                color: #1a1a2e;
-                letter-spacing: -0.5px;
-            }
-            .deposit-header h1 span { color: #f7971e; }
-            .deposit-header p {
-                color: #6b7280;
-                font-size: 1em;
-                margin-top: 6px;
-            }
-            .balance-box {
-                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-                border-radius: 20px;
-                padding: 20px 30px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 30px;
-                color: white;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .balance-box .label { font-size: 0.9em; opacity: 0.7; }
-            .balance-box .amount {
-                font-size: 2em;
-                font-weight: 700;
-                background: linear-gradient(135deg, #ffd700, #f7971e);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-            .balance-box .btn-home {
-                background: rgba(255,255,255,0.1);
-                padding: 8px 20px;
-                border-radius: 30px;
-                color: white;
-                text-decoration: none;
-                font-size: 0.85em;
-                transition: 0.3s;
-            }
-            .balance-box .btn-home:hover { background: rgba(255,255,255,0.2); }
-            .deposit-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 30px;
-            }
-            @media (max-width: 768px) { .deposit-grid { grid-template-columns: 1fr; } }
-            .deposit-card {
-                background: #f8fafc;
-                border-radius: 24px;
-                padding: 30px;
-                border: 1px solid #e9edf2;
-                transition: 0.3s;
-            }
-            .deposit-card:hover { border-color: #f7971e; box-shadow: 0 8px 30px rgba(247,151,30,0.08); }
-            .deposit-card .icon {
-                font-size: 2.2em;
-                color: #f7971e;
-                margin-bottom: 10px;
-            }
-            .deposit-card h3 {
-                font-size: 1.3em;
-                font-weight: 700;
-                color: #1a1a2e;
-                margin-bottom: 8px;
-            }
-            .deposit-card .desc {
-                color: #6b7280;
-                font-size: 0.9em;
-                margin-bottom: 18px;
-            }
-            .deposit-card label {
-                font-weight: 600;
-                font-size: 0.85em;
-                color: #374151;
-                display: block;
-                margin-top: 12px;
-                margin-bottom: 4px;
-            }
-            .deposit-card input, .deposit-card select {
-                width: 100%;
-                padding: 12px 16px;
-                border: 1px solid #d1d5db;
-                border-radius: 16px;
-                font-size: 0.95em;
-                font-family: 'Inter', sans-serif;
-                transition: 0.3s;
-                background: white;
-                color: #1a1a2e;
-            }
-            .deposit-card input:focus, .deposit-card select:focus {
-                border-color: #f7971e;
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(247,151,30,0.15);
-            }
-            .deposit-card button {
-                width: 100%;
-                padding: 14px;
-                margin-top: 18px;
-                background: linear-gradient(135deg, #f7971e, #ffd200);
-                border: none;
-                border-radius: 60px;
-                color: #1a1a2e;
-                font-weight: 700;
-                font-size: 1em;
-                cursor: pointer;
-                transition: 0.3s;
-                font-family: 'Inter', sans-serif;
-            }
-            .deposit-card button:hover {
-                transform: scale(1.02);
-                box-shadow: 0 8px 25px rgba(247,151,30,0.3);
-            }
-            .deposit-card .qr-placeholder {
-                margin-top: 15px;
-                padding: 15px;
-                background: white;
-                border-radius: 16px;
-                border: 1px dashed #d1d5db;
-                text-align: center;
-                color: #6b7280;
-                font-size: 0.9em;
-            }
-            .deposit-card .bank-info {
-                margin-top: 15px;
-                padding: 12px 16px;
-                background: #eef2f6;
-                border-radius: 12px;
-                font-size: 0.85em;
-                color: #1a1a2e;
-            }
-            .deposit-card .bank-info strong { color: #f7971e; }
-            .flash-message {
-                padding: 14px 20px;
-                border-radius: 16px;
-                margin-bottom: 20px;
-                background: #fef9e7;
-                border: 1px solid #f9e79f;
-                color: #7d6608;
-                font-weight: 500;
-                text-align: center;
-            }
-            .footer-text {
-                text-align: center;
-                margin-top: 30px;
-                font-size: 0.85em;
-                color: #9ca3af;
-            }
-            .footer-text a { color: #f7971e; text-decoration: none; }
-        </style>
-    </head>
-    <body>
-        <div class="deposit-container">
-            <div class="deposit-header">
-                <h1>💳 Nạp <span>tiền</span></h1>
-                <p>Chọn phương thức nạp tiền vào tài khoản</p>
+    <div style="max-width:1100px; margin:auto; background:white; border-radius:32px; padding:35px; border:1px solid #e9edf2;">
+        <div style="text-align:center; margin-bottom:25px;">
+            <h1 style="font-size:2em; font-weight:700; color:#0f172a;">💳 Nạp <span style="color:#f59e0b;">tiền</span></h1>
+            <p style="color:#64748b;">Chọn phương thức nạp tiền vào tài khoản</p>
+        </div>
+
+        <div style="background:#0f172a; border-radius:20px; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; color:white; flex-wrap:wrap; gap:10px; margin-bottom:25px;">
+            <div>
+                <div style="opacity:0.7;">💰 Số dư hiện tại</div>
+                <div style="font-size:1.8em; font-weight:700; color:#fcd34d;">''' + f"{user['balance']:,.0f}" + ''' đ</div>
+            </div>
+            <a href="/" style="background:rgba(255,255,255,0.08); padding:6px 18px; border-radius:40px; color:white; text-decoration:none; font-size:0.85em;"><i class="fas fa-arrow-left"></i> Trang chủ</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div style="padding:14px 20px; border-radius:16px; margin-bottom:20px; background:#fef9e7; border:1px solid #fcd34d; color:#78350f; font-weight:500;">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
+            <div style="background:#f8fafc; border-radius:24px; padding:28px; border:1px solid #e9edf2;">
+                <div style="font-size:2em; color:#f59e0b; margin-bottom:8px;"><i class="fas fa-credit-card"></i></div>
+                <h3 style="font-weight:700; color:#0f172a;">Thẻ cào</h3>
+                <div style="color:#64748b; font-size:0.9em; margin-bottom:15px;">Nạp tiền bằng thẻ Viettel, Mobifone, VinaPhone</div>
+                <form method="POST">
+                    <input type="hidden" name="method" value="card">
+                    <label style="font-weight:600; font-size:0.85em; display:block; margin:12px 0 4px; color:#334155;">Loại thẻ</label>
+                    <select name="card_type" style="width:100%; padding:12px 16px; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                        <option value="viettel">Viettel</option>
+                        <option value="mobifone">Mobifone</option>
+                        <option value="vinaphone">VinaPhone</option>
+                    </select>
+                    <label style="font-weight:600; font-size:0.85em; display:block; margin:12px 0 4px; color:#334155;">Mã thẻ</label>
+                    <input type="text" name="card_code" placeholder="Nhập mã thẻ" required style="width:100%; padding:12px 16px; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                    <label style="font-weight:600; font-size:0.85em; display:block; margin:12px 0 4px; color:#334155;">Số serial</label>
+                    <input type="text" name="card_serial" placeholder="Nhập số serial" required style="width:100%; padding:12px 16px; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                    <label style="font-weight:600; font-size:0.85em; display:block; margin:12px 0 4px; color:#334155;">Mệnh giá (VND)</label>
+                    <input type="number" name="amount" placeholder="Nhập số tiền" required min="10000" style="width:100%; padding:12px 16px; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                    <button type="submit" style="width:100%; padding:13px; margin-top:16px; background:#0f172a; color:white; border:none; border-radius:60px; font-weight:600; cursor:pointer;"><i class="fas fa-check-circle"></i> Nạp thẻ</button>
+                </form>
             </div>
 
-            <div class="balance-box">
-                <div>
-                    <div class="label">💰 Số dư hiện tại</div>
-                    <div class="amount">''' + f"{user['balance']:,.0f}" + ''' đ</div>
+            <div style="background:#f8fafc; border-radius:24px; padding:28px; border:1px solid #e9edf2;">
+                <div style="font-size:2em; color:#f59e0b; margin-bottom:8px;"><i class="fas fa-university"></i></div>
+                <h3 style="font-weight:700; color:#0f172a;">Chuyển khoản ngân hàng</h3>
+                <div style="color:#64748b; font-size:0.9em; margin-bottom:15px;">Tự động xác nhận qua SePay (MB Bank)</div>
+                <form method="POST">
+                    <input type="hidden" name="method" value="bank">
+                    <label style="font-weight:600; font-size:0.85em; display:block; margin:12px 0 4px; color:#334155;">Số tiền (VND)</label>
+                    <input type="number" name="amount" placeholder="Nhập số tiền cần nạp" required min="10000" style="width:100%; padding:12px 16px; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                    <button type="submit" style="width:100%; padding:13px; margin-top:16px; background:#0f172a; color:white; border:none; border-radius:60px; font-weight:600; cursor:pointer;"><i class="fas fa-qrcode"></i> Tạo QR & nạp</button>
+                </form>
+                <div style="background:#e9edf2; padding:12px 16px; border-radius:14px; margin-top:15px; font-size:0.9em; color:#1e293b;">
+                    <i class="fas fa-info-circle" style="color:#f59e0b;"></i>
+                    <strong>MB Bank:</strong> ''' + SEPAY_CONFIG['account_number'] + ''' - ''' + SEPAY_CONFIG['account_name'] + '''
                 </div>
-                <a href="/" class="btn-home"><i class="fas fa-arrow-left"></i> Trang chủ</a>
-            </div>
-
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-message"><i class="fas fa-info-circle"></i> {{ messages[0] }}</div>
-                {% endif %}
-            {% endwith %}
-
-            <div class="deposit-grid">
-                <!-- THẺ CÀO -->
-                <div class="deposit-card">
-                    <div class="icon"><i class="fas fa-credit-card"></i></div>
-                    <h3>Thẻ cào</h3>
-                    <div class="desc">Nạp tiền bằng thẻ Viettel, Mobifone, VinaPhone</div>
-                    <form method="POST">
-                        <input type="hidden" name="method" value="card">
-                        <label>Loại thẻ</label>
-                        <select name="card_type">
-                            <option value="viettel">Viettel</option>
-                            <option value="mobifone">Mobifone</option>
-                            <option value="vinaphone">VinaPhone</option>
-                        </select>
-                        <label>Mã thẻ</label>
-                        <input type="text" name="card_code" placeholder="Nhập mã thẻ" required>
-                        <label>Số serial</label>
-                        <input type="text" name="card_serial" placeholder="Nhập số serial" required>
-                        <label>Mệnh giá (VND)</label>
-                        <input type="number" name="amount" placeholder="Nhập số tiền" required min="10000">
-                        <button type="submit"><i class="fas fa-check-circle"></i> Nạp thẻ</button>
-                    </form>
+                <div style="margin-top:15px; padding:15px; background:white; border-radius:16px; border:1px dashed #d1d5db; text-align:center; color:#64748b; font-size:0.9em;">
+                    <i class="fas fa-qrcode" style="font-size:1.5em; color:#f59e0b; display:block; margin-bottom:6px;"></i>
+                    Quét QR sau khi nhập số tiền
                 </div>
-
-                <!-- BANK / SEPAY -->
-                <div class="deposit-card">
-                    <div class="icon"><i class="fas fa-university"></i></div>
-                    <h3>Chuyển khoản ngân hàng</h3>
-                    <div class="desc">Tự động xác nhận qua SePay (MB Bank)</div>
-                    <form method="POST">
-                        <input type="hidden" name="method" value="bank">
-                        <label>Số tiền (VND)</label>
-                        <input type="number" name="amount" placeholder="Nhập số tiền cần nạp" required min="10000">
-                        <button type="submit"><i class="fas fa-qrcode"></i> Tạo QR & nạp</button>
-                    </form>
-                    <div class="bank-info">
-                        <i class="fas fa-info-circle" style="color:#f7971e;"></i>
-                        <strong>MB Bank:</strong> ''' + SEPAY_CONFIG['account_number'] + ''' - ''' + SEPAY_CONFIG['account_name'] + '''
-                    </div>
-                    <div class="qr-placeholder">
-                        <i class="fas fa-qrcode" style="font-size:1.5em; color:#f7971e; display:block; margin-bottom:6px;"></i>
-                        Quét QR sau khi nhập số tiền
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-text">
-                <a href="/"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
             </div>
         </div>
-    </body>
-    </html>
+
+        <div style="text-align:center; margin-top:30px; font-size:0.85em; color:#94a3b8;">
+            <a href="/" style="color:#f59e0b; text-decoration:none;"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
+        </div>
+    </div>
     '''
     return render_template_string(html, session=session)
 
 # === KIỂM TRA KẾT NỐI SEPAY ===
 @app.route('/test-sepay')
 def test_sepay():
-    """Kiểm tra kết nối API SePay"""
     if test_sepay_connection():
         return "✅ Kết nối SePay thành công với API Key!"
     else:
@@ -941,7 +740,6 @@ def test_sepay():
 
 @app.route('/check-connectivity')
 def check_connectivity():
-    """Kiểm tra kết nối Internet từ server đến SePay API"""
     import socket
     import requests
     
@@ -1024,24 +822,24 @@ def admin_dashboard():
     orders = get_all_orders()
     products = get_products()
     html = '''
-    <div style="max-width:1200px; margin:20px auto; padding:30px; background:rgba(255,255,255,0.03); border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="color:#ffd700;">⚙️ Admin Dashboard</h2>
-        <a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">← Trang chủ</a>
+    <div style="max-width:1200px; margin:20px auto; padding:30px; background:white; border-radius:32px; border:1px solid #e9edf2;">
+        <h2 style="color:#0f172a;">⚙️ Admin Dashboard</h2>
+        <a href="/" style="color:#64748b; text-decoration:none;">← Trang chủ</a>
         <div style="display:flex; gap:20px; margin:20px 0; flex-wrap:wrap;">
-            <div style="background:rgba(255,215,0,0.05); padding:25px; border-radius:20px; flex:1; text-align:center;">
-                <h3 style="color:#ffd700;">Sản phẩm</h3>
-                <p style="font-size:2em; color:#fff;">''' + str(len(products)) + '''</p>
-                <a href="/admin/products" style="color:#ffd700;">Quản lý</a>
+            <div style="background:#f8fafc; padding:25px; border-radius:20px; flex:1; text-align:center; border:1px solid #e9edf2;">
+                <h3 style="color:#0f172a;">Sản phẩm</h3>
+                <p style="font-size:2em; color:#0f172a;">''' + str(len(products)) + '''</p>
+                <a href="/admin/products" style="color:#f59e0b;">Quản lý</a>
             </div>
-            <div style="background:rgba(46,204,113,0.05); padding:25px; border-radius:20px; flex:1; text-align:center;">
-                <h3 style="color:#2ecc71;">Đơn hàng</h3>
-                <p style="font-size:2em; color:#fff;">''' + str(len(orders)) + '''</p>
-                <a href="/admin/orders" style="color:#2ecc71;">Quản lý</a>
+            <div style="background:#f8fafc; padding:25px; border-radius:20px; flex:1; text-align:center; border:1px solid #e9edf2;">
+                <h3 style="color:#0f172a;">Đơn hàng</h3>
+                <p style="font-size:2em; color:#0f172a;">''' + str(len(orders)) + '''</p>
+                <a href="/admin/orders" style="color:#f59e0b;">Quản lý</a>
             </div>
-            <div style="background:rgba(255,107,107,0.05); padding:25px; border-radius:20px; flex:1; text-align:center;">
-                <h3 style="color:#ff6b6b;">Người dùng</h3>
-                <p style="font-size:2em; color:#fff;">''' + str(len(users)) + '''</p>
-                <a href="/admin/users" style="color:#ff6b6b;">Quản lý</a>
+            <div style="background:#f8fafc; padding:25px; border-radius:20px; flex:1; text-align:center; border:1px solid #e9edf2;">
+                <h3 style="color:#0f172a;">Người dùng</h3>
+                <p style="font-size:2em; color:#0f172a;">''' + str(len(users)) + '''</p>
+                <a href="/admin/users" style="color:#f59e0b;">Quản lý</a>
             </div>
         </div>
     </div>
@@ -1095,26 +893,26 @@ def admin_products():
     
     products = get_products()
     html = '''
-    <div style="max-width:1200px; margin:20px auto; padding:30px; background:rgba(255,255,255,0.03); border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="color:#ffd700;">📦 Quản lý sản phẩm</h2>
-        <a href="/admin" style="color:rgba(255,255,255,0.3); text-decoration:none;">← Dashboard</a> | <a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">Trang chủ</a>
-        <div class="admin-panel">
-            <h3 style="color:#fff;">➕ Thêm sản phẩm mới</h3>
+    <div style="max-width:1200px; margin:20px auto; padding:30px; background:white; border-radius:32px; border:1px solid #e9edf2;">
+        <h2 style="color:#0f172a;">📦 Quản lý sản phẩm</h2>
+        <a href="/admin" style="color:#64748b; text-decoration:none;">← Dashboard</a> | <a href="/" style="color:#64748b; text-decoration:none;">Trang chủ</a>
+        <div style="background:#f8fafc; padding:25px; border-radius:24px; margin:20px 0; border:1px solid #e9edf2;">
+            <h3 style="color:#0f172a;">➕ Thêm sản phẩm mới</h3>
             <form method="POST">
                 <input type="hidden" name="action" value="add">
-                <input type="text" name="name" placeholder="Tên sản phẩm" required>
-                <input type="text" name="category" placeholder="Danh mục (Android/iOS/PC)" required>
-                <input type="number" name="price" placeholder="Giá (VND)" required>
-                <input type="number" name="stock" placeholder="Số lượng" required>
-                <textarea name="description" placeholder="Mô tả"></textarea>
-                <input type="text" name="features" placeholder="Tính năng nổi bật">
-                <input type="text" name="platform" placeholder="Nền tảng">
-                <input type="text" name="warranty" placeholder="Bảo hành">
-                <input type="text" name="file_link" placeholder="Link file" style="width:100%;">
-                <button type="submit">Thêm sản phẩm</button>
+                <input type="text" name="name" placeholder="Tên sản phẩm" required style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <input type="text" name="category" placeholder="Danh mục (Android/iOS/PC)" required style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <input type="number" name="price" placeholder="Giá (VND)" required style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <input type="number" name="stock" placeholder="Số lượng" required style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <textarea name="description" placeholder="Mô tả" style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;"></textarea>
+                <input type="text" name="features" placeholder="Tính năng nổi bật" style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <input type="text" name="platform" placeholder="Nền tảng" style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <input type="text" name="warranty" placeholder="Bảo hành" style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <input type="text" name="file_link" placeholder="Link file" style="width:100%; padding:12px 16px; margin:6px 0; border:1px solid #d1d5db; border-radius:16px; background:white; color:#1e293b;">
+                <button type="submit" style="background:#0f172a; color:white; padding:12px 30px; border:none; border-radius:60px; font-weight:600; cursor:pointer;">Thêm sản phẩm</button>
             </form>
         </div>
-        <h3 style="color:#fff;">Danh sách sản phẩm</h3>
+        <h3 style="color:#0f172a;">Danh sách sản phẩm</h3>
         <table>
             <tr><th>ID</th><th>Tên</th><th>Danh mục</th><th>Giá</th><th>Tồn</th><th>Đã bán</th><th>Hành động</th></tr>
     '''
@@ -1183,10 +981,10 @@ def admin_orders():
         return redirect(url_for('admin_orders'))
     orders = get_all_orders()
     html = '''
-    <div style="max-width:1200px; margin:20px auto; padding:30px; background:rgba(255,255,255,0.03); border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="color:#ffd700;">📋 Quản lý đơn hàng</h2>
-        <a href="/admin" style="color:rgba(255,255,255,0.3); text-decoration:none;">← Dashboard</a> | <a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">Trang chủ</a>
-        <h3 style="color:#fff;">Danh sách đơn hàng</h3>
+    <div style="max-width:1200px; margin:20px auto; padding:30px; background:white; border-radius:32px; border:1px solid #e9edf2;">
+        <h2 style="color:#0f172a;">📋 Quản lý đơn hàng</h2>
+        <a href="/admin" style="color:#64748b; text-decoration:none;">← Dashboard</a> | <a href="/" style="color:#64748b; text-decoration:none;">Trang chủ</a>
+        <h3 style="color:#0f172a;">Danh sách đơn hàng</h3>
         <table>
             <tr><th>Mã đơn</th><th>Sản phẩm</th><th>Số lượng</th><th>Tổng</th><th>Trạng thái</th><th>Người mua</th><th>Hành động</th></tr>
     '''
@@ -1201,7 +999,7 @@ def admin_orders():
                 <form method="POST" style="display:inline-block;">
                     <input type="hidden" name="action" value="update_status">
                     <input type="hidden" name="order_id" value="{o['order_id']}">
-                    <select name="status" onchange="this.form.submit()" style="background:rgba(255,255,255,0.04); color:#fff; border:1px solid rgba(255,255,255,0.06); border-radius:30px; padding:6px 14px;">
+                    <select name="status" onchange="this.form.submit()" style="background:white; color:#1e293b; border:1px solid #d1d5db; border-radius:30px; padding:6px 14px;">
                         <option value="Chờ thanh toán" {"selected" if o['status']=='Chờ thanh toán' else ""}>Chờ thanh toán</option>
                         <option value="Đã thanh toán" {"selected" if o['status']=='Đã thanh toán' else ""}>Đã thanh toán</option>
                         <option value="Đã giao" {"selected" if o['status']=='Đã giao' else ""}>Đã giao</option>
@@ -1242,10 +1040,10 @@ def admin_users():
         return redirect(url_for('admin_users'))
     users = get_all_users()
     html = '''
-    <div style="max-width:1200px; margin:20px auto; padding:30px; background:rgba(255,255,255,0.03); border-radius:32px; border:1px solid rgba(255,255,255,0.05);">
-        <h2 style="color:#ffd700;">👥 Quản lý người dùng</h2>
-        <a href="/admin" style="color:rgba(255,255,255,0.3); text-decoration:none;">← Dashboard</a> | <a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">Trang chủ</a>
-        <h3 style="color:#fff;">Danh sách người dùng</h3>
+    <div style="max-width:1200px; margin:20px auto; padding:30px; background:white; border-radius:32px; border:1px solid #e9edf2;">
+        <h2 style="color:#0f172a;">👥 Quản lý người dùng</h2>
+        <a href="/admin" style="color:#64748b; text-decoration:none;">← Dashboard</a> | <a href="/" style="color:#64748b; text-decoration:none;">Trang chủ</a>
+        <h3 style="color:#0f172a;">Danh sách người dùng</h3>
         <table>
             <tr><th>ID</th><th>Tên đăng nhập</th><th>Email</th><th>Họ tên</th><th>Số dư</th><th>Vai trò</th><th>Trạng thái</th><th>Hành động</th></tr>
     '''
@@ -1256,12 +1054,12 @@ def admin_users():
             <td>{u['username']}</td>
             <td>{u['email']}</td>
             <td>{u['full_name'] or '---'}</td>
-            <td style="color:#ffd700;">{u['balance']}đ</td>
+            <td style="color:#f59e0b;">{u['balance']}đ</td>
             <td>
                 <form method="POST" style="display:inline-block;">
                     <input type="hidden" name="action" value="change_role">
                     <input type="hidden" name="user_id" value="{u['user_id']}">
-                    <select name="role" onchange="this.form.submit()" style="background:rgba(255,255,255,0.04); color:#fff; border:1px solid rgba(255,255,255,0.06); border-radius:30px; padding:6px 14px;">
+                    <select name="role" onchange="this.form.submit()" style="background:white; color:#1e293b; border:1px solid #d1d5db; border-radius:30px; padding:6px 14px;">
                         <option value="user" {"selected" if u['role']=='user' else ""}>User</option>
                         <option value="admin" {"selected" if u['role']=='admin' else ""}>Admin</option>
                     </select>
@@ -1288,7 +1086,7 @@ def admin_users():
     html += '</table></div>'
     return html
 
-# ==================== HTML TEMPLATE ====================
+# ==================== HTML TEMPLATE (TRANG CHỦ) ====================
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="vi">
@@ -1296,50 +1094,54 @@ HTML_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ shop_name }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0f; min-height: 100vh; padding: 20px; color: #fff; }
-        .container { max-width: 1280px; margin: auto; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border-radius: 48px; padding: 35px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
-        .header { text-align: center; padding: 25px 0 20px; position: relative; }
-        .header h1 { font-size: 3.5em; font-weight: 900; background: linear-gradient(135deg, #f7971e, #ffd200, #f7971e); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientMove 5s ease infinite; }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .header .sub { color: rgba(255,255,255,0.4); font-weight: 300; letter-spacing: 3px; font-size: 0.9em; margin-top: 6px; }
-        .zalo-badge { display: inline-block; background: rgba(0,136,204,0.15); color: #4fc3f7; padding: 8px 28px; border-radius: 60px; margin: 12px 0; font-weight: 600; border: 1px solid rgba(0,136,204,0.15); }
-        .user-info { position: absolute; right: 20px; top: 20px; background: rgba(255,255,255,0.04); padding: 10px 24px; border-radius: 60px; border: 1px solid rgba(255,255,255,0.05); font-size: 0.9em; }
-        .user-info a { color: #ff6b6b; text-decoration: none; font-weight: 600; }
-        .menu { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0; justify-content: center; }
-        .menu a, .menu button { font-family: 'Inter', sans-serif; background: rgba(255,255,255,0.04); color: #fff; padding: 12px 28px; border-radius: 60px; text-decoration: none; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 500; transition: all 0.25s ease; }
-        .menu a:hover, .menu button:hover { background: rgba(247,151,30,0.12); border-color: rgba(247,151,30,0.2); transform: translateY(-2px); }
-        .menu a.admin { background: linear-gradient(135deg, #f7971e, #ffd200); color: #0a0a0f; border: none; font-weight: 700; }
-        .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 25px; margin-top: 30px; }
-        .product-card { background: rgba(255,255,255,0.03); border-radius: 28px; padding: 24px 20px; transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255,255,255,0.04); }
-        .product-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.06); border-color: rgba(247,151,30,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-        .product-card h3 { font-size: 1.3em; font-weight: 700; margin-bottom: 4px; }
-        .product-card .features { color: #ffd700; font-weight: 500; }
-        .product-card .price { font-size: 1.9em; font-weight: 800; background: linear-gradient(135deg, #ffd700, #f7971e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 10px 0; }
-        .product-card .stock { color: #2ecc71; font-weight: 500; }
-        .btn-buy { width: 100%; padding: 14px; background: linear-gradient(135deg, #f7971e, #ffd200); border: none; border-radius: 60px; color: #0a0a0f; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; margin-top: 8px; }
-        .btn-buy:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(247,151,30,0.3); }
-        .auth-form { max-width: 460px; margin: 30px auto; padding: 40px 35px; background: rgba(255,255,255,0.03); border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); }
-        .auth-form h2 { text-align: center; font-weight: 700; font-size: 1.8em; background: linear-gradient(135deg, #ffd700, #f7971e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .auth-form input { width: 100%; padding: 16px 20px; margin: 10px 0; border: 1px solid rgba(255,255,255,0.06); border-radius: 60px; background: rgba(255,255,255,0.04); color: #fff; font-size: 0.95em; outline: none; transition: 0.3s; }
-        .auth-form input:focus { border-color: #ffd700; background: rgba(255,255,255,0.08); }
-        .auth-form button { width: 100%; padding: 16px; background: linear-gradient(135deg, #f7971e, #ffd200); border: none; border-radius: 60px; color: #0a0a0f; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 8px; }
-        .flash { padding: 14px 24px; background: rgba(241,196,15,0.08); border: 1px solid rgba(241,196,15,0.12); border-radius: 24px; margin: 15px 0; text-align: center; color: #ffd700; font-weight: 500; }
-        .footer { text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.15); font-size: 0.85em; }
-        .admin-panel { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 28px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.04); }
-        .admin-panel input, .admin-panel textarea { width: 100%; padding: 14px 18px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; background: rgba(255,255,255,0.04); color: #fff; outline: none; }
-        .admin-panel button { background: linear-gradient(135deg, #f7971e, #ffd200); color: #0a0a0f; padding: 14px 35px; border: none; border-radius: 60px; font-weight: 700; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; border-radius: 20px; overflow: hidden; }
-        th { background: rgba(247,151,30,0.12); color: #ffd700; padding: 14px; font-weight: 700; text-align: left; }
-        td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
-        .btn-small { padding: 6px 16px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.8em; }
-        .btn-danger { background: #ff6b6b; color: #fff; }
-        .btn-success { background: #2ecc71; color: #fff; }
-        .btn-warning { background: #f39c12; color: #fff; }
-        @media (max-width: 768px) { .container { padding: 20px; } .header h1 { font-size: 2.2em; } .user-info { position: static; display: inline-block; margin-top: 10px; } }
+        body { font-family: 'Inter', sans-serif; background: #f4f6f9; color: #1e293b; padding: 20px; min-height: 100vh; }
+        .container { max-width: 1280px; margin: auto; background: white; border-radius: 32px; padding: 30px 35px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); border: 1px solid #e9edf2; }
+        .header { text-align: center; padding: 20px 0 15px; border-bottom: 2px solid #e9edf2; position: relative; }
+        .header h1 { font-size: 2.6em; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; }
+        .header h1 .highlight { color: #f59e0b; }
+        .header .sub { color: #64748b; font-weight: 400; font-size: 0.95em; margin-top: 4px; }
+        .zalo-badge { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 6px 24px; border-radius: 40px; font-weight: 600; font-size: 0.9em; margin: 10px 0; }
+        .user-info { position: absolute; right: 20px; top: 20px; background: #f8fafc; padding: 8px 20px; border-radius: 40px; border: 1px solid #e2e8f0; font-size: 0.9em; color: #1e293b; }
+        .user-info a { color: #ef4444; text-decoration: none; font-weight: 600; }
+        .menu { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 25px; justify-content: center; }
+        .menu a, .menu button { font-family: 'Inter', sans-serif; background: #f1f5f9; color: #1e293b; padding: 10px 26px; border-radius: 60px; text-decoration: none; border: 1px solid #e2e8f0; font-weight: 500; font-size: 0.9em; transition: 0.2s; cursor: pointer; }
+        .menu a:hover, .menu button:hover { background: #e2e8f0; transform: translateY(-1px); }
+        .menu a.admin { background: #f59e0b; color: #0f172a; border: none; font-weight: 600; }
+        .menu a.admin:hover { background: #d97706; }
+        .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; margin-top: 20px; }
+        .product-card { background: #f8fafc; border-radius: 24px; padding: 20px 18px; border: 1px solid #e9edf2; transition: 0.25s; }
+        .product-card:hover { border-color: #f59e0b; box-shadow: 0 8px 25px rgba(0,0,0,0.04); transform: translateY(-3px); }
+        .product-card h3 { font-size: 1.25em; font-weight: 700; color: #0f172a; }
+        .product-card .features { color: #f59e0b; font-weight: 500; }
+        .product-card .price { font-size: 1.7em; font-weight: 700; color: #0f172a; margin: 8px 0; }
+        .product-card .stock { color: #16a34a; font-weight: 500; }
+        .product-card .platform { display: inline-block; background: #e9edf2; padding: 2px 14px; border-radius: 30px; font-size: 0.8em; color: #475569; margin: 8px 0; }
+        .btn-buy { width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; margin-top: 8px; }
+        .btn-buy:hover { background: #1e293b; }
+        .auth-form { max-width: 460px; margin: 30px auto; padding: 35px 30px; background: #f8fafc; border-radius: 28px; border: 1px solid #e9edf2; }
+        .auth-form h2 { text-align: center; font-weight: 700; color: #0f172a; }
+        .auth-form input { width: 100%; padding: 14px 18px; margin: 10px 0; border: 1px solid #d1d5db; border-radius: 60px; background: white; color: #1e293b; font-size: 0.95em; outline: none; transition: 0.2s; }
+        .auth-form input:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.15); }
+        .auth-form button { width: 100%; padding: 14px; background: #0f172a; color: white; border: none; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 8px; }
+        .auth-form button:hover { background: #1e293b; }
+        .flash { padding: 14px 20px; background: #fef9e7; border: 1px solid #fcd34d; border-radius: 20px; margin: 15px 0; text-align: center; color: #78350f; font-weight: 500; }
+        .footer { text-align: center; margin-top: 35px; padding-top: 20px; border-top: 1px solid #e9edf2; color: #94a3b8; font-size: 0.85em; }
+        .btn-small { padding: 5px 14px; border: none; border-radius: 30px; font-weight: 600; font-size: 0.8em; cursor: pointer; }
+        .btn-danger { background: #fee2e2; color: #b91c1c; }
+        .btn-success { background: #dcfce7; color: #15803d; }
+        .btn-warning { background: #fef9e7; color: #b45309; }
+        .admin-panel { background: #f8fafc; padding: 25px; border-radius: 24px; margin: 20px 0; border: 1px solid #e9edf2; }
+        .admin-panel input, .admin-panel textarea, .admin-panel select { width: 100%; padding: 12px 16px; margin: 6px 0; border: 1px solid #d1d5db; border-radius: 16px; background: white; color: #1e293b; font-family: 'Inter', sans-serif; }
+        .admin-panel button { background: #0f172a; color: white; padding: 12px 30px; border: none; border-radius: 60px; font-weight: 600; cursor: pointer; margin-top: 6px; }
+        .admin-panel button:hover { background: #1e293b; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        th { background: #f1f5f9; color: #0f172a; padding: 14px 16px; font-weight: 600; text-align: left; }
+        td { padding: 12px 16px; border-bottom: 1px solid #e9edf2; color: #1e293b; }
+        @media (max-width: 700px) { .container { padding: 18px; } .header h1 { font-size: 2em; } .user-info { position: static; display: inline-block; margin-top: 8px; } .menu a, .menu button { padding: 8px 18px; font-size: 0.8em; } .products { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -1352,7 +1154,7 @@ HTML_TEMPLATE = """
                 {% if session.user %}
                     <i class="fas fa-user-circle"></i> {{ session.user.full_name or session.user.username }}
                     {% if session.user.role == 'admin' %}⭐ Admin{% endif %}
-                    | <i class="fas fa-coins" style="color:#ffd700;"></i> {{ session.user.balance|default(0) }}đ
+                    | <i class="fas fa-coins" style="color:#f59e0b;"></i> {{ session.user.balance|default(0) }}đ
                     | <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i></a>
                 {% endif %}
             </div>
@@ -1371,8 +1173,8 @@ HTML_TEMPLATE = """
                 <button type="submit"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
             </form>
             <div style="text-align:center; margin-top:15px;">
-                <a href="{{ url_for('register') }}" style="color:rgba(255,255,255,0.3);">Đăng ký</a> | 
-                <a href="{{ url_for('forgot_password') }}" style="color:rgba(255,255,255,0.3);">Quên mật khẩu?</a>
+                <a href="{{ url_for('register') }}" style="color:#64748b; text-decoration:none;">Đăng ký</a> | 
+                <a href="{{ url_for('forgot_password') }}" style="color:#64748b; text-decoration:none;">Quên mật khẩu?</a>
             </div>
         </div>
         {% else %}
@@ -1382,7 +1184,7 @@ HTML_TEMPLATE = """
             <a href="{{ url_for('category', cat='iOS') }}"><i class="fab fa-apple"></i> iOS</a>
             <a href="{{ url_for('category', cat='PC') }}"><i class="fas fa-desktop"></i> PC</a>
             <a href="{{ url_for('orders') }}"><i class="fas fa-box"></i> Đơn hàng</a>
-            <a href="{{ url_for('deposit') }}" style="background:rgba(247,151,30,0.12); border-color:rgba(247,151,30,0.15);"><i class="fas fa-coins"></i> Nạp tiền</a>
+            <a href="{{ url_for('deposit') }}" style="background:#fef9e7; border-color:#fcd34d;"><i class="fas fa-coins"></i> Nạp tiền</a>
             {% if session.user.role == 'admin' %}
                 <a href="{{ url_for('admin_dashboard') }}" class="admin"><i class="fas fa-cog"></i> Quản trị</a>
             {% endif %}
@@ -1393,13 +1195,13 @@ HTML_TEMPLATE = """
             <div class="product-card">
                 <h3>{{ p.name }}</h3>
                 <div class="features">{{ p.features }}</div>
-                <div style="color:rgba(255,255,255,0.4); font-size:0.85em;">{{ p.warranty }}</div>
+                <div style="color:#64748b; font-size:0.85em;">{{ p.warranty }}</div>
                 <div class="price">{{ p.price }} {{ currency }}</div>
                 <div class="stock"><i class="fas fa-check-circle"></i> Còn: {{ p.stock }} | Đã bán: {{ p.sold }}</div>
-                <div style="display:inline-block; background:rgba(255,255,255,0.05); padding:3px 14px; border-radius:30px; font-size:0.8em; color:rgba(255,255,255,0.5); margin:8px 0;">{{ p.platform }}</div>
+                <div class="platform">{{ p.platform }}</div>
                 <form method="POST" action="{{ url_for('buy') }}">
                     <input type="hidden" name="product_id" value="{{ p.id }}">
-                    <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" style="width:70px; padding:10px; border-radius:30px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04); color:#fff; margin:8px 0;">
+                    <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" style="width:70px; padding:8px 12px; border-radius:30px; border:1px solid #d1d5db; background:white; color:#1e293b; margin:8px 0;">
                     <button class="btn-buy" type="submit"><i class="fas fa-shopping-cart"></i> Mua ngay</button>
                 </form>
             </div>
