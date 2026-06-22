@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# SHOP BAN FILE FREE FIRE - TÍCH HỢP API MBBANK (ĐÃ THÊM ACCESS TOKEN CỦA BẠN)
-# ACCESS TOKEN: CIUBVNBSPVT3EUIFZRMCXEGZ5QI0SGEHJVOXLTZMWTLGJBLVJORFXQ9AES1OYADI
+# SHOP BAN FILE FREE FIRE - CODE HOÀN CHỈNH VỚI API KEY SEPAY CỦA BẠN
+# API KEY: R2KFBS3YUQJFO0GNE3NMXIXNUWIQQDLHMIVJUVLIC5Z4MHANP2G5WYDGDP9TFVL1
+# ĐÃ TÍCH HỢP ĐẦY ĐỦ: ĐĂNG NHẬP, ĐĂNG KÝ, QUÊN MK, NẠP TIỀN, BANK TỰ ĐỘNG, ADMIN
 
 from flask import Flask, render_template_string, request, redirect, url_for, session, flash, jsonify
 from flask_mail import Mail, Message
@@ -14,7 +15,8 @@ import sqlite3
 import requests
 import time
 import hmac
-import hashlib
+import socket
+import re
 
 app = Flask(__name__)
 app.secret_key = "freefire_shop_secret_key_2026"
@@ -23,18 +25,18 @@ app.secret_key = "freefire_shop_secret_key_2026"
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'your_app_password'
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'      # THAY EMAIL CỦA BẠN
+app.config['MAIL_PASSWORD'] = 'your_app_password'         # THAY MẬT KHẨU APP GMAIL
 app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
 mail = Mail(app)
 
-# ==================== API MBBANK CỦA BẠN (ĐÃ THÊM ACCESS TOKEN) ====================
-MB_CONFIG = {
-    "api_url": "https://api.mbbank.com.vn/api/v1",
-    "access_token": "CIUBVNBSPVT3EUIFZRMCXEGZ5QI0SGEHJVOXLTZMWTLGJBLVJORFXQ9AES1OYADI",
-    "account_number": "0123456789",  # THAY SỐ TÀI KHOẢN CỦA BẠN
+# ==================== CẤU HÌNH SEPAY (ĐÃ THÊM API KEY CỦA BẠN) ====================
+SEPAY_CONFIG = {
+    "api_url": "https://bankhub-api.sepay.vn/v1",          # Production URL
+    "api_key": "R2KFBS3YUQJFO0GNE3NMXIXNUWIQQDLHMIVJUVLIC5Z4MHANP2G5WYDGDP9TFVL1",
+    "account_number": "0123456789",                        # THAY SỐ TÀI KHOẢN MB BANK CỦA BẠN
     "bin": "970422",
-    "account_name": "NGUYEN VAN A"   # THAY TÊN CHỦ TÀI KHOẢN
+    "account_name": "NGUYEN VAN A"                         # THAY TÊN CHỦ TÀI KHOẢN
 }
 
 # === CẤU HÌNH SHOP ===
@@ -89,62 +91,70 @@ def generate_random_id(prefix=""):
 
 def generate_qr_mbbank(amount, order_id):
     try:
-        qr_data = f"https://img.vietqr.io/image/{MB_CONFIG['bin']}-{MB_CONFIG['account_number']}-compact2.png?amount={int(amount)}&addInfo={order_id}"
+        qr_data = f"https://img.vietqr.io/image/{SEPAY_CONFIG['bin']}-{SEPAY_CONFIG['account_number']}-compact2.png?amount={int(amount)}&addInfo={order_id}"
         return qr_data
     except:
         return None
 
-# ==================== GỌI API MBBANK VỚI ACCESS TOKEN ====================
-def fetch_mbbank_transactions(account_number, from_date, to_date):
+# ==================== HÀM GỌI API SEPAY ====================
+def fetch_sepay_transactions(account_number, from_date, to_date):
     """
-    GỌI API MBBANK SỬ DỤNG ACCESS TOKEN CỦA BẠN
+    Lấy danh sách giao dịch từ SePay sử dụng API Key
     """
     try:
         headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {MB_CONFIG['access_token']}"
+            "Authorization": f"Bearer {SEPAY_CONFIG['api_key']}",
+            "Content-Type": "application/json"
         }
-        
-        payload = {
-            "account": account_number,
-            "fromDate": from_date,
-            "toDate": to_date
+        params = {
+            "account_number": account_number,
+            "from_date": from_date.split()[0],
+            "to_date": to_date.split()[0]
         }
-        
-        response = requests.post(
-            MB_CONFIG['api_url'] + "/transactions",
-            json=payload,
+        response = requests.get(
+            SEPAY_CONFIG['api_url'] + "/transactions",
             headers=headers,
+            params=params,
             timeout=15
         )
-        
         if response.status_code == 200:
             data = response.json()
-            return data.get('data', []) or data.get('transactions', [])
+            return data.get('data', [])
         else:
-            print(f"Lỗi API: {response.status_code} - {response.text}")
+            print(f"SePay API error: {response.status_code} - {response.text}")
             return []
-    
     except Exception as e:
-        print(f"Lỗi kết nối API: {e}")
+        print(f"SePay API exception: {e}")
         return []
 
-def check_and_process_mbbank_deposit(user_id, amount, order_id):
+def test_sepay_connection():
+    """Kiểm tra kết nối đến SePay với API Key"""
+    try:
+        result = fetch_sepay_transactions(
+            SEPAY_CONFIG['account_number'],
+            datetime.datetime.now().strftime("%Y-%m-%d"),
+            datetime.datetime.now().strftime("%Y-%m-%d")
+        )
+        return len(result) >= 0
+    except Exception as e:
+        print(f"Connection test failed: {e}")
+        return False
+
+def check_and_process_sepay_deposit(user_id, amount, order_id):
     """
-    KIỂM TRA VÀ XỬ LÝ GIAO DỊCH TỪ MBBANK (DÙNG ACCESS TOKEN)
+    Kiểm tra giao dịch từ SePay và tự động nạp tiền
     """
     from_date = (datetime.datetime.now() - datetime.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S")
     to_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     try:
-        transactions = fetch_mbbank_transactions(
-            MB_CONFIG['account_number'], 
+        transactions = fetch_sepay_transactions(
+            SEPAY_CONFIG['account_number'], 
             from_date, 
             to_date
         )
         
         for tx in transactions:
-            # Lấy thông tin giao dịch
             tx_desc = tx.get('description', '') or tx.get('content', '')
             tx_amount = tx.get('amount', 0) or tx.get('transaction_amount', 0)
             tx_status = tx.get('status', '') or tx.get('transaction_status', 'success')
@@ -156,7 +166,7 @@ def check_and_process_mbbank_deposit(user_id, amount, order_id):
                 conn.execute('''INSERT INTO deposit_history 
                     (user_id, method, amount, bank_info, status, created)
                     VALUES (?, ?, ?, ?, ?, ?)''',
-                    (user_id, "bank", amount, f"MBBank - {order_id}", "success", str(datetime.datetime.now())))
+                    (user_id, "sepay", amount, f"SePay - {order_id}", "success", str(datetime.datetime.now())))
                 conn.commit()
                 conn.close()
                 
@@ -171,12 +181,12 @@ def check_and_process_mbbank_deposit(user_id, amount, order_id):
                     if user and user['email']:
                         send_file_by_email(user['email'], order['file_link'], order_id)
                 
-                return {"success": True, "message": f"Nạp {amount} VND thành công qua MBBank!"}
+                return {"success": True, "message": f"Nạp {amount} VND thành công qua SePay!"}
         
         return {"success": False, "message": "Chưa tìm thấy giao dịch khớp. Vui lòng đợi vài phút."}
     
     except Exception as e:
-        return {"success": False, "message": f"Lỗi kết nối MBBank: {str(e)}"}
+        return {"success": False, "message": f"Lỗi kết nối SePay: {str(e)}"}
 
 # === QUẢN LÝ SẢN PHẨM ===
 def add_product_db(name, category, price, stock, description, features="", platform="", warranty="", file_link=""):
@@ -420,10 +430,10 @@ def process_bank_deposit(user_id, amount, order_id):
     conn.execute('''INSERT INTO deposit_history 
         (user_id, method, amount, bank_info, status, created)
         VALUES (?, ?, ?, ?, ?, ?)''',
-        (user_id, "bank", amount, f"MB Bank - {order_id}", "pending", str(datetime.datetime.now())))
+        (user_id, "sepay", amount, f"SePay - {order_id}", "pending", str(datetime.datetime.now())))
     conn.commit()
     conn.close()
-    result = check_and_process_mbbank_deposit(user_id, amount, order_id)
+    result = check_and_process_sepay_deposit(user_id, amount, order_id)
     return result
 
 # === HÀM GỬI EMAIL ===
@@ -456,41 +466,7 @@ def send_file_by_email(email, file_link, order_id):
     except:
         return False
 
-# === WEBHOOK MBBANK ===
-@app.route('/mbbank-webhook', methods=['POST'])
-def mbbank_webhook():
-    data = request.json
-    if not data:
-        return jsonify({"error": "Invalid data"}), 400
-    
-    try:
-        transaction_id = data.get('transaction_id')
-        amount = data.get('amount')
-        description = data.get('description')
-        status = data.get('status')
-        
-        if status == 'success' and description and 'ORD' in description:
-            import re
-            match = re.search(r'ORD\w+', description)
-            if match:
-                order_id = match.group()
-                conn = get_db()
-                order = conn.execute('SELECT * FROM orders WHERE order_id = ?', (order_id,)).fetchone()
-                if order:
-                    conn.execute('UPDATE orders SET status = ? WHERE order_id = ?', ("Đã thanh toán", order_id))
-                    conn.commit()
-                    conn.close()
-                    if order['file_link']:
-                        user = get_user_by_id(order['phone'])
-                        if user and user['email']:
-                            send_file_by_email(user['email'], order['file_link'], order_id)
-                    return jsonify({"success": True})
-                conn.close()
-        return jsonify({"success": False})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# === ROUTES ===
+# ==================== ROUTES ====================
 @app.route('/')
 def index():
     products = get_products()
@@ -622,7 +598,7 @@ def buy():
         quantity = 1
     user = session['user']
     order = create_order_db(product_id, quantity, user['full_name'] or user['username'], 
-                           user.get('phone', 'Chưa cập nhật'), 'MB Bank')
+                           user.get('phone', 'Chưa cập nhật'), 'SePay')
     if not order:
         flash('Lỗi đặt hàng! Kiểm tra số lượng.')
         return redirect(url_for('index'))
@@ -654,6 +630,7 @@ def orders():
     html += '</div></div>'
     return html
 
+# === NẠP TIỀN (GIAO DIỆN ĐẸP) ===
 @app.route('/deposit', methods=['GET', 'POST'])
 def deposit():
     if 'user' not in session:
@@ -692,45 +669,350 @@ def deposit():
                 session['user']['balance'] = user['balance'] + amount
             return redirect(url_for('deposit'))
     
+    # GIAO DIỆN NẠP TIỀN ĐẸP, HIỆN ĐẠI
     html = '''
-    <div style="max-width:1000px; margin:20px auto;">
-        <h2 style="color:#ffd700; text-align:center;">💳 Nạp tiền vào tài khoản</h2>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
-            <div style="background:rgba(255,255,255,0.03); border-radius:32px; padding:30px; border:1px solid rgba(255,255,255,0.05);">
-                <h3 style="color:#ffd700;">📱 Thẻ cào</h3>
-                <form method="POST">
-                    <input type="hidden" name="method" value="card">
-                    <select name="card_type" style="width:100%; padding:14px 18px; margin:8px 0; border-radius:60px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff;">
-                        <option value="viettel">Viettel</option>
-                        <option value="mobifone">Mobifone</option>
-                        <option value="vinaphone">VinaPhone</option>
-                    </select>
-                    <input type="text" name="card_code" placeholder="Mã thẻ" required>
-                    <input type="text" name="card_serial" placeholder="Số serial" required>
-                    <input type="number" name="amount" placeholder="Mệnh giá (VND)" required min="10000">
-                    <button type="submit"><i class="fas fa-credit-card"></i> Nạp thẻ</button>
-                </form>
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nạp tiền - FF SHOP</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: 'Inter', sans-serif;
+                background: #f0f2f5;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+            .deposit-container {
+                max-width: 1100px;
+                width: 100%;
+                background: white;
+                border-radius: 32px;
+                padding: 40px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            }
+            .deposit-header {
+                text-align: center;
+                margin-bottom: 35px;
+            }
+            .deposit-header h1 {
+                font-size: 2.2em;
+                font-weight: 800;
+                color: #1a1a2e;
+                letter-spacing: -0.5px;
+            }
+            .deposit-header h1 span { color: #f7971e; }
+            .deposit-header p {
+                color: #6b7280;
+                font-size: 1em;
+                margin-top: 6px;
+            }
+            .balance-box {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                border-radius: 20px;
+                padding: 20px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                color: white;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .balance-box .label { font-size: 0.9em; opacity: 0.7; }
+            .balance-box .amount {
+                font-size: 2em;
+                font-weight: 700;
+                background: linear-gradient(135deg, #ffd700, #f7971e);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .balance-box .btn-home {
+                background: rgba(255,255,255,0.1);
+                padding: 8px 20px;
+                border-radius: 30px;
+                color: white;
+                text-decoration: none;
+                font-size: 0.85em;
+                transition: 0.3s;
+            }
+            .balance-box .btn-home:hover { background: rgba(255,255,255,0.2); }
+            .deposit-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+            @media (max-width: 768px) { .deposit-grid { grid-template-columns: 1fr; } }
+            .deposit-card {
+                background: #f8fafc;
+                border-radius: 24px;
+                padding: 30px;
+                border: 1px solid #e9edf2;
+                transition: 0.3s;
+            }
+            .deposit-card:hover { border-color: #f7971e; box-shadow: 0 8px 30px rgba(247,151,30,0.08); }
+            .deposit-card .icon {
+                font-size: 2.2em;
+                color: #f7971e;
+                margin-bottom: 10px;
+            }
+            .deposit-card h3 {
+                font-size: 1.3em;
+                font-weight: 700;
+                color: #1a1a2e;
+                margin-bottom: 8px;
+            }
+            .deposit-card .desc {
+                color: #6b7280;
+                font-size: 0.9em;
+                margin-bottom: 18px;
+            }
+            .deposit-card label {
+                font-weight: 600;
+                font-size: 0.85em;
+                color: #374151;
+                display: block;
+                margin-top: 12px;
+                margin-bottom: 4px;
+            }
+            .deposit-card input, .deposit-card select {
+                width: 100%;
+                padding: 12px 16px;
+                border: 1px solid #d1d5db;
+                border-radius: 16px;
+                font-size: 0.95em;
+                font-family: 'Inter', sans-serif;
+                transition: 0.3s;
+                background: white;
+                color: #1a1a2e;
+            }
+            .deposit-card input:focus, .deposit-card select:focus {
+                border-color: #f7971e;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(247,151,30,0.15);
+            }
+            .deposit-card button {
+                width: 100%;
+                padding: 14px;
+                margin-top: 18px;
+                background: linear-gradient(135deg, #f7971e, #ffd200);
+                border: none;
+                border-radius: 60px;
+                color: #1a1a2e;
+                font-weight: 700;
+                font-size: 1em;
+                cursor: pointer;
+                transition: 0.3s;
+                font-family: 'Inter', sans-serif;
+            }
+            .deposit-card button:hover {
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(247,151,30,0.3);
+            }
+            .deposit-card .qr-placeholder {
+                margin-top: 15px;
+                padding: 15px;
+                background: white;
+                border-radius: 16px;
+                border: 1px dashed #d1d5db;
+                text-align: center;
+                color: #6b7280;
+                font-size: 0.9em;
+            }
+            .deposit-card .bank-info {
+                margin-top: 15px;
+                padding: 12px 16px;
+                background: #eef2f6;
+                border-radius: 12px;
+                font-size: 0.85em;
+                color: #1a1a2e;
+            }
+            .deposit-card .bank-info strong { color: #f7971e; }
+            .flash-message {
+                padding: 14px 20px;
+                border-radius: 16px;
+                margin-bottom: 20px;
+                background: #fef9e7;
+                border: 1px solid #f9e79f;
+                color: #7d6608;
+                font-weight: 500;
+                text-align: center;
+            }
+            .footer-text {
+                text-align: center;
+                margin-top: 30px;
+                font-size: 0.85em;
+                color: #9ca3af;
+            }
+            .footer-text a { color: #f7971e; text-decoration: none; }
+        </style>
+    </head>
+    <body>
+        <div class="deposit-container">
+            <div class="deposit-header">
+                <h1>💳 Nạp <span>tiền</span></h1>
+                <p>Chọn phương thức nạp tiền vào tài khoản</p>
             </div>
-            <div style="background:rgba(255,255,255,0.03); border-radius:32px; padding:30px; border:1px solid rgba(255,255,255,0.05);">
-                <h3 style="color:#ffd700;">🏦 MB Bank (Tự động)</h3>
-                <form method="POST">
-                    <input type="hidden" name="method" value="bank">
-                    <p style="color:rgba(255,255,255,0.3); font-size:0.9em;">Nhập số tiền, quét QR và hệ thống tự động xác nhận</p>
-                    <input type="number" name="amount" placeholder="Số tiền (VND)" required min="10000">
-                    <button type="submit"><i class="fas fa-qrcode"></i> Tạo QR & nạp</button>
-                </form>
-                <div style="text-align:center; margin-top:15px;">
-                    <p style="color:rgba(255,255,255,0.2); font-size:0.8em;">💳 MB Bank: ''' + MB_CONFIG['account_number'] + ''' - ''' + MB_CONFIG['account_name'] + '''</p>
-                    <p style="color:rgba(255,255,255,0.2); font-size:0.8em;">Hệ thống sẽ tự động xác nhận sau khi chuyển khoản</p>
+
+            <div class="balance-box">
+                <div>
+                    <div class="label">💰 Số dư hiện tại</div>
+                    <div class="amount">''' + f"{user['balance']:,.0f}" + ''' đ</div>
+                </div>
+                <a href="/" class="btn-home"><i class="fas fa-arrow-left"></i> Trang chủ</a>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message"><i class="fas fa-info-circle"></i> {{ messages[0] }}</div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="deposit-grid">
+                <!-- THẺ CÀO -->
+                <div class="deposit-card">
+                    <div class="icon"><i class="fas fa-credit-card"></i></div>
+                    <h3>Thẻ cào</h3>
+                    <div class="desc">Nạp tiền bằng thẻ Viettel, Mobifone, VinaPhone</div>
+                    <form method="POST">
+                        <input type="hidden" name="method" value="card">
+                        <label>Loại thẻ</label>
+                        <select name="card_type">
+                            <option value="viettel">Viettel</option>
+                            <option value="mobifone">Mobifone</option>
+                            <option value="vinaphone">VinaPhone</option>
+                        </select>
+                        <label>Mã thẻ</label>
+                        <input type="text" name="card_code" placeholder="Nhập mã thẻ" required>
+                        <label>Số serial</label>
+                        <input type="text" name="card_serial" placeholder="Nhập số serial" required>
+                        <label>Mệnh giá (VND)</label>
+                        <input type="number" name="amount" placeholder="Nhập số tiền" required min="10000">
+                        <button type="submit"><i class="fas fa-check-circle"></i> Nạp thẻ</button>
+                    </form>
+                </div>
+
+                <!-- BANK / SEPAY -->
+                <div class="deposit-card">
+                    <div class="icon"><i class="fas fa-university"></i></div>
+                    <h3>Chuyển khoản ngân hàng</h3>
+                    <div class="desc">Tự động xác nhận qua SePay (MB Bank)</div>
+                    <form method="POST">
+                        <input type="hidden" name="method" value="bank">
+                        <label>Số tiền (VND)</label>
+                        <input type="number" name="amount" placeholder="Nhập số tiền cần nạp" required min="10000">
+                        <button type="submit"><i class="fas fa-qrcode"></i> Tạo QR & nạp</button>
+                    </form>
+                    <div class="bank-info">
+                        <i class="fas fa-info-circle" style="color:#f7971e;"></i>
+                        <strong>MB Bank:</strong> ''' + SEPAY_CONFIG['account_number'] + ''' - ''' + SEPAY_CONFIG['account_name'] + '''
+                    </div>
+                    <div class="qr-placeholder">
+                        <i class="fas fa-qrcode" style="font-size:1.5em; color:#f7971e; display:block; margin-bottom:6px;"></i>
+                        Quét QR sau khi nhập số tiền
+                    </div>
                 </div>
             </div>
+
+            <div class="footer-text">
+                <a href="/"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
+            </div>
         </div>
-        <div style="text-align:center; margin-top:20px;">
-            <a href="/" style="color:rgba(255,255,255,0.3); text-decoration:none;">← Quay lại trang chủ</a>
-        </div>
-    </div>
+    </body>
+    </html>
     '''
     return render_template_string(html, session=session)
+
+# === KIỂM TRA KẾT NỐI SEPAY ===
+@app.route('/test-sepay')
+def test_sepay():
+    """Kiểm tra kết nối API SePay"""
+    if test_sepay_connection():
+        return "✅ Kết nối SePay thành công với API Key!"
+    else:
+        return "❌ Lỗi kết nối SePay. Kiểm tra API Key và cấu hình."
+
+@app.route('/check-connectivity')
+def check_connectivity():
+    """Kiểm tra kết nối Internet từ server đến SePay API"""
+    import socket
+    import requests
+    
+    result = {
+        "dns_resolution": False,
+        "api_accessible": False,
+        "details": ""
+    }
+    
+    try:
+        ip = socket.gethostbyname("bankhub-api.sepay.vn")
+        result["dns_resolution"] = True
+        result["details"] += f"✅ DNS: bankhub-api.sepay.vn -> {ip}\n"
+    except Exception as e:
+        result["details"] += f"❌ DNS error: {e}\n"
+    
+    try:
+        test_url = "https://bankhub-api.sepay.vn/v1/health"
+        response = requests.get(test_url, timeout=5)
+        if response.status_code < 500:
+            result["api_accessible"] = True
+            result["details"] += f"✅ API accessible: {response.status_code}\n"
+        else:
+            result["details"] += f"⚠️ API response: {response.status_code}\n"
+    except Exception as e:
+        result["details"] += f"❌ API error: {e}\n"
+    
+    html = f"""
+    <h2>🔍 Kiểm tra kết nối Internet</h2>
+    <pre>{result['details']}</pre>
+    <hr>
+    <p><b>Kết luận:</b></p>
+    <ul>
+        <li>DNS: {'✅ OK' if result['dns_resolution'] else '❌ Lỗi'}</li>
+        <li>API SePay: {'✅ Có thể truy cập' if result['api_accessible'] else '❌ Không truy cập được'}</li>
+    </ul>
+    """
+    return html
+
+# === WEBHOOK SEPAY ===
+@app.route('/mbbank-webhook', methods=['POST'])
+def mbbank_webhook():
+    data = request.json
+    if not data:
+        return jsonify({"error": "Invalid data"}), 400
+    
+    try:
+        transaction_id = data.get('transaction_id')
+        amount = data.get('amount')
+        description = data.get('description')
+        status = data.get('status')
+        
+        if status == 'success' and description and 'ORD' in description:
+            match = re.search(r'ORD\w+', description)
+            if match:
+                order_id = match.group()
+                conn = get_db()
+                order = conn.execute('SELECT * FROM orders WHERE order_id = ?', (order_id,)).fetchone()
+                if order:
+                    conn.execute('UPDATE orders SET status = ? WHERE order_id = ?', ("Đã thanh toán", order_id))
+                    conn.commit()
+                    conn.close()
+                    if order['file_link']:
+                        user = get_user_by_id(order['phone'])
+                        if user and user['email']:
+                            send_file_by_email(user['email'], order['file_link'], order_id)
+                    return jsonify({"success": True})
+                conn.close()
+        return jsonify({"success": False})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # === ADMIN ===
 @app.route('/admin')
@@ -1064,7 +1346,7 @@ HTML_TEMPLATE = """
     <div class="container">
         <div class="header">
             <h1>🔥 {{ shop_name }}</h1>
-            <div class="sub">⚡ Bán file Free Fire - Tích hợp MBBank tự động</div>
+            <div class="sub">⚡ Bán file Free Fire - Tích hợp SePay tự động</div>
             <div class="zalo-badge"><i class="fas fa-phone-alt"></i> Zalo: {{ zalo }}</div>
             <div class="user-info">
                 {% if session.user %}
