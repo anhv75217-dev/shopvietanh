@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-# SHOP BAN FILE FREE FIRE - NÂNG CẤP NẠP TIỀN: THẺ CÀO + BANK TỰ ĐỘNG
-# Bank: chuyển khoản MB Bank (QR + tự động xác nhận bằng Webhook mô phỏng)
-# Thẻ cào: Viettel, Mobifone, VinaPhone
-# Giao diện: màu sắc gradient, font hiện đại (Inter), bố cục tối giản sang trọng
+# SHOP BAN FILE FREE FIRE - TÍCH HỢP API MBBANK (ĐÃ THÊM ACCESS TOKEN CỦA BẠN)
+# ACCESS TOKEN: CIUBVNBSPVT3EUIFZRMCXEGZ5QI0SGEHJVOXLTZMWTLGJBLVJORFXQ9AES1OYADI
 
 from flask import Flask, render_template_string, request, redirect, url_for, session, flash, jsonify
 from flask_mail import Mail, Message
@@ -30,13 +28,13 @@ app.config['MAIL_PASSWORD'] = 'your_app_password'
 app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
 mail = Mail(app)
 
-# === CẤU HÌNH BANK (MB Bank - QR Code) ===
-BANK_CONFIG = {
-    "name": "MB Bank",
-    "account_number": "0123456789",
-    "account_name": "NGUYEN VAN A",
+# ==================== API MBBANK CỦA BẠN (ĐÃ THÊM ACCESS TOKEN) ====================
+MB_CONFIG = {
+    "api_url": "https://api.mbbank.com.vn/api/v1",
+    "access_token": "CIUBVNBSPVT3EUIFZRMCXEGZ5QI0SGEHJVOXLTZMWTLGJBLVJORFXQ9AES1OYADI",
+    "account_number": "0123456789",  # THAY SỐ TÀI KHOẢN CỦA BẠN
     "bin": "970422",
-    "description": "Nap tien FF SHOP"
+    "account_name": "NGUYEN VAN A"   # THAY TÊN CHỦ TÀI KHOẢN
 }
 
 # === CẤU HÌNH SHOP ===
@@ -50,27 +48,23 @@ DB_FILE = "shop_ff.db"
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    # Bảng sản phẩm
     c.execute('''CREATE TABLE IF NOT EXISTS products (
         id TEXT PRIMARY KEY, name TEXT, category TEXT, price REAL,
         stock INTEGER, sold INTEGER DEFAULT 0, description TEXT,
         features TEXT, platform TEXT, warranty TEXT, file_link TEXT,
         status TEXT, created TEXT
     )''')
-    # Bảng đơn hàng
     c.execute('''CREATE TABLE IF NOT EXISTS orders (
         order_id TEXT PRIMARY KEY, product_id TEXT, product_name TEXT,
         quantity INTEGER, total REAL, buyer TEXT, phone TEXT,
         payment_method TEXT, status TEXT, file_link TEXT, created TEXT
     )''')
-    # Bảng người dùng
     c.execute('''CREATE TABLE IF NOT EXISTS users (
         user_id TEXT PRIMARY KEY, username TEXT UNIQUE, email TEXT UNIQUE,
         password_hash TEXT, full_name TEXT, phone TEXT, role TEXT,
         status TEXT, reset_token TEXT, reset_expiry TEXT,
         balance REAL DEFAULT 0, created TEXT, last_login TEXT
     )''')
-    # Bảng lịch sử nạp tiền (thẻ cào + bank)
     c.execute('''CREATE TABLE IF NOT EXISTS deposit_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id TEXT, method TEXT, amount REAL,
@@ -94,12 +88,95 @@ def generate_random_id(prefix=""):
     return f"{prefix}{random_str}"
 
 def generate_qr_mbbank(amount, order_id):
-    """Tạo link QR Code cho MB Bank với số tiền và nội dung chuyển khoản"""
     try:
-        qr_data = f"https://img.vietqr.io/image/{BANK_CONFIG['bin']}-{BANK_CONFIG['account_number']}-compact2.png?amount={int(amount)}&addInfo={order_id}"
+        qr_data = f"https://img.vietqr.io/image/{MB_CONFIG['bin']}-{MB_CONFIG['account_number']}-compact2.png?amount={int(amount)}&addInfo={order_id}"
         return qr_data
     except:
         return None
+
+# ==================== GỌI API MBBANK VỚI ACCESS TOKEN ====================
+def fetch_mbbank_transactions(account_number, from_date, to_date):
+    """
+    GỌI API MBBANK SỬ DỤNG ACCESS TOKEN CỦA BẠN
+    """
+    try:
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {MB_CONFIG['access_token']}"
+        }
+        
+        payload = {
+            "account": account_number,
+            "fromDate": from_date,
+            "toDate": to_date
+        }
+        
+        response = requests.post(
+            MB_CONFIG['api_url'] + "/transactions",
+            json=payload,
+            headers=headers,
+            timeout=15
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            return data.get('data', []) or data.get('transactions', [])
+        else:
+            print(f"Lỗi API: {response.status_code} - {response.text}")
+            return []
+    
+    except Exception as e:
+        print(f"Lỗi kết nối API: {e}")
+        return []
+
+def check_and_process_mbbank_deposit(user_id, amount, order_id):
+    """
+    KIỂM TRA VÀ XỬ LÝ GIAO DỊCH TỪ MBBANK (DÙNG ACCESS TOKEN)
+    """
+    from_date = (datetime.datetime.now() - datetime.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S")
+    to_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    try:
+        transactions = fetch_mbbank_transactions(
+            MB_CONFIG['account_number'], 
+            from_date, 
+            to_date
+        )
+        
+        for tx in transactions:
+            # Lấy thông tin giao dịch
+            tx_desc = tx.get('description', '') or tx.get('content', '')
+            tx_amount = tx.get('amount', 0) or tx.get('transaction_amount', 0)
+            tx_status = tx.get('status', '') or tx.get('transaction_status', 'success')
+            
+            if order_id in tx_desc and float(tx_amount) == float(amount) and tx_status.lower() in ['success', 'completed']:
+                # Cộng tiền user
+                conn = get_db()
+                conn.execute('UPDATE users SET balance = balance + ? WHERE user_id = ?', (amount, user_id))
+                conn.execute('''INSERT INTO deposit_history 
+                    (user_id, method, amount, bank_info, status, created)
+                    VALUES (?, ?, ?, ?, ?, ?)''',
+                    (user_id, "bank", amount, f"MBBank - {order_id}", "success", str(datetime.datetime.now())))
+                conn.commit()
+                conn.close()
+                
+                # Cập nhật đơn hàng
+                conn = get_db()
+                conn.execute('UPDATE orders SET status = ? WHERE order_id = ?', ("Đã thanh toán", order_id))
+                order = conn.execute('SELECT * FROM orders WHERE order_id = ?', (order_id,)).fetchone()
+                conn.close()
+                
+                if order and order['file_link']:
+                    user = get_user_by_id(user_id)
+                    if user and user['email']:
+                        send_file_by_email(user['email'], order['file_link'], order_id)
+                
+                return {"success": True, "message": f"Nạp {amount} VND thành công qua MBBank!"}
+        
+        return {"success": False, "message": "Chưa tìm thấy giao dịch khớp. Vui lòng đợi vài phút."}
+    
+    except Exception as e:
+        return {"success": False, "message": f"Lỗi kết nối MBBank: {str(e)}"}
 
 # === QUẢN LÝ SẢN PHẨM ===
 def add_product_db(name, category, price, stock, description, features="", platform="", warranty="", file_link=""):
@@ -324,14 +401,10 @@ def update_user_balance(user_id, amount):
     conn.commit()
     conn.close()
 
-# === NẠP TIỀN: THẺ CÀO ===
+# === QUẢN LÝ NẠP TIỀN ===
 def process_card_deposit(user_id, card_type, card_code, card_serial, amount):
-    """Xử lý nạp thẻ cào (mô phỏng tự động)"""
-    # Kiểm tra mã thẻ hợp lệ (demo)
     if len(card_code) < 6 or len(card_serial) < 6:
         return {"success": False, "message": "Mã thẻ hoặc serial không hợp lệ"}
-    
-    # Giả lập thành công
     conn = get_db()
     conn.execute('''INSERT INTO deposit_history 
         (user_id, method, amount, card_type, card_code, card_serial, status, created)
@@ -339,26 +412,19 @@ def process_card_deposit(user_id, card_type, card_code, card_serial, amount):
         (user_id, "card", amount, card_type, card_code, card_serial, "success", str(datetime.datetime.now())))
     conn.commit()
     conn.close()
-    
-    # Cộng tiền vào tài khoản user
     update_user_balance(user_id, amount)
     return {"success": True, "message": f"Nạp {amount} VND thành công!"}
 
-# === NẠP TIỀN: BANK TỰ ĐỘNG ===
 def process_bank_deposit(user_id, amount, order_id):
-    """Xử lý nạp tiền qua Bank (tự động xác nhận)"""
-    # Demo: tự động xác nhận thành công
     conn = get_db()
     conn.execute('''INSERT INTO deposit_history 
         (user_id, method, amount, bank_info, status, created)
         VALUES (?, ?, ?, ?, ?, ?)''',
-        (user_id, "bank", amount, f"MB Bank - {order_id}", "success", str(datetime.datetime.now())))
+        (user_id, "bank", amount, f"MB Bank - {order_id}", "pending", str(datetime.datetime.now())))
     conn.commit()
     conn.close()
-    
-    # Cộng tiền vào tài khoản user
-    update_user_balance(user_id, amount)
-    return {"success": True, "message": f"Nạp {amount} VND thành công qua Bank!"}
+    result = check_and_process_mbbank_deposit(user_id, amount, order_id)
+    return result
 
 # === HÀM GỬI EMAIL ===
 def send_reset_email(email, reset_link):
@@ -376,460 +442,55 @@ def send_reset_email(email, reset_link):
     except:
         return False
 
-# ============================================================
-# TEMPLATE HTML - MÀU SẮC HIỆN ĐẠI, FONT CHUYÊN NGHIỆP
-# ============================================================
-HTML_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ shop_name }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0a0a0f;
-            background-image: radial-gradient(circle at 10% 20%, rgba(247, 151, 30, 0.05) 0%, transparent 50%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #fff;
-        }
-        .container {
-            max-width: 1280px;
-            margin: auto;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 48px;
-            padding: 35px;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-        }
-        /* HEADER */
-        .header {
-            text-align: center;
-            padding: 25px 0 20px;
-            position: relative;
-        }
-        .header h1 {
-            font-size: 3.5em;
-            font-weight: 900;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, #f7971e, #ffd200, #f7971e);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientMove 5s ease infinite;
-            text-shadow: 0 0 60px rgba(247, 151, 30, 0.15);
-        }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .header .sub {
-            color: rgba(255,255,255,0.4);
-            font-weight: 300;
-            letter-spacing: 3px;
-            font-size: 0.9em;
-            margin-top: 6px;
-        }
-        .zalo-badge {
-            display: inline-block;
-            background: rgba(0, 136, 204, 0.15);
-            backdrop-filter: blur(10px);
-            color: #4fc3f7;
-            padding: 8px 28px;
-            border-radius: 60px;
-            margin: 12px 0;
-            font-weight: 600;
-            font-size: 0.95em;
-            border: 1px solid rgba(0, 136, 204, 0.15);
-        }
-        .user-info {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            background: rgba(255,255,255,0.04);
-            padding: 10px 24px;
-            border-radius: 60px;
-            border: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.9em;
-        }
-        .user-info a { color: #ff6b6b; text-decoration: none; font-weight: 600; }
+def send_file_by_email(email, file_link, order_id):
+    try:
+        msg = Message(f"File của bạn - Đơn hàng {order_id}", recipients=[email])
+        msg.html = f'''
+        <h2>Cảm ơn bạn đã mua hàng tại FF SHOP!</h2>
+        <p>Đơn hàng <b>{order_id}</b> đã được xác nhận.</p>
+        <p>Link tải file: <a href="{file_link}">{file_link}</a></p>
+        <p>Trân trọng,<br>FF SHOP PRO</p>
+        '''
+        mail.send(msg)
+        return True
+    except:
+        return False
 
-        /* MENU */
-        .menu {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 25px 0;
-            justify-content: center;
-        }
-        .menu a, .menu button {
-            font-family: 'Inter', sans-serif;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            padding: 12px 28px;
-            border-radius: 60px;
-            text-decoration: none;
-            border: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9em;
-            transition: all 0.25s ease;
-            backdrop-filter: blur(5px);
-        }
-        .menu a:hover, .menu button:hover {
-            background: rgba(247, 151, 30, 0.12);
-            border-color: rgba(247, 151, 30, 0.2);
-            transform: translateY(-2px);
-        }
-        .menu a.admin {
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            color: #0a0a0f;
-            border: none;
-            font-weight: 700;
-        }
-        .menu a.admin:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(247, 151, 30, 0.25);
-        }
+# === WEBHOOK MBBANK ===
+@app.route('/mbbank-webhook', methods=['POST'])
+def mbbank_webhook():
+    data = request.json
+    if not data:
+        return jsonify({"error": "Invalid data"}), 400
+    
+    try:
+        transaction_id = data.get('transaction_id')
+        amount = data.get('amount')
+        description = data.get('description')
+        status = data.get('status')
+        
+        if status == 'success' and description and 'ORD' in description:
+            import re
+            match = re.search(r'ORD\w+', description)
+            if match:
+                order_id = match.group()
+                conn = get_db()
+                order = conn.execute('SELECT * FROM orders WHERE order_id = ?', (order_id,)).fetchone()
+                if order:
+                    conn.execute('UPDATE orders SET status = ? WHERE order_id = ?', ("Đã thanh toán", order_id))
+                    conn.commit()
+                    conn.close()
+                    if order['file_link']:
+                        user = get_user_by_id(order['phone'])
+                        if user and user['email']:
+                            send_file_by_email(user['email'], order['file_link'], order_id)
+                    return jsonify({"success": True})
+                conn.close()
+        return jsonify({"success": False})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-        /* PRODUCTS */
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        .product-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 28px;
-            padding: 24px 20px;
-            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255,255,255,0.04);
-            backdrop-filter: blur(10px);
-        }
-        .product-card:hover {
-            transform: translateY(-8px);
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(247, 151, 30, 0.15);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        .product-card h3 { font-size: 1.3em; font-weight: 700; margin-bottom: 4px; }
-        .product-card .features { color: #ffd700; font-weight: 500; font-size: 0.95em; }
-        .product-card .warranty { color: rgba(255,255,255,0.4); font-size: 0.85em; margin: 4px 0; }
-        .product-card .price {
-            font-size: 1.9em;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffd700, #f7971e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 10px 0;
-        }
-        .product-card .stock { color: #2ecc71; font-weight: 500; }
-        .product-card .platform {
-            display: inline-block;
-            background: rgba(255,255,255,0.05);
-            padding: 3px 14px;
-            border-radius: 30px;
-            font-size: 0.8em;
-            color: rgba(255,255,255,0.5);
-            margin: 8px 0;
-        }
-        .btn-buy {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            border: none;
-            border-radius: 60px;
-            color: #0a0a0f;
-            font-weight: 700;
-            font-size: 0.95em;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            margin-top: 8px;
-        }
-        .btn-buy:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(247, 151, 30, 0.3); }
-
-        /* LOGIN / REGISTER */
-        .auth-form {
-            max-width: 460px;
-            margin: 30px auto;
-            padding: 40px 35px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-        }
-        .auth-form h2 { text-align: center; font-weight: 700; font-size: 1.8em; background: linear-gradient(135deg, #ffd700, #f7971e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .auth-form input {
-            width: 100%;
-            padding: 16px 20px;
-            margin: 10px 0;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 60px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-size: 0.95em;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: 0.3s;
-        }
-        .auth-form input:focus { border-color: #ffd700; background: rgba(255,255,255,0.08); }
-        .auth-form input::placeholder { color: rgba(255,255,255,0.25); }
-        .auth-form button {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            border: none;
-            border-radius: 60px;
-            color: #0a0a0f;
-            font-weight: 700;
-            font-size: 1em;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Inter', sans-serif;
-            margin-top: 8px;
-        }
-        .auth-form button:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(247, 151, 30, 0.25); }
-        .auth-form .link { text-align: center; margin-top: 15px; }
-        .auth-form .link a { color: rgba(255,255,255,0.3); text-decoration: none; transition: 0.3s; font-size: 0.9em; }
-        .auth-form .link a:hover { color: #ffd700; }
-
-        /* FLASH */
-        .flash {
-            padding: 14px 24px;
-            background: rgba(241, 196, 15, 0.08);
-            border: 1px solid rgba(241, 196, 15, 0.12);
-            border-radius: 24px;
-            margin: 15px 0;
-            text-align: center;
-            color: #ffd700;
-            font-weight: 500;
-            backdrop-filter: blur(10px);
-        }
-
-        /* DEPOSIT - NẠP TIỀN */
-        .deposit-container {
-            max-width: 1000px;
-            margin: 20px auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        @media (max-width: 768px) { .deposit-container { grid-template-columns: 1fr; } }
-        .deposit-box {
-            background: rgba(255,255,255,0.03);
-            border-radius: 32px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-        }
-        .deposit-box h3 {
-            font-size: 1.4em;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        .deposit-box input, .deposit-box select {
-            width: 100%;
-            padding: 14px 18px;
-            margin: 8px 0;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 60px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-        }
-        .deposit-box input:focus, .deposit-box select:focus { border-color: #ffd700; }
-        .deposit-box button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            border: none;
-            border-radius: 60px;
-            color: #0a0a0f;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Inter', sans-serif;
-            margin-top: 10px;
-        }
-        .deposit-box button:hover { transform: scale(1.02); }
-        .deposit-box .qr-img {
-            max-width: 220px;
-            border-radius: 20px;
-            margin: 15px auto;
-            display: block;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .deposit-box .bank-info {
-            color: rgba(255,255,255,0.5);
-            font-size: 0.9em;
-            text-align: center;
-            margin: 10px 0;
-        }
-        .deposit-box .bank-info strong { color: #fff; }
-
-        /* ADMIN PANEL */
-        .admin-panel {
-            background: rgba(255,255,255,0.03);
-            padding: 25px;
-            border-radius: 28px;
-            margin: 20px 0;
-            border: 1px solid rgba(255,255,255,0.04);
-        }
-        .admin-panel input, .admin-panel textarea, .admin-panel select {
-            width: 100%;
-            padding: 14px 18px;
-            margin: 8px 0;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 30px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-        }
-        .admin-panel input:focus, .admin-panel textarea:focus { border-color: #ffd700; }
-        .admin-panel button {
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            color: #0a0a0f;
-            padding: 14px 35px;
-            border: none;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-        .admin-panel button:hover { transform: scale(1.02); }
-
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        th { background: rgba(247, 151, 30, 0.12); color: #ffd700; padding: 14px; font-weight: 700; text-align: left; }
-        td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
-        .btn-small {
-            padding: 6px 16px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            transition: 0.3s;
-            font-size: 0.8em;
-        }
-        .btn-danger { background: #ff6b6b; color: #fff; }
-        .btn-success { background: #2ecc71; color: #fff; }
-        .btn-warning { background: #f39c12; color: #fff; }
-        .btn-small:hover { transform: scale(1.05); }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            color: rgba(255,255,255,0.15);
-            font-size: 0.85em;
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 20px; border-radius: 30px; }
-            .header h1 { font-size: 2.2em; }
-            .user-info { position: static; display: inline-block; margin-top: 10px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🔥 {{ shop_name }}</h1>
-            <div class="sub">⚡ Hệ thống bán file tự động - Nạp tiền đa kênh</div>
-            <div class="zalo-badge"><i class="fas fa-phone-alt"></i> Zalo: {{ zalo }}</div>
-            <div class="user-info">
-                {% if session.user %}
-                    <i class="fas fa-user-circle"></i> {{ session.user.full_name or session.user.username }}
-                    {% if session.user.role == 'admin' %}⭐ Admin{% endif %}
-                    | <i class="fas fa-coins" style="color:#ffd700;"></i> {{ session.user.balance|default(0) }}đ
-                    | <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i></a>
-                {% endif %}
-            </div>
-        </div>
-
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}<div class="flash"><i class="fas fa-bell"></i> {{ messages[0] }}</div>{% endif %}
-        {% endwith %}
-
-        {% if not session.user %}
-        <!-- LOGIN / REGISTER -->
-        <div class="auth-form">
-            <h2>Chào mừng trở lại</h2>
-            <form method="POST" action="{{ url_for('login') }}">
-                <input type="text" name="username" placeholder="Email / Username" required>
-                <input type="password" name="password" placeholder="Mật khẩu" required>
-                <button type="submit"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
-            </form>
-            <div class="link">
-                <a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Đăng ký</a> &nbsp;|&nbsp;
-                <a href="{{ url_for('forgot_password') }}"><i class="fas fa-key"></i> Quên mật khẩu?</a>
-            </div>
-        </div>
-        {% else %}
-        <!-- MENU -->
-        <div class="menu">
-            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
-            <a href="{{ url_for('category', cat='Android') }}"><i class="fab fa-android"></i> Android</a>
-            <a href="{{ url_for('category', cat='iOS') }}"><i class="fab fa-apple"></i> iOS</a>
-            <a href="{{ url_for('category', cat='PC') }}"><i class="fas fa-desktop"></i> PC</a>
-            <a href="{{ url_for('orders') }}"><i class="fas fa-box"></i> Đơn hàng</a>
-            <a href="{{ url_for('deposit') }}" style="background:rgba(247,151,30,0.12); border-color:rgba(247,151,30,0.15);"><i class="fas fa-coins"></i> Nạp tiền</a>
-            {% if session.user.role == 'admin' %}
-                <a href="{{ url_for('admin_dashboard') }}" class="admin"><i class="fas fa-cog"></i> Quản trị</a>
-            {% endif %}
-        </div>
-
-        <!-- HIỂN THỊ SẢN PHẨM -->
-        <div class="products">
-            {% for p in products %}
-            <div class="product-card">
-                <h3>{{ p.name }}</h3>
-                <div class="features">{{ p.features }}</div>
-                <div class="warranty">{{ p.warranty }}</div>
-                <div class="price">{{ p.price }} {{ currency }}</div>
-                <div class="stock"><i class="fas fa-check-circle"></i> Còn: {{ p.stock }} | Đã bán: {{ p.sold }}</div>
-                <div class="platform"><i class="fas fa-tag"></i> {{ p.platform }}</div>
-                <form method="POST" action="{{ url_for('buy') }}">
-                    <input type="hidden" name="product_id" value="{{ p.id }}">
-                    <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" style="width:70px; padding:10px; border-radius:30px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04); color:#fff; margin:8px 0;">
-                    <button class="btn-buy" type="submit"><i class="fas fa-shopping-cart"></i> Mua ngay</button>
-                </form>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <div class="footer">
-            <p>© 2025 {{ shop_name }} - Liên hệ Zalo {{ zalo }}</p>
-        </div>
-    </div>
-</body>
-</html>
-"""
-
-# ==================== ROUTES ====================
+# === ROUTES ===
 @app.route('/')
 def index():
     products = get_products()
@@ -850,7 +511,6 @@ def category(cat):
                                 products=products,
                                 session=session)
 
-# === ĐĂNG NHẬP / ĐĂNG KÝ ===
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form.get('username')
@@ -897,7 +557,6 @@ def logout():
     flash('Đã đăng xuất.')
     return redirect(url_for('index'))
 
-# === QUÊN MẬT KHẨU ===
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -951,7 +610,6 @@ def reset_password(token):
     </div>
     '''
 
-# === MUA HÀNG ===
 @app.route('/buy', methods=['POST'])
 def buy():
     if 'user' not in session:
@@ -996,7 +654,6 @@ def orders():
     html += '</div></div>'
     return html
 
-# ==================== NẠP TIỀN: THẺ CÀO + BANK TỰ ĐỘNG ====================
 @app.route('/deposit', methods=['GET', 'POST'])
 def deposit():
     if 'user' not in session:
@@ -1019,32 +676,26 @@ def deposit():
             result = process_card_deposit(user['user_id'], card_type, card_code, card_serial, amount)
             flash(result['message'])
             if result['success']:
-                # Cập nhật session balance
                 session['user']['balance'] = user['balance'] + amount
             return redirect(url_for('deposit'))
         
         elif method == 'bank':
-            # Tạo mã giao dịch
             order_id = generate_random_id("BANK")
-            # Tạo QR
             qr_link = generate_qr_mbbank(amount, order_id)
             if not qr_link:
                 flash('Lỗi tạo QR, vui lòng thử lại!')
                 return redirect(url_for('deposit'))
             
-            # Tự động xác nhận (demo)
             result = process_bank_deposit(user['user_id'], amount, order_id)
             flash(result['message'])
             if result['success']:
                 session['user']['balance'] = user['balance'] + amount
             return redirect(url_for('deposit'))
     
-    # GET - Hiển thị form nạp tiền
     html = '''
     <div style="max-width:1000px; margin:20px auto;">
         <h2 style="color:#ffd700; text-align:center;">💳 Nạp tiền vào tài khoản</h2>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
-            <!-- THẺ CÀO -->
             <div style="background:rgba(255,255,255,0.03); border-radius:32px; padding:30px; border:1px solid rgba(255,255,255,0.05);">
                 <h3 style="color:#ffd700;">📱 Thẻ cào</h3>
                 <form method="POST">
@@ -1060,18 +711,17 @@ def deposit():
                     <button type="submit"><i class="fas fa-credit-card"></i> Nạp thẻ</button>
                 </form>
             </div>
-            <!-- BANK TỰ ĐỘNG -->
             <div style="background:rgba(255,255,255,0.03); border-radius:32px; padding:30px; border:1px solid rgba(255,255,255,0.05);">
-                <h3 style="color:#ffd700;">🏦 Chuyển khoản Bank (QR)</h3>
+                <h3 style="color:#ffd700;">🏦 MB Bank (Tự động)</h3>
                 <form method="POST">
                     <input type="hidden" name="method" value="bank">
-                    <p style="color:rgba(255,255,255,0.3); font-size:0.9em;">Nhập số tiền và quét QR để nạp tự động</p>
+                    <p style="color:rgba(255,255,255,0.3); font-size:0.9em;">Nhập số tiền, quét QR và hệ thống tự động xác nhận</p>
                     <input type="number" name="amount" placeholder="Số tiền (VND)" required min="10000">
                     <button type="submit"><i class="fas fa-qrcode"></i> Tạo QR & nạp</button>
                 </form>
                 <div style="text-align:center; margin-top:15px;">
-                    <p style="color:rgba(255,255,255,0.2); font-size:0.8em;">💳 MB Bank: 0123456789 - NGUYEN VAN A</p>
-                    <p style="color:rgba(255,255,255,0.2); font-size:0.8em;">Sau khi chuyển, hệ thống tự động cộng tiền</p>
+                    <p style="color:rgba(255,255,255,0.2); font-size:0.8em;">💳 MB Bank: ''' + MB_CONFIG['account_number'] + ''' - ''' + MB_CONFIG['account_name'] + '''</p>
+                    <p style="color:rgba(255,255,255,0.2); font-size:0.8em;">Hệ thống sẽ tự động xác nhận sau khi chuyển khoản</p>
                 </div>
             </div>
         </div>
@@ -1082,7 +732,7 @@ def deposit():
     '''
     return render_template_string(html, session=session)
 
-# ==================== ADMIN ====================
+# === ADMIN ===
 @app.route('/admin')
 def admin_dashboard():
     if 'user' not in session or session['user']['role'] != 'admin':
@@ -1356,6 +1006,133 @@ def admin_users():
     html += '</table></div>'
     return html
 
+# ==================== HTML TEMPLATE ====================
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ shop_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0f; min-height: 100vh; padding: 20px; color: #fff; }
+        .container { max-width: 1280px; margin: auto; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border-radius: 48px; padding: 35px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+        .header { text-align: center; padding: 25px 0 20px; position: relative; }
+        .header h1 { font-size: 3.5em; font-weight: 900; background: linear-gradient(135deg, #f7971e, #ffd200, #f7971e); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientMove 5s ease infinite; }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .header .sub { color: rgba(255,255,255,0.4); font-weight: 300; letter-spacing: 3px; font-size: 0.9em; margin-top: 6px; }
+        .zalo-badge { display: inline-block; background: rgba(0,136,204,0.15); color: #4fc3f7; padding: 8px 28px; border-radius: 60px; margin: 12px 0; font-weight: 600; border: 1px solid rgba(0,136,204,0.15); }
+        .user-info { position: absolute; right: 20px; top: 20px; background: rgba(255,255,255,0.04); padding: 10px 24px; border-radius: 60px; border: 1px solid rgba(255,255,255,0.05); font-size: 0.9em; }
+        .user-info a { color: #ff6b6b; text-decoration: none; font-weight: 600; }
+        .menu { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0; justify-content: center; }
+        .menu a, .menu button { font-family: 'Inter', sans-serif; background: rgba(255,255,255,0.04); color: #fff; padding: 12px 28px; border-radius: 60px; text-decoration: none; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 500; transition: all 0.25s ease; }
+        .menu a:hover, .menu button:hover { background: rgba(247,151,30,0.12); border-color: rgba(247,151,30,0.2); transform: translateY(-2px); }
+        .menu a.admin { background: linear-gradient(135deg, #f7971e, #ffd200); color: #0a0a0f; border: none; font-weight: 700; }
+        .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 25px; margin-top: 30px; }
+        .product-card { background: rgba(255,255,255,0.03); border-radius: 28px; padding: 24px 20px; transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255,255,255,0.04); }
+        .product-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.06); border-color: rgba(247,151,30,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .product-card h3 { font-size: 1.3em; font-weight: 700; margin-bottom: 4px; }
+        .product-card .features { color: #ffd700; font-weight: 500; }
+        .product-card .price { font-size: 1.9em; font-weight: 800; background: linear-gradient(135deg, #ffd700, #f7971e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 10px 0; }
+        .product-card .stock { color: #2ecc71; font-weight: 500; }
+        .btn-buy { width: 100%; padding: 14px; background: linear-gradient(135deg, #f7971e, #ffd200); border: none; border-radius: 60px; color: #0a0a0f; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; margin-top: 8px; }
+        .btn-buy:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(247,151,30,0.3); }
+        .auth-form { max-width: 460px; margin: 30px auto; padding: 40px 35px; background: rgba(255,255,255,0.03); border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); }
+        .auth-form h2 { text-align: center; font-weight: 700; font-size: 1.8em; background: linear-gradient(135deg, #ffd700, #f7971e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .auth-form input { width: 100%; padding: 16px 20px; margin: 10px 0; border: 1px solid rgba(255,255,255,0.06); border-radius: 60px; background: rgba(255,255,255,0.04); color: #fff; font-size: 0.95em; outline: none; transition: 0.3s; }
+        .auth-form input:focus { border-color: #ffd700; background: rgba(255,255,255,0.08); }
+        .auth-form button { width: 100%; padding: 16px; background: linear-gradient(135deg, #f7971e, #ffd200); border: none; border-radius: 60px; color: #0a0a0f; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 8px; }
+        .flash { padding: 14px 24px; background: rgba(241,196,15,0.08); border: 1px solid rgba(241,196,15,0.12); border-radius: 24px; margin: 15px 0; text-align: center; color: #ffd700; font-weight: 500; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.15); font-size: 0.85em; }
+        .admin-panel { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 28px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.04); }
+        .admin-panel input, .admin-panel textarea { width: 100%; padding: 14px 18px; margin: 8px 0; border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; background: rgba(255,255,255,0.04); color: #fff; outline: none; }
+        .admin-panel button { background: linear-gradient(135deg, #f7971e, #ffd200); color: #0a0a0f; padding: 14px 35px; border: none; border-radius: 60px; font-weight: 700; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; border-radius: 20px; overflow: hidden; }
+        th { background: rgba(247,151,30,0.12); color: #ffd700; padding: 14px; font-weight: 700; text-align: left; }
+        td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); }
+        .btn-small { padding: 6px 16px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.8em; }
+        .btn-danger { background: #ff6b6b; color: #fff; }
+        .btn-success { background: #2ecc71; color: #fff; }
+        .btn-warning { background: #f39c12; color: #fff; }
+        @media (max-width: 768px) { .container { padding: 20px; } .header h1 { font-size: 2.2em; } .user-info { position: static; display: inline-block; margin-top: 10px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 {{ shop_name }}</h1>
+            <div class="sub">⚡ Bán file Free Fire - Tích hợp MBBank tự động</div>
+            <div class="zalo-badge"><i class="fas fa-phone-alt"></i> Zalo: {{ zalo }}</div>
+            <div class="user-info">
+                {% if session.user %}
+                    <i class="fas fa-user-circle"></i> {{ session.user.full_name or session.user.username }}
+                    {% if session.user.role == 'admin' %}⭐ Admin{% endif %}
+                    | <i class="fas fa-coins" style="color:#ffd700;"></i> {{ session.user.balance|default(0) }}đ
+                    | <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i></a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}<div class="flash"><i class="fas fa-bell"></i> {{ messages[0] }}</div>{% endif %}
+        {% endwith %}
+
+        {% if not session.user %}
+        <div class="auth-form">
+            <h2>Chào mừng trở lại</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <input type="text" name="username" placeholder="Email / Username" required>
+                <input type="password" name="password" placeholder="Mật khẩu" required>
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+            </form>
+            <div style="text-align:center; margin-top:15px;">
+                <a href="{{ url_for('register') }}" style="color:rgba(255,255,255,0.3);">Đăng ký</a> | 
+                <a href="{{ url_for('forgot_password') }}" style="color:rgba(255,255,255,0.3);">Quên mật khẩu?</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="menu">
+            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+            <a href="{{ url_for('category', cat='Android') }}"><i class="fab fa-android"></i> Android</a>
+            <a href="{{ url_for('category', cat='iOS') }}"><i class="fab fa-apple"></i> iOS</a>
+            <a href="{{ url_for('category', cat='PC') }}"><i class="fas fa-desktop"></i> PC</a>
+            <a href="{{ url_for('orders') }}"><i class="fas fa-box"></i> Đơn hàng</a>
+            <a href="{{ url_for('deposit') }}" style="background:rgba(247,151,30,0.12); border-color:rgba(247,151,30,0.15);"><i class="fas fa-coins"></i> Nạp tiền</a>
+            {% if session.user.role == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="admin"><i class="fas fa-cog"></i> Quản trị</a>
+            {% endif %}
+        </div>
+
+        <div class="products">
+            {% for p in products %}
+            <div class="product-card">
+                <h3>{{ p.name }}</h3>
+                <div class="features">{{ p.features }}</div>
+                <div style="color:rgba(255,255,255,0.4); font-size:0.85em;">{{ p.warranty }}</div>
+                <div class="price">{{ p.price }} {{ currency }}</div>
+                <div class="stock"><i class="fas fa-check-circle"></i> Còn: {{ p.stock }} | Đã bán: {{ p.sold }}</div>
+                <div style="display:inline-block; background:rgba(255,255,255,0.05); padding:3px 14px; border-radius:30px; font-size:0.8em; color:rgba(255,255,255,0.5); margin:8px 0;">{{ p.platform }}</div>
+                <form method="POST" action="{{ url_for('buy') }}">
+                    <input type="hidden" name="product_id" value="{{ p.id }}">
+                    <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" style="width:70px; padding:10px; border-radius:30px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04); color:#fff; margin:8px 0;">
+                    <button class="btn-buy" type="submit"><i class="fas fa-shopping-cart"></i> Mua ngay</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="footer">
+            <p>© 2025 {{ shop_name }} - Liên hệ Zalo {{ zalo }}</p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
 # ==================== KHỞI TẠO ====================
 def init_sample_data():
     init_db()
@@ -1369,7 +1146,6 @@ def init_sample_data():
             ("Pixel 1.0", "Android", 350000, 10, "Nhiều Chức Năng Hot", "Full Đỏ Dễ Dàng", "Android", "An Toàn Acc Chính", "https://drive.google.com/file/pixel1"),
             ("Aim Proxy", "iOS", 0, 6, "Kéo Là Đỏ", "Đi Rank Phòng Đều Ok", "iOS", "", "https://drive.google.com/file/aimproxy"),
             ("AimBot PC", "PC", 0, 9, "Esp,Aimbot,Ai player", "An Toàn Trên Acc Chính", "PC", "", "https://drive.google.com/file/aimbotpc"),
-            ("Migul Pro", "iOS", 0, 9, "Nhiều Chức Năng", "Antiban, Chơi Acc Chính", "iOS", "", "https://drive.google.com/file/migul"),
         ]
         for name, cat, price, stock, desc, features, platform, warranty, file_link in sample_products:
             add_product_db(name, cat, price, stock, desc, features, platform, warranty, file_link)
