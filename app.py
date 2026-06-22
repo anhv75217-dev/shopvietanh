@@ -34,9 +34,9 @@ mail = Mail(app)
 SEPAY_CONFIG = {
     "api_url": "https://bankhub-api.sepay.vn/v1",          # Production URL
     "api_key": "R2KFBS3YUQJFO0GNE3NMXIXNUWIQQDLHMIVJUVLIC5Z4MHANP2G5WYDGDP9TFVL1",
-    "account_number": "0123456789",                        # THAY SỐ TÀI KHOẢN MB BANK CỦA BẠN
+    "account_number": "0933121845",                        # THAY SỐ TÀI KHOẢN MB BANK CỦA BẠN
     "bin": "970422",
-    "account_name": "NGUYEN VAN A"                         # THAY TÊN CHỦ TÀI KHOẢN
+    "account_name": "TUONG VIET ANH"                         # THAY TÊN CHỦ TÀI KHOẢN
 }
 
 # === CẤU HÌNH SHOP ===
