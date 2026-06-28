@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CheatiOSVip - Premium Proxy Shop</title>
+<title>CheatiOSVipp - Premium Proxy Shop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
+/* ── Tất cả style giữ nguyên như bạn đã có ── */
 :root{
   --bg:#09090B;--card:rgba(255,255,255,0.035);--border:rgba(255,255,255,0.08);
   --text:#FFFFFF;--sub:rgba(255,255,255,0.45);--sec:rgba(255,255,255,0.65);
@@ -27,7 +28,6 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
 
 /* ── ANNOUNCE ── */
-
 .announce b{color:var(--cyan);font-weight:700}
 
 /* ── HEADER ── */
@@ -217,7 +217,6 @@ a{color:inherit;text-decoration:none}
   .section{padding:52px 16px}
 }
 @media(max-width:480px){.stats-grid{grid-template-columns:1fr 1fr}.pkg-price{font-size:28px}}
-
 
 /* Force visible - AOS fallback */
 [data-aos]{opacity:1!important;transform:none!important}
@@ -542,6 +541,14 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 #hero3d{display:block;filter:drop-shadow(0 0 60px rgba(0,229,255,0.45))}
 @media(max-width:960px){#hero3dWrap{display:none!important}}
 .pkg-card{transform-style:preserve-3d}
+
+/* ── AUTH MODAL (thêm mới) ── */
+.auth-modal .modal-box { max-width: 400px; }
+.auth-modal .modal-head { text-align: center; }
+.auth-modal .form-input { margin-bottom: 14px; }
+.auth-switch { margin-top: 16px; font-size: 13px; color: var(--sub); text-align: center; }
+.auth-switch a { color: var(--cyan); cursor: pointer; font-weight: 600; }
+.auth-switch a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -549,24 +556,41 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <div class="sb-overlay" id="sbo" onclick="cSB()"></div>
 <aside class="sidebar" id="sb">
   <button class="sb-close" onclick="cSB()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-  <a href="/shop/" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div><div><div class="nav-logo-name">CheatiOSVip</div><div class="nav-logo-sub">Proxy Shop</div></div></a>
+  <a href="/" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div><div><div class="nav-logo-name">CheatiOSVip</div><div class="nav-logo-sub">Proxy Shop</div></div></a>
   
-  <nav class="sb-nav"><a href="/shop/login"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Đăng nhập</a><a href="/shop/register"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Đăng ký</a></nav>
+  <nav class="sb-nav" id="sbNav">
+    <a href="#" onclick="event.preventDefault(); openLoginModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Đăng nhập</a>
+    <a href="#" onclick="event.preventDefault(); openRegisterModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Đăng ký</a>
+  </nav>
 </aside>
 <nav class="navbar" id="nb">
   <div class="nav-inner">
-    <a href="/shop/" class="nav-logo">
+    <a href="/" class="nav-logo">
       <div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
       <div><div class="nav-logo-name">CheatiOSVip</div><div class="nav-logo-sub">Proxy Shop</div></div>
     </a>
     <div class="nav-links">
-      <a href="/shop/">Trang Chủ</a>
-      <a href="/shop/packages">Mua Key</a>
+      <a href="/">Trang Chủ</a>
+      <a href="#packages">Mua Key</a>
       <a href="#features">Tính Năng</a>
-      <a href="/shop/topup">Nạp Tiền</a>
+      <a href="#topup">Nạp Tiền</a>
     </div>
     <div class="nav-right">
-      <a href="/shop/login" class="nav-btn">Đăng nhập</a><a href="/shop/register" class="btn-primary" style="padding:9px 18px;font-size:13px">Đăng ký</a>
+      <span id="navAuthButtons">
+        <a href="#" class="nav-btn" onclick="event.preventDefault(); openLoginModal();">Đăng nhập</a>
+        <a href="#" class="btn-primary" style="padding:9px 18px;font-size:13px" onclick="event.preventDefault(); openRegisterModal();">Đăng ký</a>
+      </span>
+      <span id="navUserInfo" style="display:none; align-items:center; gap:10px;">
+        <span class="h-balance">
+          <span class="h-bal-lbl">Số dư</span>
+          <span class="h-bal-val" id="headerBalance">0đ</span>
+        </span>
+        <span class="user-chip" id="userChip">
+          <span class="user-avatar" id="userAvatar">U</span>
+          <span class="user-name-h" id="userName">User</span>
+        </span>
+        <a href="#" class="nav-btn nav-out" onclick="event.preventDefault(); logout();">Đăng xuất</a>
+      </span>
       <button class="hamburger" id="hbg" onclick="tSB()"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -594,11 +618,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <div class="hf-item"><div class="hf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.58 4.45 2 2 0 0 1 3.55 2.25h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg></div>Hỗ trợ 24/7</div>
       </div>
       <div class="hero-cta" data-aos="fade-up" data-aos-delay="320">
-        <a href="/shop/packages" class="btn-primary">
+        <a href="#packages" class="btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           Mua Ngay
         </a>
-        <a href="/shop/topup" class="btn-secondary">
+        <a href="#topup" class="btn-secondary">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           Nạp Tiền Ngay
         </a>
@@ -616,7 +640,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <section class="section" id="stats" style="padding-bottom:40px">
   <div class="sec-inner">
     <div class="activity-wrap">
-      <!-- Top Nạp -->
       <div class="activity-card">
         <div class="activity-hdr">
           <div class="activity-title">
@@ -627,7 +650,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         </div>
         <div id="topNapList"><div style="text-align:center;padding:20px;color:var(--sub);font-size:12px">Đang tải...</div></div>
       </div>
-      <!-- Lịch sử + nut xem -->
       <div class="activity-card">
         <div class="activity-hdr">
           <div class="activity-title">
@@ -660,55 +682,54 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </div>
 <div class="div-line"></div>
-<!-- PACKAGES (hidden on home, see /shop/packages) -->
-<section class="section" id="packages" style="display:none">
+<!-- PACKAGES -->
+<section class="section" id="packages">
   <div class="sec-inner">
     <div class="sec-hdr">
       <div class="sec-pill" data-aos="fade-up"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg> Bảng Giá</div>
       <h2 class="sec-title" data-aos="fade-up" data-aos-delay="80">Chọn Gói Phù Hợp</h2>
       <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Thanh toán ngay, nhận key tức thì. Bảo mật Device ID toàn diện.</p>
     </div>
-    <div class="pkg-grid"><div class="pkg-card shine" data-aos="fade-up" data-aos-delay="0">
-
-<div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-<div class="pkg-tier" style="color:rgba(255,255,255,0.45)">Proxy 1 Ngày</div>
-
-<div class="pkg-price" style="">10.000đ</div>
-<div class="pkg-dur" style=""><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 1 ngày truy cập</div>
-<div class="pkg-divider"></div>
-<ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li></ul>
-<button class="btn-buy" onclick="openBuyModal('p1','Key 1 Ngày','10.000đ',1,10000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
-</div><div class="pkg-card hot shine" data-aos="fade-up" data-aos-delay="120">
-<div class="pkg-top-glow"></div><span class="pkg-badge">Phổ biến</span>
-<div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-<div class="pkg-tier" style="color:#00E5FF">Proxy 1 Tuần</div>
-
-<div class="pkg-price" style="">30.000đ</div>
-<div class="pkg-dur" style="background:rgba(0,229,255,0.09);border:1px solid rgba(0,229,255,0.2);color:#00E5FF;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 7 ngày truy cập</div>
-<div class="pkg-divider"></div>
-<ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li></ul>
-<button class="btn-buy" onclick="openBuyModal('p2','Key 7 Ngày','30.000đ',7,30000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
-</div><div class="pkg-card shine" data-aos="fade-up" data-aos-delay="240">
-<div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:220px;height:90px;background:radial-gradient(ellipse,rgba(124,58,237,0.13) 0%,transparent 70%);pointer-events:none"></div><span class="pkg-badge" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">Dùng nhiều</span>
-<div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-<div class="pkg-tier" style="color:#A78BFA">Proxy 1 Tháng</div>
-
-<div class="pkg-price" style="">65.000đ</div>
-<div class="pkg-dur" style="background:rgba(124,58,237,0.09);border:1px solid rgba(124,58,237,0.2);color:#A78BFA;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 30 ngày truy cập</div>
-<div class="pkg-divider"></div>
-<ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Tiết kiệm 30% so với lẻ</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Gia hạn ưu tiên</li></ul>
-<button class="btn-buy" onclick="openBuyModal('p3','Key 30 Ngày','65.000đ',30,65000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
-</div><div class="pkg-card shine" data-aos="fade-up" data-aos-delay="360">
-
-<div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-<div class="pkg-tier" style="color:rgba(255,255,255,0.45)">Proxy Key Vĩnh Viễn</div>
-
-<div class="pkg-price" style="">200.000đ</div>
-<div class="pkg-dur" style="background:rgba(124,58,237,0.09);border:1px solid rgba(124,58,237,0.2);color:#A78BFA;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 9999 ngày truy cập</div>
-<div class="pkg-divider"></div>
-<ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Tiết kiệm 30% so với lẻ</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Gia hạn ưu tiên</li></ul>
-<button class="btn-buy" onclick="openBuyModal('padced7','Proxy Key Vĩnh Viễn','200.000đ',9999,200000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
-</div></div>
+    <div class="pkg-grid">
+      <div class="pkg-card shine" data-aos="fade-up" data-aos-delay="0">
+        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
+        <div class="pkg-tier" style="color:rgba(255,255,255,0.45)">Proxy 1 Ngày</div>
+        <div class="pkg-price" style="">10.000đ</div>
+        <div class="pkg-dur" style=""><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 1 ngày truy cập</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li></ul>
+        <button class="btn-buy" onclick="openBuyModal('p1','Key 1 Ngày','10.000đ',1,10000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+      </div>
+      <div class="pkg-card hot shine" data-aos="fade-up" data-aos-delay="120">
+        <div class="pkg-top-glow"></div><span class="pkg-badge">Phổ biến</span>
+        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
+        <div class="pkg-tier" style="color:#00E5FF">Proxy 1 Tuần</div>
+        <div class="pkg-price" style="">30.000đ</div>
+        <div class="pkg-dur" style="background:rgba(0,229,255,0.09);border:1px solid rgba(0,229,255,0.2);color:#00E5FF;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 7 ngày truy cập</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li></ul>
+        <button class="btn-buy" onclick="openBuyModal('p2','Key 7 Ngày','30.000đ',7,30000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+      </div>
+      <div class="pkg-card shine" data-aos="fade-up" data-aos-delay="240">
+        <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:220px;height:90px;background:radial-gradient(ellipse,rgba(124,58,237,0.13) 0%,transparent 70%);pointer-events:none"></div><span class="pkg-badge" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">Dùng nhiều</span>
+        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
+        <div class="pkg-tier" style="color:#A78BFA">Proxy 1 Tháng</div>
+        <div class="pkg-price" style="">65.000đ</div>
+        <div class="pkg-dur" style="background:rgba(124,58,237,0.09);border:1px solid rgba(124,58,237,0.2);color:#A78BFA;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 30 ngày truy cập</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Tiết kiệm 30% so với lẻ</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Gia hạn ưu tiên</li></ul>
+        <button class="btn-buy" onclick="openBuyModal('p3','Key 30 Ngày','65.000đ',30,65000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+      </div>
+      <div class="pkg-card shine" data-aos="fade-up" data-aos-delay="360">
+        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
+        <div class="pkg-tier" style="color:rgba(255,255,255,0.45)">Proxy Key Vĩnh Viễn</div>
+        <div class="pkg-price" style="">200.000đ</div>
+        <div class="pkg-dur" style="background:rgba(124,58,237,0.09);border:1px solid rgba(124,58,237,0.2);color:#A78BFA;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 9999 ngày truy cập</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Tiết kiệm 30% so với lẻ</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Gia hạn ưu tiên</li></ul>
+        <button class="btn-buy" onclick="openBuyModal('padced7','Proxy Key Vĩnh Viễn','200.000đ',9999,200000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+      </div>
+    </div>
   </div>
 </section>
 <div class="div-line"></div>
@@ -729,16 +750,56 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </section>
 <div class="div-line"></div>
+
+<!-- ── TOPUP SECTION ── -->
+<section class="section" id="topup">
+  <div class="sec-inner">
+    <div class="sec-hdr">
+      <div class="sec-pill" data-aos="fade-up"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Nạp Tiền</div>
+      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="80">Nạp Tiền Vào Tài Khoản</h2>
+      <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Chọn phương thức và số tiền để nạp.</p>
+    </div>
+    <div class="topup-wrap" style="max-width:560px; margin:0 auto;">
+      <div class="topup-form-card">
+        <div class="topup-form-title">THÔNG TIN NẠP</div>
+        <div class="topup-bal-pill" style="margin-top:0; margin-bottom:18px;">
+          Số dư hiện tại: <span id="topupBalance">0đ</span>
+        </div>
+        <div class="topup-amounts" id="topupAmounts">
+          <button class="topup-amt-btn active" data-amount="20000">20.000đ</button>
+          <button class="topup-amt-btn" data-amount="50000">50.000đ</button>
+          <button class="topup-amt-btn" data-amount="100000">100.000đ</button>
+          <button class="topup-amt-btn" data-amount="200000">200.000đ</button>
+          <button class="topup-amt-btn" data-amount="500000">500.000đ</button>
+          <button class="topup-amt-btn" data-amount="1000000">1.000.000đ</button>
+        </div>
+        <div class="topup-input-row">
+          <input type="number" class="topup-custom-input" id="topupCustomAmount" placeholder="Nhập số tiền khác">
+        </div>
+        <button class="topup-submit" onclick="submitTopup()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Nạp Ngay
+        </button>
+        <div id="topupResult" style="margin-top:14px; font-size:14px; font-weight:600; color:var(--green);"></div>
+        <div class="topup-note">
+          <strong>Lưu ý:</strong> Sau khi nạp, số dư sẽ được cập nhật tự động. Nếu có vấn đề, vui lòng liên hệ hỗ trợ.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="div-line"></div>
+
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="/shop/" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div><div><div class="nav-logo-name">CheatiOSVip</div><div class="nav-logo-sub">Proxy Shop</div></div></a>
-        <p class="footer-desc">Hệ thống proxy cao cap, bảo mật, tốc độ cao. Kích hoạt tức thì sau thanh toán.</p>
+        <a href="/" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div><div><div class="nav-logo-name">CheatiOSVip</div><div class="nav-logo-sub">Proxy Shop</div></div></a>
+        <p class="footer-desc">Hệ thống proxy cao cấp, bảo mật, tốc độ cao. Kích hoạt tức thì sau thanh toán.</p>
       </div>
-      <div><div class="footer-col-h">Sản Phẩm</div><div class="footer-links"><a href="/shop/">Key 7 Ngày</a><a href="/shop/">Key 15 Ngày</a><a href="/shop/">Key 30 Ngày</a></div></div>
-      <div><div class="footer-col-h">Tài Khoản</div><div class="footer-links"><a href="/shop/login">Đăng nhập</a><a href="/shop/register">Đăng ký</a><a href="/shop/orders">Đơn hàng</a><a href="/shop/topup">Nạp tiền</a></div></div>
+      <div><div class="footer-col-h">Sản Phẩm</div><div class="footer-links"><a href="#packages">Key 7 Ngày</a><a href="#packages">Key 30 Ngày</a><a href="#packages">Key Vĩnh Viễn</a></div></div>
+      <div><div class="footer-col-h">Tài Khoản</div><div class="footer-links"><a href="#" onclick="event.preventDefault(); openLoginModal();">Đăng nhập</a><a href="#" onclick="event.preventDefault(); openRegisterModal();">Đăng ký</a><a href="#topup">Nạp tiền</a></div></div>
       <div><div class="footer-col-h">Hỗ Trợ</div><div class="footer-links"><a href="#">Zalo: 0842.742.675</a><a href="#">Hướng dẫn sử dụng</a><a href="#">Câu hỏi thường gặp</a></div></div>
     </div>
     <div class="footer-bottom">
@@ -759,7 +820,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <button class="modal-close" onclick="closeBuyModal()">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-    <!-- Form -->
     <div id="modalForm">
       <div class="modal-head">
         <div class="modal-tier" id="mTier">PROXY 1 NGÀY</div>
@@ -767,8 +827,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <div class="modal-desc">Xác nhận mua hàng &bull; Nhận key tức thì</div>
       </div>
       <div class="modal-price-row">
-        <div class="modal-price" id="mPrice">30.000d</div>
-        <div class="modal-dur" id="mDur">7 ngay</div>
+        <div class="modal-price" id="mPrice">30.000đ</div>
+        <div class="modal-dur" id="mDur">7 ngày</div>
       </div>
       <div class="modal-body">
         <div class="modal-balance-row">
@@ -792,227 +852,472 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         </button>
       </div>
     </div>
-    <!-- Result -->
-    <div class="modal-result" id="modalResult" style="padding-top:28px">
+    <div class="modal-result" id="modalResult" style="padding-top:28px"></div>
+  </div>
+</div>
+
+<!-- ── AUTH MODALS ── -->
+<!-- Login Modal -->
+<div class="modal-overlay auth-modal" id="loginModal" onclick="if(event.target===this)closeLoginModal()">
+  <div class="modal-box">
+    <div class="modal-glow"></div>
+    <button class="modal-close" onclick="closeLoginModal()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head">
+      <div class="modal-tier">ĐĂNG NHẬP</div>
+      <div class="modal-name">Chào mừng trở lại</div>
+      <div class="modal-desc">Đăng nhập để mua key và quản lý tài khoản.</div>
+    </div>
+    <div class="modal-body">
+      <input type="text" class="form-input" id="loginUsername" placeholder="Tên đăng nhập">
+      <input type="password" class="form-input" id="loginPassword" placeholder="Mật khẩu">
+      <div id="loginError" style="color:var(--red); font-size:13px; margin-bottom:10px; display:none;"></div>
+      <button class="modal-btn-confirm" style="width:100%;" onclick="login()">Đăng nhập</button>
+      <div class="auth-switch">Chưa có tài khoản? <a onclick="switchAuth('register')">Đăng ký ngay</a></div>
     </div>
   </div>
 </div>
-</main>
-<script>
-(function(){
-  var obs=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting){
-        e.target.style.opacity="1";
-        e.target.style.transform="none";
-      }
-    });
-  },{threshold:0.05});
-  document.querySelectorAll("[data-aos]").forEach(function(el){
-    el.style.transition="opacity 0.6s ease, transform 0.6s ease";
-    obs.observe(el);
-  });
-})();
-const nb=document.getElementById('nb');
-window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>40),{passive:true});
-function tSB(){document.getElementById('sb').classList.toggle('open');document.getElementById('sbo').classList.toggle('open');document.getElementById('hbg').classList.toggle('active')}
-function cSB(){document.getElementById('sb').classList.remove('open');document.getElementById('sbo').classList.remove('open');document.getElementById('hbg').classList.remove('active')}
-// Counter
-const cEl=document.querySelector('[data-count]');
-if(cEl){const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;const t=parseInt(e.target.dataset.count);let v=0;const s=t/70;const tick=()=>{v=Math.min(v+s,t);e.target.textContent=Math.floor(v).toLocaleString('vi-VN')+'+';if(v<t)requestAnimationFrame(tick)};tick();io.unobserve(e.target)})},{threshold:.6});io.observe(cEl)}
 
-// Activity: Top Nạp + History
-var _actData = null;
-var _histTab = 'all';
-function fvnd(n){ return n.toLocaleString('vi-VN')+'d'; }
+<!-- Register Modal -->
+<div class="modal-overlay auth-modal" id="registerModal" onclick="if(event.target===this)closeRegisterModal()">
+  <div class="modal-box">
+    <div class="modal-glow"></div>
+    <button class="modal-close" onclick="closeRegisterModal()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head">
+      <div class="modal-tier">ĐĂNG KÝ</div>
+      <div class="modal-name">Tạo tài khoản mới</div>
+      <div class="modal-desc">Đăng ký ngay để bắt đầu mua Proxy.</div>
+    </div>
+    <div class="modal-body">
+      <input type="text" class="form-input" id="registerUsername" placeholder="Tên đăng nhập">
+      <input type="password" class="form-input" id="registerPassword" placeholder="Mật khẩu">
+      <input type="password" class="form-input" id="registerConfirm" placeholder="Xác nhận mật khẩu">
+      <div id="registerError" style="color:var(--red); font-size:13px; margin-bottom:10px; display:none;"></div>
+      <button class="modal-btn-confirm" style="width:100%;" onclick="register()">Đăng ký</button>
+      <div class="auth-switch">Đã có tài khoản? <a onclick="switchAuth('login')">Đăng nhập ngay</a></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── GLOBAL STATE ──
+let currentUser = null;
+let currentBalance = 0;
+
+// ── AUTH MODAL CONTROLS ──
+function openLoginModal() { 
+  document.getElementById('loginModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('loginError').style.display = 'none';
+}
+function openRegisterModal() {
+  document.getElementById('registerModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeRegisterModal() {
+  document.getElementById('registerModal').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('registerError').style.display = 'none';
+}
+function switchAuth(to) {
+  closeLoginModal(); closeRegisterModal();
+  if (to === 'login') openLoginModal();
+  else openRegisterModal();
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLoginModal(); closeRegisterModal(); closeBuyModal(); }
+});
+
+// ── API HELPERS ──
+async function apiCall(url, method = 'GET', body = null) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  return res.json();
+}
+
+// ── REGISTER ──
+async function register() {
+  const username = document.getElementById('registerUsername').value.trim();
+  const password = document.getElementById('registerPassword').value;
+  const confirm = document.getElementById('registerConfirm').value;
+  const errEl = document.getElementById('registerError');
+  if (!username || !password || !confirm) {
+    errEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
+    errEl.style.display = 'block'; return;
+  }
+  if (password !== confirm) {
+    errEl.textContent = 'Mật khẩu xác nhận không khớp.';
+    errEl.style.display = 'block'; return;
+  }
+  if (password.length < 4) {
+    errEl.textContent = 'Mật khẩu phải có ít nhất 4 ký tự.';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+  try {
+    const data = await apiCall('/api/register', 'POST', { username, password });
+    if (data.ok) {
+      alert('Đăng ký thành công! Vui lòng đăng nhập.');
+      closeRegisterModal();
+      openLoginModal();
+    } else {
+      errEl.textContent = data.err || 'Đăng ký thất bại.';
+      errEl.style.display = 'block';
+    }
+  } catch (e) {
+    errEl.textContent = 'Lỗi kết nối server.';
+    errEl.style.display = 'block';
+  }
+}
+
+// ── LOGIN ──
+async function login() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  if (!username || !password) {
+    errEl.textContent = 'Vui lòng nhập tên và mật khẩu.';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+  try {
+    const data = await apiCall('/api/login', 'POST', { username, password });
+    if (data.ok) {
+      currentUser = data.username;
+      currentBalance = data.balance;
+      closeLoginModal();
+      updateUI();
+      loadBalance();
+      loadActivity();
+      alert('Đăng nhập thành công!');
+    } else {
+      errEl.textContent = data.err || 'Sai tên hoặc mật khẩu.';
+      errEl.style.display = 'block';
+    }
+  } catch (e) {
+    errEl.textContent = 'Lỗi kết nối server.';
+    errEl.style.display = 'block';
+  }
+}
+
+// ── LOGOUT ──
+async function logout() {
+  if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+  await apiCall('/api/logout', 'GET');
+  currentUser = null;
+  currentBalance = 0;
+  updateUI();
+  loadBalance();
+  loadActivity();
+  alert('Đã đăng xuất.');
+}
+
+// ── LOAD BALANCE ──
+async function loadBalance() {
+  try {
+    const data = await apiCall('/api/balance');
+    if (data.logged_in) {
+      currentUser = data.username;
+      currentBalance = data.balance;
+      updateUI();
+    } else {
+      currentUser = null;
+      currentBalance = 0;
+      updateUI();
+    }
+  } catch (e) { /* ignore */ }
+}
+
+// ── UPDATE UI ──
+function updateUI() {
+  const isLoggedIn = currentUser !== null;
+  document.getElementById('navAuthButtons').style.display = isLoggedIn ? 'none' : 'inline-flex';
+  document.getElementById('navUserInfo').style.display = isLoggedIn ? 'flex' : 'none';
+  if (isLoggedIn) {
+    document.getElementById('headerBalance').textContent = currentBalance.toLocaleString('vi-VN') + 'đ';
+    document.getElementById('userName').textContent = currentUser;
+    document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
+    document.getElementById('topupBalance').textContent = currentBalance.toLocaleString('vi-VN') + 'đ';
+  }
+  // Update sidebar links
+  const sbNav = document.getElementById('sbNav');
+  if (isLoggedIn) {
+    sbNav.innerHTML = `
+      <a href="#packages"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Mua Key</a>
+      <a href="#topup"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Nạp Tiền</a>
+      <a href="#" class="danger" onclick="event.preventDefault(); logout();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Đăng xuất</a>
+    `;
+  } else {
+    sbNav.innerHTML = `
+      <a href="#" onclick="event.preventDefault(); openLoginModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Đăng nhập</a>
+      <a href="#" onclick="event.preventDefault(); openRegisterModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Đăng ký</a>
+    `;
+  }
+}
+
+// ── TOPUP ──
+let selectedAmount = 20000;
+document.querySelectorAll('#topupAmounts .topup-amt-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#topupAmounts .topup-amt-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    selectedAmount = parseInt(this.dataset.amount);
+    document.getElementById('topupCustomAmount').value = '';
+  });
+});
+document.getElementById('topupCustomAmount').addEventListener('input', function() {
+  if (this.value) {
+    document.querySelectorAll('#topupAmounts .topup-amt-btn').forEach(b => b.classList.remove('active'));
+    selectedAmount = parseInt(this.value) || 0;
+  } else {
+    // re-select default
+    document.querySelector('#topupAmounts .topup-amt-btn.active')?.click();
+  }
+});
+
+async function submitTopup() {
+  const amount = selectedAmount;
+  if (!amount || amount <= 0) {
+    document.getElementById('topupResult').textContent = 'Vui lòng chọn hoặc nhập số tiền hợp lệ.';
+    document.getElementById('topupResult').style.color = 'var(--red)';
+    return;
+  }
+  if (!currentUser) {
+    document.getElementById('topupResult').textContent = 'Vui lòng đăng nhập để nạp tiền.';
+    document.getElementById('topupResult').style.color = 'var(--red)';
+    return;
+  }
+  document.getElementById('topupResult').textContent = 'Đang xử lý...';
+  document.getElementById('topupResult').style.color = 'var(--text)';
+  try {
+    const data = await apiCall('/api/topup', 'POST', { amount });
+    if (data.ok) {
+      currentBalance = data.new_balance;
+      updateUI();
+      loadBalance();
+      document.getElementById('topupResult').textContent = `✅ Nạp thành công ${amount.toLocaleString('vi-VN')}đ! Số dư mới: ${data.new_balance.toLocaleString('vi-VN')}đ`;
+      document.getElementById('topupResult').style.color = 'var(--green)';
+      loadActivity();
+    } else {
+      document.getElementById('topupResult').textContent = '❌ ' + (data.err || 'Lỗi không xác định');
+      document.getElementById('topupResult').style.color = 'var(--red)';
+    }
+  } catch (e) {
+    document.getElementById('topupResult').textContent = '❌ Lỗi kết nối server.';
+    document.getElementById('topupResult').style.color = 'var(--red)';
+  }
+}
+
+// ── BUY MODAL ──
+var _mPid='', _mPrice=0;
+function openBuyModal(pid,name,priceStr,days,price){
+  if (!currentUser) {
+    openLoginModal();
+    return;
+  }
+  _mPid=pid; _mPrice=price;
+  document.getElementById('mTier').textContent = 'GÓI ' + name.toUpperCase();
+  document.getElementById('mName').textContent = name;
+  document.getElementById('mPrice').textContent = priceStr;
+  document.getElementById('mDur').textContent = days + ' ngày truy cập';
+  document.getElementById('mBalance').textContent = currentBalance.toLocaleString('vi-VN') + 'đ';
+  const after = currentBalance - price;
+  const af = document.getElementById('mAfter');
+  const warn = document.getElementById('mWarn');
+  const btn = document.getElementById('mConfirmBtn');
+  if (after < 0) {
+    af.textContent = 'Không đủ số dư'; af.style.color = 'var(--red)';
+    warn.style.display = 'flex';
+    document.getElementById('mWarnText').textContent = 'Cần thêm ' + (price - currentBalance).toLocaleString('vi-VN') + 'đ để mua.';
+    btn.disabled = true;
+  } else {
+    af.textContent = after.toLocaleString('vi-VN') + 'đ';
+    af.style.color = after === 0 ? 'rgba(255,255,255,0.4)' : 'var(--green)';
+    warn.style.display = 'none';
+    btn.disabled = false;
+  }
+  document.getElementById('modalForm').style.display = '';
+  document.getElementById('modalResult').className = 'modal-result';
+  document.getElementById('modalResult').innerHTML = '';
+  document.getElementById('buyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBuyModal(){
+  document.getElementById('buyModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+async function confirmBuy(){
+  const btn = document.getElementById('mConfirmBtn');
+  if (btn.disabled) return;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin">⟳</span> Đang xử lý...';
+  try {
+    const data = await apiCall('/api/buy/' + _mPid, 'POST');
+    document.getElementById('modalForm').style.display = 'none';
+    const res = document.getElementById('modalResult');
+    res.style.paddingTop = '28px';
+    if (data.ok) {
+      currentBalance = data.new_balance;
+      updateUI();
+      loadBalance();
+      res.innerHTML = '<div class="modal-success-icon">✓</div>'
+        + '<div class="modal-result-title">Mua thành công!</div>'
+        + '<div class="modal-result-desc">Key sẵn sàng sử dụng!<br>Hết hạn: <strong>' + (data.expires || '') + '</strong></div>'
+        + '<div class="modal-key-display" id="kDisp" title="Bấm để copy">' + data.key + '</div>'
+        + '<div class="modal-copy-hint">Bấm vào key để copy</div>'
+        + '<div style="display:flex;gap:10px;justify-content:center;padding-bottom:28px">'
+        + '<button class="modal-btn-cancel" onclick="closeBuyModal()">Đóng</button>'
+        + '<a href="#packages" class="modal-btn-confirm" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;padding:13px 20px;" onclick="closeBuyModal()">Mua tiếp</a>'
+        + '</div>';
+      document.getElementById('buyModal').querySelector('#kDisp').addEventListener('click', function(){
+        const keyVal = data.key;
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(keyVal).catch(() => fallbackCopy(keyVal));
+        } else { fallbackCopy(keyVal); }
+        const el = document.getElementById('kDisp');
+        el.style.background = 'rgba(74,222,128,0.12)';
+        el.style.borderColor = 'rgba(74,222,128,0.3)';
+        el.style.color = 'var(--green)';
+        el.textContent = 'Copied! ' + keyVal;
+        setTimeout(() => { el.style.background = ''; el.style.borderColor = ''; el.style.color = 'var(--cyan)'; el.textContent = keyVal; }, 2000);
+      });
+      res.classList.add('show');
+      loadActivity();
+    } else {
+      res.innerHTML = '<div class="modal-fail-icon">✗</div>'
+        + '<div class="modal-result-title">Không thể mua!</div>'
+        + '<div class="modal-result-desc">' + (data.err || 'Lỗi không xác định') + '</div>'
+        + '<div style="display:flex;gap:10px;justify-content:center;padding-bottom:28px">'
+        + (data.need_topup ? '<a href="#topup" class="modal-btn-confirm" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;padding:13px 20px;" onclick="closeBuyModal()">Nạp tiền ngay</a>' : '')
+        + '<button class="modal-btn-cancel" onclick="closeBuyModal()">Đóng</button>'
+        + '</div>';
+      res.classList.add('show');
+    }
+  } catch (e) {
+    alert('Lỗi kết nối. Vui lòng thử lại.');
+    btn.disabled = false;
+    btn.innerHTML = 'Thanh toán & Nhận Key';
+  }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── ACTIVITY ──
+var _actData = null, _histTab = 'all';
+function fvnd(n){ return n.toLocaleString('vi-VN') + 'đ'; }
 function timeAgo(s){
   if(!s) return '';
-  var d=new Date(s.replace(' ','T')), now=new Date();
-  var diff=Math.floor((now-d)/1000);
-  if(diff<60) return diff+'s trước';
-  if(diff<3600) return Math.floor(diff/60)+'p trước';
-  if(diff<86400) return Math.floor(diff/3600)+'h trước';
-  return Math.floor(diff/86400)+'ng trước';
+  const d = new Date(s.replace(' ','T')), now = new Date();
+  const diff = Math.floor((now - d) / 1000);
+  if(diff < 60) return diff + 's trước';
+  if(diff < 3600) return Math.floor(diff/60) + 'p trước';
+  if(diff < 86400) return Math.floor(diff/3600) + 'h trước';
+  return Math.floor(diff/86400) + 'ng trước';
 }
 function renderTopNap(data){
-  var el=document.getElementById('topNapList');
+  const el = document.getElementById('topNapList');
   if(!el) return;
-  if(!data||!data.length){el.innerHTML='<div class="hist-empty">Chưa có dữ liệu</div>';return;}
-  var ranks=['rank-1','rank-2','rank-3'];
-  el.innerHTML=data.map(function(item,i){
-    var rc=ranks[i]||'rank-n';
-    var name=item.username.length>12?item.username.slice(0,10)+'..':item.username;
+  if(!data || !data.length) { el.innerHTML = '<div class="hist-empty">Chưa có dữ liệu</div>'; return; }
+  const ranks = ['rank-1','rank-2','rank-3'];
+  el.innerHTML = data.map((item,i) => {
+    const rc = ranks[i] || 'rank-n';
+    const name = item.username.length > 12 ? item.username.slice(0,10)+'..' : item.username;
     return '<div class="top-nap-item">'
-      +'<div class="top-rank '+rc+'">'+(i+1)+'</div>'
-      +'<div class="top-nap-name">'+name+'</div>'
-      +'<div class="top-nap-amt">'+fvnd(item.total)+'</div>'
-      +'</div>';
+      + '<div class="top-rank '+rc+'">' + (i+1) + '</div>'
+      + '<div class="top-nap-name">' + name + '</div>'
+      + '<div class="top-nap-amt">' + fvnd(item.total) + '</div>'
+      + '</div>';
   }).join('');
 }
 function renderHistRows(list, max){
-  if(!list||!list.length) return '<div class="hist-empty">Chưa có giao dịch</div>';
-  var items=max?list.slice(0,max):list;
-  return items.map(function(item){
-    var badge=item.type==='buy'
-      ?'<span class="hist-badge hist-buy">MUA</span>'
-      :'<span class="hist-badge hist-topup">NAP</span>';
-    var name=item.username.length>10?item.username.slice(0,8)+'..':item.username;
+  if(!list || !list.length) return '<div class="hist-empty">Chưa có giao dịch</div>';
+  const items = max ? list.slice(0,max) : list;
+  return items.map(item => {
+    const badge = item.type === 'buy' 
+      ? '<span class="hist-badge hist-buy">MUA</span>'
+      : '<span class="hist-badge hist-topup">NAP</span>';
+    const name = item.username.length > 10 ? item.username.slice(0,8)+'..' : item.username;
     return '<div class="hist-row">'
-      +badge
-      +'<div class="hist-user">'+name+'</div>'
-      +'<div class="hist-desc">'+item.desc+'</div>'
-      +'<div class="hist-amt">'+fvnd(item.amount)+'</div>'
-      +'<div class="hist-time">'+timeAgo(item.time)+'</div>'
-      +'</div>';
+      + badge
+      + '<div class="hist-user">' + name + '</div>'
+      + '<div class="hist-desc">' + item.desc + '</div>'
+      + '<div class="hist-amt">' + fvnd(item.amount) + '</div>'
+      + '<div class="hist-time">' + timeAgo(item.time) + '</div>'
+      + '</div>';
   }).join('');
 }
-function loadActivity(){
-  fetch('/shop/api/activity').then(function(r){return r.json();}).then(function(d){
-    _actData=d;
-    renderTopNap(d.top_nap);
-    var el=document.getElementById('recentHistList');
-    if(el) el.innerHTML=renderHistRows(d.history,6);
-  }).catch(function(){});
+async function loadActivity(){
+  try {
+    const data = await apiCall('/api/activity');
+    _actData = data;
+    renderTopNap(data.top_nap);
+    const el = document.getElementById('recentHistList');
+    if(el) el.innerHTML = renderHistRows(data.history, 6);
+  } catch(e) {}
 }
 function openHistModal(){
   document.getElementById('histModal').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
   renderHistModal();
 }
 function closeHistModal(){
   document.getElementById('histModal').classList.remove('open');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
 }
 function switchTab(tab){
-  _histTab=tab;
-  ['all','buy','topup'].forEach(function(t){
-    document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active',t===tab);
+  _histTab = tab;
+  ['all','buy','topup'].forEach(t => {
+    document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t===tab);
   });
   renderHistModal();
 }
 function renderHistModal(){
-  var el=document.getElementById('histModalList');
-  if(!el||!_actData) return;
-  var list=_actData.history;
-  if(_histTab!=='all') list=list.filter(function(x){return x.type===_histTab;});
-  el.innerHTML=renderHistRows(list,0);
+  const el = document.getElementById('histModalList');
+  if(!el || !_actData) return;
+  let list = _actData.history;
+  if(_histTab !== 'all') list = list.filter(x => x.type === _histTab);
+  el.innerHTML = renderHistRows(list, 0);
 }
+
+// ── SIDEBAR / NAV ──
+function tSB(){ document.getElementById('sb').classList.toggle('open'); document.getElementById('sbo').classList.toggle('open'); }
+function cSB(){ document.getElementById('sb').classList.remove('open'); document.getElementById('sbo').classList.remove('open'); }
+const nb = document.getElementById('nb');
+window.addEventListener('scroll', () => nb.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+
+// ── AOS fallback ──
+(function(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; }
+    });
+  }, {threshold:0.05});
+  document.querySelectorAll('[data-aos]').forEach(el => {
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    obs.observe(el);
+  });
+})();
+
+// ── INIT ──
+loadBalance();
 loadActivity();
 setInterval(loadActivity, 30000);
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});cSB()}}));
-
-// ── MODAL ──────────────────────────────
-var _mPid='',_mPrice=0;
-function openBuyModal(pid,name,priceStr,days,price){
-  // Kiem tra dang nhap truoc
-  fetch('/shop/api/balance').then(r=>r.json()).then(d0=>{
-    if(!d0.logged_in){
-      window.location.href='/shop/login?next=/shop/';
-      return;
-    }
-    _openBuyModalInner(pid,name,priceStr,days,price,d0);
-  }).catch(()=>{ window.location.href='/shop/login'; });
-}
-function _openBuyModalInner(pid,name,priceStr,days,price,d0){
-  _mPid=pid; _mPrice=price;
-  var tiers={'p1':'PROXY 1 NGÀY','p2':'PROXY 1 TUẦN','p3':'PROXY 1 THÁNG'};
-  document.getElementById('mTier').textContent=(tiers[pid]||'GOI')+' PACKAGE';
-  document.getElementById('mName').textContent=name;
-  document.getElementById('mPrice').textContent=priceStr;
-  document.getElementById('mDur').textContent=days+' ngày truy cập';
-  document.getElementById('mBalance').textContent='...';
-  document.getElementById('mAfter').textContent='...';
-  document.getElementById('mWarn').style.display='none';
-  document.getElementById('mConfirmBtn').disabled=false;
-  document.getElementById('mConfirmBtn').innerHTML='Thanh toan &amp; Nhận Key';
-  document.getElementById('modalForm').style.display='';
-  document.getElementById('modalResult').className='modal-result';
-  document.getElementById('modalResult').innerHTML='';
-  document.getElementById('buyModal').classList.add('open');
-  document.body.style.overflow='hidden';
-  // Dung lai kết quả da fetch tu check login
-  Promise.resolve(d0).then(d=>{
-    var bal=d.balance||0;
-    document.getElementById('mBalance').textContent=bal.toLocaleString('vi-VN')+'d';
-    var after=bal-price;
-    var af=document.getElementById('mAfter');
-    var warn=document.getElementById('mWarn');
-    var btn=document.getElementById('mConfirmBtn');
-    if(after<0){
-      af.textContent='Không đủ số dư'; af.style.color='var(--red)';
-      warn.style.display='flex';
-      document.getElementById('mWarnText').textContent='Cần thêm '+(price-bal).toLocaleString('vi-VN')+'đ để mua.';
-      btn.disabled=true;
-    }else{
-      af.textContent=after.toLocaleString('vi-VN')+'d';
-      af.style.color=after===0?'rgba(255,255,255,0.4)':'var(--green)';
-      warn.style.display='none'; btn.disabled=false;
-    }
-  }).catch(()=>{});
-}
-function closeBuyModal(){
-  document.getElementById('buyModal').classList.remove('open');
-  document.body.style.overflow='';
-}
-function confirmBuy(){
-  var btn=document.getElementById('mConfirmBtn');
-  btn.disabled=true;
-  btn.innerHTML='<span style="display:inline-block;animation:spin .7s linear infinite">&#8635;</span> Đang xử lý...';
-  fetch('/shop/buy-json/'+_mPid,{method:'POST',headers:{'Content-Type':'application/json'}})
-  .then(r=>r.json()).then(function(d){
-    document.getElementById('modalForm').style.display='none';
-    var res=document.getElementById('modalResult');
-    res.style.paddingTop='28px';
-    if(d.ok){
-      var keyVal=d.key||'';
-      var expVal=d.expires||'';
-      res.innerHTML='<div class="modal-success-icon">&#10003;</div>'
-        +'<div class="modal-result-title">Mua thành công!</div>'
-        +'<div class="modal-result-desc">Key sẵn sàng sử dụng!<br>Hết hạn: <strong>'+expVal+'</strong></div>'
-        +'<div class="modal-key-display" id="kDisp" title="Bấm để copy">'+keyVal+'</div>'
-        +'<div class="modal-copy-hint">Bấm vào key để copy</div>'
-        +'<div style="display:flex;gap:10px;justify-content:center;padding-bottom:28px">'
-        +'<button class="modal-btn-cancel" onclick="closeBuyModal()">Đóng</button>'
-        +'<a href="/shop/orders" class="modal-btn-confirm" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px">Xem đơn hàng</a>'
-        +'</div>';
-      document.getElementById('buyModal').querySelector('#kDisp').addEventListener('click',function(){
-        function fb(){var ta=document.createElement('textarea');ta.value=keyVal;ta.style.cssText='position:fixed;opacity:0;top:0;left:0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
-        if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(keyVal).catch(fb);}else{fb();}
-          var el=document.getElementById('kDisp');
-          el.style.background='rgba(74,222,128,0.12)';
-          el.style.borderColor='rgba(74,222,128,0.3)';
-          el.style.color='var(--green)';
-          el.textContent='Copied! '+keyVal;
-          setTimeout(function(){el.style.background='';el.style.borderColor='';el.style.color='var(--cyan)';el.textContent=keyVal;},2000);
-      });
-      if(d.new_balance){
-        var bv=document.querySelector('.h-bal-val');
-        if(bv)bv.textContent=d.new_balance;
-        var sb=document.querySelector('.sb-bal-box div:last-child');
-        if(sb)sb.textContent=d.new_balance;
-      }
-    }else{
-      res.innerHTML='<div class="modal-fail-icon">&#10007;</div>'
-        +'<div class="modal-result-title">Không thể mua!</div>'
-        +'<div class="modal-result-desc">'+(d.err||'Lỗi không xác định')+'</div>'
-        +'<div style="display:flex;gap:10px;justify-content:center;padding-bottom:28px">'
-        +(d.need_topup?'<a href="/shop/topup" class="modal-btn-confirm" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px">Nạp tiền ngay</a>':'')
-        +'<button class="modal-btn-cancel" onclick="closeBuyModal()">Đóng</button>'
-        +'</div>';
-    }
-    res.classList.add('show');
-  }).catch(function(err){
-    btn.disabled=false;
-    btn.innerHTML='Thanh toán & Nhận Key';
-    alert('Lỗi kết nối. Vui lòng thử lại.');
-  });
-}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeBuyModal()});
-
 </script>
 
+<!-- ── 3D / EFFECTS (giữ nguyên) ── -->
 <script>
 (function(){
 const cv=document.getElementById('pcv');
@@ -1031,7 +1336,6 @@ loop();
 })();
 </script>
 <script>
-// Three.js 3D Hero Crystal
 (function(){
 var c=document.getElementById('hero3d');
 if(!c||typeof THREE==='undefined')return;
@@ -1041,65 +1345,25 @@ cam.position.z=3.5;
 var rdr=new THREE.WebGLRenderer({canvas:c,alpha:true,antialias:true});
 rdr.setPixelRatio(Math.min(window.devicePixelRatio,2));
 rdr.setSize(380,380);
-// Outer crystal wireframe (cyan)
-var mesh1=new THREE.Mesh(
-  new THREE.IcosahedronGeometry(1.3,1),
-  new THREE.MeshBasicMaterial({color:0x00E5FF,wireframe:true,transparent:true,opacity:0.38})
-);
+var mesh1=new THREE.Mesh(new THREE.IcosahedronGeometry(1.3,1),new THREE.MeshBasicMaterial({color:0x00E5FF,wireframe:true,transparent:true,opacity:0.38}));
 scene.add(mesh1);
-// Inner crystal (purple)
-var mesh2=new THREE.Mesh(
-  new THREE.IcosahedronGeometry(0.78,0),
-  new THREE.MeshBasicMaterial({color:0x7C3AED,wireframe:true,transparent:true,opacity:0.8})
-);
+var mesh2=new THREE.Mesh(new THREE.IcosahedronGeometry(0.78,0),new THREE.MeshBasicMaterial({color:0x7C3AED,wireframe:true,transparent:true,opacity:0.8}));
 scene.add(mesh2);
-// Horizontal equatorial ring
-var torus1=new THREE.Mesh(
-  new THREE.TorusGeometry(1.85,0.018,8,80),
-  new THREE.MeshBasicMaterial({color:0x00E5FF,transparent:true,opacity:0.3})
-);
-torus1.rotation.x=Math.PI/2;
-scene.add(torus1);
-// Diagonal ring
-var torus2=new THREE.Mesh(
-  new THREE.TorusGeometry(2.15,0.012,8,80),
-  new THREE.MeshBasicMaterial({color:0xA78BFA,transparent:true,opacity:0.22})
-);
-torus2.rotation.x=Math.PI/3;torus2.rotation.z=Math.PI/4;
-scene.add(torus2);
-// Particle cloud around crystal
+var torus1=new THREE.Mesh(new THREE.TorusGeometry(1.85,0.018,8,80),new THREE.MeshBasicMaterial({color:0x00E5FF,transparent:true,opacity:0.3}));
+torus1.rotation.x=Math.PI/2; scene.add(torus1);
+var torus2=new THREE.Mesh(new THREE.TorusGeometry(2.15,0.012,8,80),new THREE.MeshBasicMaterial({color:0xA78BFA,transparent:true,opacity:0.22}));
+torus2.rotation.x=Math.PI/3; torus2.rotation.z=Math.PI/4; scene.add(torus2);
 var pp=new Float32Array(150*3);
-for(var i=0;i<150;i++){
-  var th=Math.random()*Math.PI*2,ph=Math.random()*Math.PI,r=1.9+Math.random()*.95;
-  pp[i*3]=r*Math.sin(ph)*Math.cos(th);
-  pp[i*3+1]=r*Math.sin(ph)*Math.sin(th);
-  pp[i*3+2]=r*Math.cos(ph);
-}
-var pg=new THREE.BufferGeometry();
-pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+for(var i=0;i<150;i++){ var th=Math.random()*Math.PI*2,ph=Math.random()*Math.PI,r=1.9+Math.random()*.95; pp[i*3]=r*Math.sin(ph)*Math.cos(th); pp[i*3+1]=r*Math.sin(ph)*Math.sin(th); pp[i*3+2]=r*Math.cos(ph); }
+var pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
 var pcloud=new THREE.Points(pg,new THREE.PointsMaterial({color:0x00E5FF,size:0.048,transparent:true,opacity:0.7}));
 scene.add(pcloud);
 var t=0,mx=0,my=0;
-document.addEventListener('mousemove',function(e){
-  mx=(e.clientX/innerWidth-.5)*2;
-  my=(e.clientY/innerHeight-.5)*2;
-},{passive:true});
-(function anim(){
-  requestAnimationFrame(anim);
-  t+=.006;
-  mesh1.rotation.x=t*.22+my*.18;
-  mesh1.rotation.y=t*.38+mx*.28;
-  mesh2.rotation.x=-t*.32+my*.12;
-  mesh2.rotation.y=-t*.48+mx*.18;
-  torus1.rotation.z=t*.16;
-  torus2.rotation.x=Math.PI/3+t*.1;
-  pcloud.rotation.y=t*.07;
-  rdr.render(scene,cam);
-})();
+document.addEventListener('mousemove',function(e){ mx=(e.clientX/innerWidth-.5)*2; my=(e.clientY/innerHeight-.5)*2; },{passive:true});
+(function anim(){ requestAnimationFrame(anim); t+=.006; mesh1.rotation.x=t*.22+my*.18; mesh1.rotation.y=t*.38+mx*.28; mesh2.rotation.x=-t*.32+my*.12; mesh2.rotation.y=-t*.48+mx*.18; torus1.rotation.z=t*.16; torus2.rotation.x=Math.PI/3+t*.1; pcloud.rotation.y=t*.07; rdr.render(scene,cam); })();
 })();
 </script>
 <script>
-// 3D Card Tilt Effect
 (function(){
 document.querySelectorAll('.pkg-card').forEach(function(card){
   var gl=document.createElement('div');
@@ -1125,32 +1389,27 @@ document.querySelectorAll('.pkg-card').forEach(function(card){
 })();
 </script>
 
-<!-- ── CONTACT WIDGET (shop_home) ── -->
+<!-- ── CONTACT WIDGET ── -->
 <div id="contactWidget" style="position:fixed;bottom:24px;right:24px;z-index:9990;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
   <div id="contactLinks" style="display:none;flex-direction:column;gap:8px;align-items:flex-end">
-    <a href="https://chat.zalo.me/?phone=0842742675" target="_blank"
-       style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(0,120,255,0.45);border-radius:50px;color:#60a5fa;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
+    <a href="https://chat.zalo.me/?phone=0842742675" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(0,120,255,0.45);border-radius:50px;color:#60a5fa;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
       <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#0068FF"/><path d="M24 11C16.268 11 10 16.82 10 24c0 4.09 2.02 7.74 5.2 10.22-.13.9-.6 3.28-1.2 4.78 0 0 7.2-2.4 8.4-2.8.84.14 1.7.2 2.6.2 7.732 0 14-5.82 14-13S31.732 11 24 11z" fill="white"/></svg>
       Zalo Admin
     </a>
-    <a href="https://zalo.me/g/gvcvci4rbsd2wbkw6gri" target="_blank"
-       style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(0,120,255,0.45);border-radius:50px;color:#60a5fa;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
+    <a href="https://zalo.me/g/gvcvci4rbsd2wbkw6gri" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(0,120,255,0.45);border-radius:50px;color:#60a5fa;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
       <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#0068FF"/><path d="M24 11C16.268 11 10 16.82 10 24c0 4.09 2.02 7.74 5.2 10.22-.13.9-.6 3.28-1.2 4.78 0 0 7.2-2.4 8.4-2.8.84.14 1.7.2 2.6.2 7.732 0 14-5.82 14-13S31.732 11 24 11z" fill="white"/></svg>
       Nhóm Zalo
     </a>
-    <a href="https://t.me/canhioscrack" target="_blank"
-       style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(44,165,224,0.45);border-radius:50px;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
+    <a href="https://t.me/canhioscrack" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(44,165,224,0.45);border-radius:50px;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
       <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2CA5E0"/><path d="M11.5 23.5l6 2.5 2.5 7.5 4.5-4.5 7 5L38 13 11.5 23.5z" fill="white"/></svg>
       Telegram Admin
     </a>
-    <a href="https://t.me/ngoclinhgroub" target="_blank"
-       style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(44,165,224,0.45);border-radius:50px;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
+    <a href="https://t.me/ngoclinhgroub" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(44,165,224,0.45);border-radius:50px;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
       <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2CA5E0"/><path d="M11.5 23.5l6 2.5 2.5 7.5 4.5-4.5 7 5L38 13 11.5 23.5z" fill="white"/></svg>
       Nhóm Telegram
     </a>
   </div>
-  <button onclick="toggleContact()" id="contactBtn"
-    style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#00E5FF,#7C3AED);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,229,255,0.45);transition:all .3s;position:relative">
+  <button onclick="toggleContact()" id="contactBtn" style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#00E5FF,#7C3AED);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,229,255,0.45);transition:all .3s;position:relative">
     <svg id="cIcoOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.58 4.45 2 2 0 0 1 3.55 2.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
     <svg id="cIcoClose" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     <span style="position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(0,229,255,0.35);animation:cPulse 2s infinite;pointer-events:none"></span>
@@ -1175,4 +1434,5 @@ document.addEventListener('click',function(e){
   if(_cOpen&&!document.getElementById('contactWidget').contains(e.target))toggleContact();
 });
 </script>
-</body></html>
+</body>
+</html>
