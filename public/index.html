@@ -2,22 +2,31 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CheatiOSVipp - Premium Proxy Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Proxy Vip - Premium Proxy Shop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-/* ── Tất cả style giữ nguyên như bạn đã có ── */
-:root{
-  --bg:#09090B;--card:rgba(255,255,255,0.035);--border:rgba(255,255,255,0.08);
-  --text:#FFFFFF;--sub:rgba(255,255,255,0.45);--sec:rgba(255,255,255,0.65);
-  --cyan:#00E5FF;--purple:#7C3AED;--purple-l:#A78BFA;
-  --green:#4ADE80;--red:#F87171;--yellow:#FBBF24;
-  --r:24px;--rbtn:14px;
-  --sh-c:0 0 40px rgba(0,229,255,0.22);
-  --sh-p:0 0 40px rgba(124,58,237,0.28);
+/* ── BASE (giữ nguyên như cũ) ── */
+:root {
+  --bg: #09090B;
+  --card: rgba(255,255,255,0.035);
+  --border: rgba(255,255,255,0.08);
+  --text: #FFFFFF;
+  --sub: rgba(255,255,255,0.45);
+  --sec: rgba(255,255,255,0.65);
+  --cyan: #00E5FF;
+  --purple: #7C3AED;
+  --purple-l: #A78BFA;
+  --green: #4ADE80;
+  --red: #F87171;
+  --yellow: #FBBF24;
+  --r: 24px;
+  --rbtn: 14px;
+  --sh-c: 0 0 40px rgba(0,229,255,0.22);
+  --sh-p: 0 0 40px rgba(124,58,237,0.28);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -27,14 +36,8 @@ a{color:inherit;text-decoration:none}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
 
-/* ── ANNOUNCE ── */
-.announce b{color:var(--cyan);font-weight:700}
-
 /* ── HEADER ── */
-.navbar{position:sticky;top:0;z-index:900;height:62px;padding:0 24px;
-  background:rgba(9,9,11,0.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;
-  transition:background .3s}
+.navbar{position:sticky;top:0;z-index:900;height:62px;padding:0 24px;background:rgba(9,9,11,0.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;transition:background .3s}
 .navbar.scrolled{background:rgba(9,9,11,0.95)}
 .nav-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
@@ -49,20 +52,15 @@ a{color:inherit;text-decoration:none}
 .h-balance:hover{background:rgba(0,229,255,0.1)}
 .h-bal-lbl{font-size:9px;color:var(--sub);font-weight:500}
 .h-bal-val{font-size:12.5px;font-weight:800;color:var(--cyan)}
-.h-icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--sec);transition:all .2s}
-.h-icon-btn:hover{border-color:var(--cyan);color:var(--cyan)}
 .user-chip{display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);border-radius:10px;cursor:pointer;transition:all .2s}
 .user-chip:hover{border-color:rgba(255,255,255,0.13);background:rgba(255,255,255,0.06)}
 .user-avatar{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff}
 .user-name-h{font-size:12.5px;font-weight:600;color:#fff}
-.user-role-h{font-size:9.5px;color:var(--sub)}
 .nav-btn{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--border);transition:.2s;cursor:pointer;background:transparent;color:var(--text);display:inline-flex;align-items:center;gap:5px}
 .nav-btn:hover{background:rgba(255,255,255,0.06)}
 .nav-pri{background:linear-gradient(135deg,var(--cyan),var(--purple))!important;border-color:transparent!important;color:#fff!important}
 .nav-out{color:var(--red)!important;border-color:rgba(248,113,113,0.3)!important}
 .nav-out:hover{background:rgba(248,113,113,0.08)!important}
-.nav-admin{color:var(--yellow)!important;border-color:rgba(251,191,36,0.3)!important}
-.bal-badge{background:rgba(0,229,255,0.1);color:var(--cyan);font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;border:1px solid rgba(0,229,255,0.2);margin-left:4px}
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:7px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04)}
 .hamburger span{width:16px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
 
@@ -72,9 +70,6 @@ a{color:inherit;text-decoration:none}
 .sidebar{position:fixed;top:0;left:-300px;width:280px;height:100vh;background:rgba(9,9,11,0.98);backdrop-filter:blur(40px);border-right:1px solid rgba(255,255,255,0.07);z-index:2000;transition:left .35s cubic-bezier(.4,0,.2,1);padding:22px 18px;display:flex;flex-direction:column;gap:16px}
 .sidebar.open{left:0}
 .sb-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--sub)}
-.sb-user-box{display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
-.sb-avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
-.sb-bal-box{padding:12px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.13);border-radius:12px}
 .sb-nav{display:flex;flex-direction:column;gap:2px}
 .sb-nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--sec);font-size:13.5px;font-weight:500;transition:all .2s}
 .sb-nav a:hover{background:rgba(255,255,255,0.06);color:#fff}
@@ -87,9 +82,9 @@ a{color:inherit;text-decoration:none}
 #pcv{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .glow-blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px)}
 .gb1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.12) 0%,transparent 70%);top:-180px;left:-240px}
-.gb2{width:500px;height:500px;background:radial-gradient(circle,rgba(0,229,255,.1) 0%,transparent 70%);bottom:-80px;right:-120px}.gbf1{position:fixed;width:800px;height:800px;background:radial-gradient(circle,rgba(124,58,237,.08) 0%,transparent 70%);top:20%;right:-200px;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0}.gbf2{position:fixed;width:600px;height:600px;background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 70%);bottom:10%;left:-150px;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0}.gbf3{position:fixed;width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,.06) 0%,transparent 70%);top:60%;right:20%;border-radius:50%;pointer-events:none;filter:blur(100px);z-index:0}
-.hero-inner{max-width:860px;margin:0 auto;width:100%;display:flex;flex-direction:column;align-items:flex-start;position:relative;z-index:1;padding:0 40px}
-.hero-content{display:flex;flex-direction:column;gap:20px}
+.gb2{width:500px;height:500px;background:radial-gradient(circle,rgba(0,229,255,.1) 0%,transparent 70%);bottom:-80px;right:-120px}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:60px;position:relative;z-index:1;padding:0 40px}
+.hero-content{display:flex;flex-direction:column;gap:20px;flex:1}
 .hero-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:100px;font-size:12px;font-weight:600;color:var(--cyan);width:fit-content}
 .hero-title{font-size:clamp(36px,5vw,66px);font-weight:900;line-height:1.08;letter-spacing:-.025em}
 .grad{background:linear-gradient(135deg,var(--cyan),var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -101,33 +96,15 @@ a{color:inherit;text-decoration:none}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 56px rgba(0,229,255,.4);color:#fff}
 .btn-secondary{display:inline-flex;align-items:center;gap:7px;padding:12px 24px;background:rgba(255,255,255,0.05);color:#fff;font-size:14px;font-weight:600;border-radius:var(--rbtn);text-decoration:none;border:1px solid rgba(255,255,255,0.11);cursor:pointer;transition:all .3s}
 .btn-secondary:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2);transform:translateY(-2px);color:#fff}
-.hero-visual{display:flex;justify-content:flex-end;align-items:center}
-.dash-card{width:100%;max-width:480px;background:rgba(255,255,255,0.035);border-radius:var(--r);padding:24px;border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(16px);position:relative;overflow:hidden;animation:float-c 6s ease-in-out infinite;box-shadow:var(--sh-c)}
-@keyframes float-c{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-.d-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.d-tlbl{font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:1.2px}
-.sys-ok{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--green)}
-.sys-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-g 2s infinite}
-@keyframes pulse-g{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
-.d-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.ds{padding:12px 8px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.06);text-align:center}
-.ds-v{font-size:17px;font-weight:800;color:var(--cyan)}
-.ds-l{font-size:9.5px;color:var(--sub);margin-top:2px}
-.d-bars{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
-.bar-row{display:flex;align-items:center;gap:9px}
-.bar-lbl{font-size:10.5px;color:var(--sub);width:50px;flex-shrink:0}
-.bar-track{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--purple))}
-.bar-val{font-size:10.5px;font-weight:700;color:#fff;width:30px;text-align:right}
-.d-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mini-s{padding:11px;border-radius:11px;border:1px solid}
-.mini-s.c{background:rgba(0,229,255,0.06);border-color:rgba(0,229,255,0.15)}
-.mini-s.p{background:rgba(124,58,237,0.06);border-color:rgba(124,58,237,0.15)}
-.mini-top{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.mini-lbl{font-size:9.5px;color:var(--sub)}
-.mini-v{font-size:18px;font-weight:800}
-.mini-s.c .mini-v{color:var(--cyan)}
-.mini-s.p .mini-v{color:var(--purple-l)}
+#hero3dWrap{flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;width:380px;height:380px}
+#hero3dWrap div{position:absolute;border-radius:50%;pointer-events:none}
+#hero3dWrap div:nth-child(1){inset:-22px;border:1px solid rgba(0,229,255,0.18);animation:hero3dRing 8s linear infinite}
+#hero3dWrap div:nth-child(2){inset:-44px;border:1px solid rgba(124,58,237,0.12);animation:hero3dRing 14s linear infinite reverse}
+#hero3dWrap div:nth-child(3){inset:-66px;border:1px solid rgba(0,229,255,0.07);animation:hero3dRing 22s linear infinite}
+#hero3d{display:block;filter:drop-shadow(0 0 60px rgba(0,229,255,0.45))}
+@keyframes hero3dRing{to{transform:rotate(360deg)}}
+@media(max-width:960px){#hero3dWrap{display:none!important}}
+@media(max-width:768px){.hero-inner{flex-direction:column;padding:0 16px}.hero-cta{flex-direction:row;flex-wrap:nowrap}.hero-cta .btn-primary,.hero-cta .btn-secondary{width:100%;justify-content:center}}
 
 /* ── SECTION ── */
 .section{padding:80px 24px;position:relative}
@@ -138,15 +115,9 @@ a{color:inherit;text-decoration:none}
 .sec-sub{font-size:15.5px;color:var(--sec);max-width:460px;margin:0 auto;line-height:1.65}
 .div-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent);max-width:1280px;margin:0 auto}
 
-/* ── STATS ── */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.stat-card{padding:26px 18px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);backdrop-filter:blur(8px);transition:all .3s;position:relative;overflow:hidden;cursor:default}
-.stat-card:hover{transform:translateY(-4px);border-color:rgba(0,229,255,0.18);box-shadow:var(--sh-c)}
-.stat-num{font-size:clamp(24px,3vw,36px);font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:7px}
-.stat-lbl{font-size:13.5px;font-weight:500;color:var(--sec)}
-
 /* ── PACKAGES ── */
 .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+@media(max-width:768px){.pkg-grid{grid-template-columns:1fr}}
 .pkg-card{padding:28px 26px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r);position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer}
 .pkg-card:hover{transform:translateY(-8px) scale(1.025);border-color:rgba(0,229,255,0.3);box-shadow:var(--sh-c)}
 .pkg-card.hot{border-color:rgba(0,229,255,0.22);background:rgba(0,229,255,0.03)}
@@ -156,7 +127,6 @@ a{color:inherit;text-decoration:none}
 .pkg-card:hover .pkg-icon{box-shadow:0 0 22px rgba(0,229,255,.28);background:linear-gradient(135deg,rgba(0,229,255,0.22),rgba(124,58,237,0.2))}
 .pkg-tier{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .pkg-price{font-size:36px;font-weight:900;color:#fff;line-height:1;margin-bottom:2px}
-.pkg-price span{font-size:14px;font-weight:600;color:var(--sub)}
 .pkg-dur{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:rgba(255,255,255,0.05);border-radius:6px;font-size:11px;font-weight:500;color:var(--sec);margin-bottom:18px;margin-top:6px}
 .pkg-divider{height:1px;background:rgba(255,255,255,0.06);margin-bottom:16px}
 .pkg-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
@@ -165,15 +135,14 @@ a{color:inherit;text-decoration:none}
 .btn-buy{width:100%;padding:12px;background:linear-gradient(135deg,rgba(0,229,255,0.09),rgba(124,58,237,0.09));border:1px solid rgba(0,229,255,0.22);border-radius:var(--rbtn);color:var(--cyan);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;font-family:inherit}
 .btn-buy:hover{background:linear-gradient(135deg,var(--cyan),var(--purple));border-color:transparent;color:#fff;box-shadow:var(--sh-c);transform:translateY(-2px)}
 .pkg-card.hot .btn-buy{background:linear-gradient(135deg,var(--cyan),var(--purple));border-color:transparent;color:#fff;box-shadow:var(--sh-c)}
-.pkg-card.hot .btn-buy:hover{box-shadow:0 0 56px rgba(0,229,255,.48)}
-
-/* Shine effect */
 .shine{position:relative;overflow:hidden}
 .shine::after{content:'';position:absolute;top:-50%;left:-100%;width:55%;height:200%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.05) 50%,transparent 60%);transition:left .9s ease}
 .shine:hover::after{left:160%}
 
 /* ── FEATURES ── */
 .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.feat-grid{grid-template-columns:1fr}}
 .feat-card{padding:24px 20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);backdrop-filter:blur(8px);transition:all .3s;position:relative;overflow:hidden}
 .feat-card:hover{transform:translateY(-4px);border-color:rgba(124,58,237,0.22);box-shadow:var(--sh-p)}
 .feat-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(124,58,237,0.14),rgba(0,229,255,0.14));border:1px solid rgba(124,58,237,0.2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--purple-l);transition:all .3s}
@@ -181,307 +150,13 @@ a{color:inherit;text-decoration:none}
 .feat-name{font-size:15px;font-weight:700;margin-bottom:6px}
 .feat-desc{font-size:13px;color:var(--sec);line-height:1.6}
 
-/* ── FOOTER ── */
-.footer{padding:48px 24px 28px;border-top:1px solid rgba(255,255,255,0.06)}
-.footer-inner{max-width:1280px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:36px;margin-bottom:36px}
-.footer-brand{display:flex;flex-direction:column;gap:11px}
-.footer-desc{font-size:13px;color:var(--sub);line-height:1.65;max-width:260px}
-.footer-col-h{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sec);margin-bottom:12px}
-.footer-links{display:flex;flex-direction:column;gap:7px}
-.footer-links a{color:var(--sub);font-size:13px;transition:color .2s}
-.footer-links a:hover{color:var(--cyan)}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,0.04)}
-.footer-copy{font-size:12px;color:var(--sub)}
-.footer-socials{display:flex;gap:6px}
-.soc-btn{width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;color:var(--sub);cursor:pointer;transition:all .2s}
-.soc-btn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.06)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr)}.feat-grid{grid-template-columns:repeat(2,1fr)}.footer-top{grid-template-columns:1fr 1fr}}
-@media(max-width:768px){
-  .nav-links,.nav-right .h-balance,.nav-right .h-icon-btn,.nav-right .user-chip,.nav-right .nav-btn:not(.hamburger){display:none!important}
-  .hamburger{display:flex!important}
-  .hero{padding:36px 16px;min-height:auto}
-  .hero-inner{grid-template-columns:1fr;gap:32px}
-  .hero-visual{order:-1}
-  .dash-card{max-width:100%}
-  .pkg-grid{grid-template-columns:1fr}
-  .pkg-card:hover{transform:none}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .feat-grid{grid-template-columns:1fr}
-  .hero-cta{flex-direction:row;flex-wrap:nowrap;gap:8px}
-  .hero-cta .btn-primary,.hero-cta .btn-secondary{width:100%;justify-content:center}
-  .footer-top{grid-template-columns:1fr;gap:20px}
-  .footer-bottom{flex-direction:column;gap:10px;text-align:center}
-  .section{padding:52px 16px}
-}
-@media(max-width:480px){.stats-grid{grid-template-columns:1fr 1fr}.pkg-price{font-size:28px}}
-
-/* Force visible - AOS fallback */
-[data-aos]{opacity:1!important;transform:none!important}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeLeft{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
-
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal-box{background:#111118;border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:0;width:100%;max-width:460px;position:relative;transform:translateY(20px) scale(0.97);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow:hidden}
-.modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
-.modal-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:120px;background:radial-gradient(ellipse,rgba(0,229,255,0.15) 0%,transparent 70%);pointer-events:none}
-.modal-head{padding:28px 28px 0}
-.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:9px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.45);transition:all .2s}
-.modal-close:hover{border-color:var(--red);color:var(--red)}
-.modal-tier{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);margin-bottom:6px}
-.modal-name{font-size:22px;font-weight:800;margin-bottom:4px}
-.modal-desc{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:20px}
-.modal-price-row{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:rgba(0,229,255,0.04);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
-.modal-price{font-size:36px;font-weight:900;color:#fff}
-.modal-dur{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(0,229,255,0.09);border:1px solid rgba(0,229,255,0.2);border-radius:7px;font-size:11.5px;color:var(--cyan);font-weight:600}
-.modal-body{padding:20px 28px}
-.modal-balance-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:11px;margin-bottom:8px}
-.modal-balance-row span:first-child{font-size:13px;color:rgba(255,255,255,0.5)}
-.modal-balance-row span:last-child{font-size:13.5px;font-weight:700}
-.modal-after-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:11px;margin-bottom:20px}
-.modal-after-row span:first-child{font-size:13px;color:rgba(255,255,255,0.5)}
-.modal-after-row span:last-child{font-size:14px;font-weight:700}
-.modal-warn{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:10px;font-size:13px;color:#fca5a5;margin-bottom:20px}
-.modal-footer{padding:0 28px 28px;display:flex;gap:10px}
-.modal-btn-confirm{flex:1;padding:13px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:7px}
-.modal-btn-confirm:hover{box-shadow:0 0 40px rgba(0,229,255,0.4);transform:translateY(-1px)}
-.modal-btn-confirm:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.modal-btn-cancel{padding:13px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;color:rgba(255,255,255,0.6);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
-.modal-btn-cancel:hover{background:rgba(255,255,255,0.08);color:#fff}
-.modal-result{padding:0 28px 28px;text-align:center;display:none}
-.modal-result.show{display:block}
-.modal-success-icon{width:60px;height:60px;border-radius:50%;background:rgba(74,222,128,0.12);border:2px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#4ADE80}
-.modal-fail-icon{width:60px;height:60px;border-radius:50%;background:rgba(248,113,113,0.12);border:2px solid rgba(248,113,113,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#F87171}
-.modal-result-title{font-size:18px;font-weight:800;margin-bottom:8px}
-.modal-result-desc{font-size:13.5px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:18px}
-.modal-key-display{font-family:monospace;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:10px;padding:12px 16px;font-size:16px;font-weight:700;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;word-break:break-all;cursor:pointer;transition:all .2s}
-.modal-key-display:hover{background:rgba(0,229,255,0.1)}
-.modal-copy-hint{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:18px}
-.spin{animation:spin .7s linear infinite;display:inline-block}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── TOPUP PAGE PREMIUM ── */
-.topup-wrap{max-width:760px;margin:0 auto;padding:32px 16px 80px}
-.topup-header{text-align:center;margin-bottom:36px}
-.topup-header h1{font-size:clamp(26px,4vw,36px);font-weight:900;margin-bottom:6px}
-.topup-header p{font-size:14px;color:var(--sub)}
-.topup-bal-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.25);border-radius:30px;font-size:14px;font-weight:700;color:#4ADE80;margin-top:10px}
-.topup-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:600px){.topup-grid{grid-template-columns:1fr}}
-.topup-bank-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px;position:relative;overflow:hidden}
-.topup-bank-card::before{content:'';position:absolute;top:-40px;right:-40px;width:130px;height:130px;background:radial-gradient(circle,rgba(0,229,255,0.08),transparent 70%);pointer-events:none}
-.topup-bank-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);margin-bottom:16px}
-.topup-bank-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-.topup-bank-row:last-child{border-bottom:none}
-.topup-bank-label{font-size:12px;color:var(--sub);display:flex;align-items:center;gap:7px}
-.topup-bank-val{font-size:14px;font-weight:700;cursor:pointer;transition:color .2s}
-.topup-bank-val:hover{color:var(--cyan)}
-.topup-bank-stk{font-size:20px;font-weight:900;letter-spacing:1px;color:var(--cyan)}
-.topup-copy-btn{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:6px;font-size:11px;color:var(--cyan);cursor:pointer;transition:all .2s;margin-left:8px}
-.topup-copy-btn:hover{background:rgba(0,229,255,0.15)}
-.topup-form-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px}
-.topup-form-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--purple-l);margin-bottom:16px}
-.topup-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.topup-amt-btn{padding:12px 8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;transition:all .25s;color:rgba(255,255,255,0.85)}
-.topup-amt-btn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.06)}
-.topup-amt-btn.active{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 16px rgba(0,229,255,0.15)}
-.topup-input-row{display:flex;gap:10px;margin-bottom:18px}
-.topup-custom-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;font-size:15px;font-weight:700;color:#fff;outline:none;transition:border-color .2s}
-.topup-custom-input:focus{border-color:var(--cyan)}
-.topup-custom-input::placeholder{color:rgba(255,255,255,0.2);font-weight:400}
-.topup-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px}
-.topup-submit:hover{box-shadow:0 0 40px rgba(0,229,255,0.35);transform:translateY(-1px)}
-.topup-note{margin-top:20px;padding:14px 16px;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:12px;font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6}
-.topup-note strong{color:var(--purple-l)}
-.topup-alert-ok{margin-bottom:20px;padding:14px 18px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.25);border-radius:14px;font-size:14px;color:#4ADE80;line-height:1.6}
-.topup-alert-err{margin-bottom:20px;padding:14px 18px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);border-radius:14px;font-size:14px;color:#fca5a5;line-height:1.6}
-.topup-steps{display:flex;gap:10px;margin-bottom:24px}
-@media(max-width:500px){.topup-steps{flex-direction:column}}
-.topup-step{flex:1;padding:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;text-align:center}
-.topup-step-num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin:0 auto 8px}
-.topup-step-text{font-size:12px;color:var(--sub);line-height:1.4}
-
-/* ── QR BANK ── */
-.topup-qr-wrap{display:flex;flex-direction:column;align-items:center;margin:18px 0 12px}
-.topup-qr-box{position:relative;width:200px;height:200px;border-radius:16px;overflow:hidden;background:#fff;padding:10px;box-shadow:0 0 40px rgba(0,229,255,0.12);border:2px solid rgba(0,229,255,0.2)}
-.topup-qr-box img{width:100%;height:100%;object-fit:contain;display:block;border-radius:8px}
-.topup-qr-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.9);border-radius:14px;font-size:13px;color:#333;font-weight:600}
-.topup-qr-amt{margin-top:10px;font-size:22px;font-weight:900;color:var(--cyan);letter-spacing:.5px}
-.topup-qr-name{font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px}
-.topup-qr-hint{font-size:11px;color:rgba(255,255,255,0.3);margin-top:6px;display:flex;align-items:center;gap:5px}
-.topup-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:640px){.topup-grid{grid-template-columns:1fr}.topup-form-card{order:-1}.topup-bank-card{order:1}}
-
-/* ── TOPUP CK NOTE ── */
-.topup-ck-note{margin-top:10px;padding:10px 14px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:10px;text-align:center}
-.topup-ck-label{font-size:10px;color:#94a3b8;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.topup-ck-val{display:flex;align-items:center;justify-content:center;gap:8px}
-.topup-ck-val code{color:#00E5FF;font-size:14px;font-weight:700;font-family:monospace;background:rgba(0,229,255,.1);padding:4px 10px;border-radius:6px}
-.topup-ck-copy{padding:3px 10px;background:rgba(0,229,255,.15);border:1px solid rgba(0,229,255,.3);border-radius:5px;color:#00E5FF;font-size:11px;cursor:pointer;transition:.2s}
-.topup-ck-copy:hover{background:rgba(0,229,255,.3)}
-.topup-gen-btn{width:100%;padding:15px;margin-top:12px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:9px}
-.topup-gen-btn:hover{box-shadow:0 0 40px rgba(0,229,255,.35);transform:translateY(-2px)}
-.topup-done-btn{width:100%;margin-top:14px;padding:13px;background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.25);border-radius:12px;color:#4ADE80;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:7px}
-.topup-done-btn:hover:not(:disabled){background:rgba(74,222,128,.15);box-shadow:0 0 20px rgba(74,222,128,.2)}
-.topup-done-btn:disabled{opacity:.6;cursor:not-allowed}
-.topup-qr-hidden{display:none}
-.topup-hist-card{margin-top:24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:22px 24px}
-.topup-hist-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--purple-l);margin-bottom:16px}
-.topup-hist-row{display:grid;grid-template-columns:80px 1fr 1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.topup-hist-row:last-child{border-bottom:none}
-@media(max-width:540px){.topup-hist-row{grid-template-columns:1fr 1fr;row-gap:3px}.th-date{grid-column:1/3;font-size:10px}.th-badge{justify-self:end}}
-.th-id{font-size:11px;color:var(--sub);font-family:monospace}.th-amt{font-size:14px;font-weight:800;color:#e2e8f0}
-.th-date{font-size:11px;color:var(--sub)}.th-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
-.th-pend{background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.3);color:#fbbf24}
-.th-done{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#4ADE80}
-.th-rej{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5}
-.th-empty{text-align:center;color:var(--sub);padding:24px 0;font-size:14px;margin:0}@keyframes tspin{to{transform:rotate(360deg)}}.btn-spinner{display:inline-block;width:15px;height:15px;border:2.5px solid rgba(74,222,128,.25);border-top-color:#4ADE80;border-radius:50%;animation:tspin .75s linear infinite;vertical-align:middle;margin-right:7px}
-/* ── TOPUP TABS ── */
-.topup-tabs{display:flex;gap:8px;margin-bottom:22px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:5px}
-.topup-tab-btn{flex:1;padding:11px 16px;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;transition:all .25s;background:transparent;color:rgba(255,255,255,.45);font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px}
-.topup-tab-btn.active{background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(124,58,237,.15));color:#fff;border:1px solid rgba(0,229,255,.25);box-shadow:0 2px 12px rgba(0,229,255,.1)}
-.topup-tab-btn:hover:not(.active){color:rgba(255,255,255,.7);background:rgba(255,255,255,.05)}
-/* ── CARD TOPUP FORM ── */
-.card-form-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px}
-.card-telco-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px}
-@media(max-width:500px){.card-telco-grid{grid-template-columns:repeat(3,1fr)}}
-.card-telco-btn{padding:10px 4px;border:1.5px solid rgba(255,255,255,.1);border-radius:11px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.03)}
-.card-telco-btn:hover{border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.06)}
-.card-telco-btn.active{border-color:var(--cyan);background:rgba(0,229,255,.1);box-shadow:0 0 12px rgba(0,229,255,.15)}
-.card-telco-name{font-size:10px;font-weight:700;margin-top:4px;color:rgba(255,255,255,.7)}
-.card-denom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.card-denom-btn{padding:11px 6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;transition:all .22s;color:rgba(255,255,255,.8)}
-.card-denom-btn:hover{border-color:rgba(124,58,237,.5);color:var(--purple-l)}
-.card-denom-btn.active{background:rgba(124,58,237,.12);border-color:var(--purple-l);color:var(--purple-l);box-shadow:0 0 12px rgba(124,58,237,.15)}
-.card-input{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600;color:#fff;outline:none;transition:border-color .2s;font-family:'Inter',sans-serif;margin-bottom:12px}
-.card-input:focus{border-color:var(--purple-l)}
-.card-input::placeholder{color:rgba(255,255,255,.2);font-weight:400}
-.card-submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:9px}
-.card-submit-btn:hover{box-shadow:0 0 40px rgba(124,58,237,.4);transform:translateY(-2px)}
-.card-submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.card-result-box{margin-top:14px;padding:13px 16px;border-radius:12px;font-size:14px;font-weight:600;display:none;line-height:1.5}
-.card-note{margin-top:16px;padding:12px 14px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:11px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.7}
-.card-note strong{color:var(--purple-l)}
-/* ── CAPTCHA ── */
-.captcha-wrap{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.captcha-box{flex-shrink:0;padding:11px 18px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(0,229,255,.1));border:1.5px solid rgba(124,58,237,.35);border-radius:12px;font-size:17px;font-weight:900;color:#fff;letter-spacing:2px;font-family:monospace;min-width:130px;text-align:center;user-select:none}
-.captcha-input{flex:1;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;font-size:16px;font-weight:700;color:#fff;outline:none;transition:border-color .2s;font-family:'Inter',sans-serif;text-align:center;width:90px}
-.captcha-input:focus{border-color:var(--purple-l)}
-.captcha-input::placeholder{color:rgba(255,255,255,.2);font-weight:400;font-size:13px}
-.captcha-refresh{padding:11px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:11px;color:rgba(255,255,255,.6);cursor:pointer;font-size:16px;transition:.2s;line-height:1}
-.captcha-refresh:hover{background:rgba(255,255,255,.12);color:#fff}
-/* ── ORDERS PAGE ── */
-.orders-wrap{max-width:960px;margin:0 auto;padding:32px 16px 80px}
-.orders-header{margin-bottom:28px}
-.orders-header h1{font-size:clamp(22px,3.5vw,32px);font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:12px}
-.orders-header p{font-size:14px;color:var(--sub)}
-.orders-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
-@media(max-width:500px){.orders-stats{grid-template-columns:1fr 1fr}}
-.orders-stat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 16px}
-.orders-stat-val{font-size:22px;font-weight:900;margin-bottom:2px}
-.orders-stat-lbl{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.5px}
-.orders-empty{text-align:center;padding:60px 20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px}
-.orders-empty-icon{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;opacity:.5}
-.orders-list{display:flex;flex-direction:column;gap:12px}
-.order-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 20px;transition:border-color .2s,background .2s;position:relative;overflow:hidden}
-.order-card:hover{border-color:rgba(0,229,255,0.2);background:rgba(255,255,255,0.04)}
-.order-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.order-id{font-family:monospace;font-size:11px;color:var(--sub);background:rgba(255,255,255,0.05);padding:3px 10px;border-radius:6px;letter-spacing:.5px}
-.order-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);border-radius:20px;font-size:11px;font-weight:700;color:#4ADE80}
-.order-badge-exp{background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.25);color:#F87171}
-.order-card-body{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
-@media(max-width:560px){.order-card-body{grid-template-columns:1fr}}
-.order-product{font-size:17px;font-weight:800;margin-bottom:6px}
-.order-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--sub)}
-.order-meta-item{display:flex;align-items:center;gap:5px}
-.order-key-section{min-width:0}
-.order-key-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--sub);margin-bottom:6px}
-.order-key-box{display:flex;align-items:center;gap:8px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:10px;padding:10px 14px}
-.order-key-val{font-family:monospace;font-size:14px;font-weight:700;letter-spacing:1.5px;color:var(--cyan);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
-.order-copy-btn{flex-shrink:0;padding:5px 12px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:7px;font-size:11px;font-weight:700;color:var(--cyan);cursor:pointer;transition:all .2s;white-space:nowrap}
-.order-copy-btn:hover{background:rgba(0,229,255,0.16);border-color:var(--cyan)}
-.order-copy-btn.copied{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:#4ADE80}
-.order-exp-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:0 0 0 18px;transition:width .6s ease}
-/* ── LEGACY forms/tables/alerts ── */
-.container{max-width:1200px;margin:0 auto;padding:32px 20px}
-.page-title{font-size:1.5rem;font-weight:800;margin-bottom:6px}
-.page-sub{color:var(--sub);font-size:.9rem;margin-bottom:24px}
-.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;margin-bottom:16px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:700px){.grid-3,.grid-2{grid-template-columns:1fr}}
-.prod-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:12px;transition:.2s;position:relative;overflow:hidden}
-.prod-card:hover{border-color:#444;transform:translateY(-2px)}
-.prod-card.popular{border-color:rgba(0,229,255,0.3)}
-.popular-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:1px}
-.prod-name{font-size:1.05rem;font-weight:700}
-.prod-desc{font-size:.82rem;color:var(--sub)}
-.prod-price{font-size:1.6rem;font-weight:800;color:#fff}
-.prod-price span{font-size:.8rem;color:var(--sub);font-weight:400}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 22px;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;border:none;transition:.2s}
-.btn-full{width:100%}
-.btn-pri{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff}
-.btn-pri:hover{box-shadow:var(--sh-c)}
-.btn-sec{background:transparent;color:var(--text);border:1px solid var(--border)}.btn-sec:hover{background:rgba(255,255,255,0.05)}
-.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#16a34a}
-.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#dc2626}
-.btn-blue{background:#3b82f6;color:#fff}.btn-blue:hover{background:#2563eb}
-.btn-sm{padding:6px 12px;font-size:.78rem;border-radius:8px}
-.form-group{margin-bottom:16px}
-.form-label{font-size:.82rem;color:var(--sub);margin-bottom:6px;display:block;font-weight:600}
-.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:11px 14px;color:var(--text);font-size:.9rem;outline:none;transition:.2s}
-.form-input:focus{border-color:rgba(0,229,255,0.4)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:500px){.form-row{grid-template-columns:1fr}}
-.alert{padding:12px 16px;border-radius:10px;font-size:.85rem;margin-bottom:20px;font-weight:500}
-.alert-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5}
-.alert-ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac}
-.alert-info{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,0.08);color:var(--sub)}
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.5px}
-.badge-green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
-.badge-yellow{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3)}
-.badge-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
-.badge-blue{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
-.badge-gray{background:rgba(255,255,255,0.05);color:var(--sub);border:1px solid rgba(255,255,255,0.08)}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:10px 14px;font-size:.75rem;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,0.08)}
-td{padding:12px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,0.02)}
-.key-box{font-family:monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;font-size:.82rem;letter-spacing:1px;display:inline-flex;align-items:center;gap:8px}
-.copy-btn{background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--sub);cursor:pointer;font-size:.72rem;padding:3px 8px;border-radius:6px}
-.copy-btn:hover{background:rgba(255,255,255,0.06);color:var(--text)}
-.divider{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:20px 0}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-@media(max-width:800px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
-.topup-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
-.amount-btn{padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:var(--text);font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;text-align:center}
-.amount-btn:hover,.amount-btn.selected{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.05)}
-.info-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;font-size:.83rem;color:var(--sub);line-height:1.9}
-.info-box strong{color:var(--text)}
-.admin-tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0}
-.admin-tab{padding:10px 20px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.2s}
-.admin-tab:hover{color:var(--text)}
-.admin-tab.active{color:#fff;border-bottom-color:#fff}
-.tab-content{display:none}.tab-content.active{display:block}
-.input-group{display:flex;gap:8px}
-.input-group .form-input{flex:1}
-
-
-.hero-cta .btn-primary,.hero-cta .btn-secondary{flex:1;min-width:0;justify-content:center;white-space:nowrap}
-@media(max-width:480px){.hero-cta .btn-primary,.hero-cta .btn-secondary{padding:11px 10px;font-size:13px}}
-
-/* ── TOP NAP + HISTORY ── */
+/* ── ACTIVITY ── */
 .activity-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+@media(max-width:768px){.activity-wrap{grid-template-columns:1fr}}
 .activity-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);padding:20px;position:relative;overflow:hidden}
 .activity-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.03),transparent);pointer-events:none}
 .activity-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .activity-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--sub)}
-.activity-title svg{flex-shrink:0}
 .activity-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
 .top-nap-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .top-nap-item:last-child{border-bottom:none}
@@ -503,7 +178,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .hist-desc{flex:1;font-size:11px;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hist-amt{font-size:12px;font-weight:800;color:var(--cyan);flex-shrink:0}
 .hist-time{font-size:10px;color:rgba(255,255,255,.25);flex-shrink:0;margin-left:4px}
-/* History Modal */
+
+/* ── HIST MODAL ── */
 .hist-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:9500;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:.25s}
 .hist-modal-overlay.open{opacity:1;pointer-events:all}
 .hist-modal{background:linear-gradient(145deg,#0f1117,#12151f);border:1px solid rgba(255,255,255,.08);border-radius:20px;width:100%;max-width:640px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(20px) scale(.97);transition:.3s cubic-bezier(.34,1.56,.64,1)}
@@ -520,35 +196,171 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .hist-list::-webkit-scrollbar-track{background:transparent}
 .hist-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
 .hist-empty{text-align:center;padding:32px;color:var(--sub);font-size:13px}
-@media(max-width:768px){.activity-wrap{grid-template-columns:1fr}}
-/* ── BALANCE TOAST ── */
-#balToastWrap{position:fixed;top:80px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.bal-toast{display:flex;align-items:center;gap:10px;padding:14px 18px;background:linear-gradient(135deg,rgba(10,20,35,.97),rgba(15,30,50,.97));border:1px solid rgba(74,222,128,.45);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(74,222,128,.1);pointer-events:auto;min-width:260px;max-width:340px;animation:toastIn .35s cubic-bezier(.34,1.56,.64,1) both}
-.bal-toast.hide{animation:toastOut .3s ease forwards}
-.bal-toast-icon{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(0,229,255,.1));border:1px solid rgba(74,222,128,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.bal-toast-body{flex:1}
-.bal-toast-title{font-size:13px;font-weight:700;color:#4ADE80;margin-bottom:2px}
-.bal-toast-msg{font-size:12px;color:#94a3b8}
-.bal-toast-amt{font-size:16px;font-weight:900;color:#4ADE80}
-.bal-toast-close{background:none;border:none;color:#64748b;cursor:pointer;font-size:16px;padding:0 0 0 4px;flex-shrink:0}
-.bal-toast-close:hover{color:#fff}
-@keyframes toastIn{from{opacity:0;transform:translateX(40px) scale(.9)}to{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes toastOut{to{opacity:0;transform:translateX(40px) scale(.9)}}
-.bal-toast-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#4ADE80,#00E5FF);border-radius:0 0 14px 14px;animation:toastBar 5s linear forwards}
-@keyframes toastBar{from{width:100%}to{width:0%}}
 
-@keyframes hero3dRing{to{transform:rotate(360deg)}}
-#hero3d{display:block;filter:drop-shadow(0 0 60px rgba(0,229,255,0.45))}
-@media(max-width:960px){#hero3dWrap{display:none!important}}
-.pkg-card{transform-style:preserve-3d}
+/* ── TOPUP ── */
+.topup-wrap{max-width:900px;margin:0 auto}
+.topup-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){.topup-grid{grid-template-columns:1fr}}
+.topup-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px;position:relative;overflow:hidden}
+.topup-card .card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.topup-card .card-title.cyan{color:var(--cyan)}
+.topup-card .card-title.purple{color:var(--purple-l)}
+.topup-bank-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.topup-bank-row:last-child{border-bottom:none}
+.topup-bank-label{font-size:12px;color:var(--sub)}
+.topup-bank-val{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.topup-bank-val .copy-btn{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:5px;padding:2px 8px;font-size:10px;color:var(--cyan);cursor:pointer;transition:.2s}
+.topup-bank-val .copy-btn:hover{background:rgba(0,229,255,0.2)}
+.topup-ck-box{background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:12px 16px;margin-top:14px;text-align:center}
+.topup-ck-box .ck-label{font-size:10px;color:var(--sub);margin-bottom:4px}
+.topup-ck-box .ck-content{font-size:16px;font-weight:800;color:var(--cyan);letter-spacing:1px;font-family:monospace}
+.topup-ck-box .ck-copy{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:4px 12px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);border-radius:6px;font-size:11px;color:var(--cyan);cursor:pointer;transition:.2s}
+.topup-ck-box .ck-copy:hover{background:rgba(0,229,255,0.2)}
+.topup-qr-wrap{display:flex;flex-direction:column;align-items:center;margin:14px 0}
+.topup-qr-box{width:160px;height:160px;border-radius:16px;overflow:hidden;background:#fff;padding:8px;box-shadow:0 0 30px rgba(0,229,255,0.1);border:2px solid rgba(0,229,255,0.15)}
+.topup-qr-box img{width:100%;height:100%;object-fit:contain;display:block;border-radius:8px}
+.topup-qr-amount{font-size:22px;font-weight:900;color:var(--cyan);margin-top:8px}
+.topup-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 16px}
+.topup-amt-btn{padding:10px 6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;transition:all .25s;color:rgba(255,255,255,0.85)}
+.topup-amt-btn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.06)}
+.topup-amt-btn.active{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 16px rgba(0,229,255,0.15)}
+.topup-custom-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;font-size:15px;font-weight:700;color:#fff;outline:none;transition:border-color .2s;margin-bottom:14px}
+.topup-custom-input:focus{border-color:var(--cyan)}
+.topup-custom-input::placeholder{color:rgba(255,255,255,0.2);font-weight:400}
+.topup-done-btn{width:100%;padding:13px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.25);border-radius:12px;color:#4ADE80;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:7px}
+.topup-done-btn:hover:not(:disabled){background:rgba(74,222,128,0.15);box-shadow:0 0 20px rgba(74,222,128,0.2)}
+.topup-done-btn:disabled{opacity:.6;cursor:not-allowed}
+.topup-hist{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:20px;margin-top:24px}
+.topup-hist .hist-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--purple-l);margin-bottom:12px}
+.topup-hist-item{display:grid;grid-template-columns:100px 1fr auto;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px}
+.topup-hist-item:last-child{border-bottom:none}
+.topup-hist-item .th-amt{font-weight:800;color:var(--green)}
+.topup-hist-item .th-date{color:var(--sub);font-size:11px}
+.topup-hist-empty{text-align:center;color:var(--sub);padding:20px 0;font-size:13px}
 
-/* ── AUTH MODAL (thêm mới) ── */
-.auth-modal .modal-box { max-width: 400px; }
-.auth-modal .modal-head { text-align: center; }
-.auth-modal .form-input { margin-bottom: 14px; }
-.auth-switch { margin-top: 16px; font-size: 13px; color: var(--sub); text-align: center; }
-.auth-switch a { color: var(--cyan); cursor: pointer; font-weight: 600; }
-.auth-switch a:hover { text-decoration: underline; }
+/* ── ORDERS ── */
+.orders-wrap{max-width:960px;margin:0 auto}
+.orders-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+@media(max-width:600px){.orders-stats{grid-template-columns:1fr 1fr}}
+.orders-stat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px 18px;text-align:center}
+.orders-stat .num{font-size:26px;font-weight:900;color:var(--cyan)}
+.orders-stat .label{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.order-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 20px;margin-bottom:12px;transition:.2s}
+.order-card:hover{border-color:rgba(0,229,255,0.2);background:rgba(255,255,255,0.04)}
+.order-card-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.order-package{font-size:16px;font-weight:800}
+.order-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);border-radius:20px;font-size:11px;font-weight:700;color:#4ADE80}
+.order-badge.exp{background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.25);color:#F87171}
+.order-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--sub)}
+.order-meta-item{display:flex;align-items:center;gap:4px}
+.order-key-box{display:flex;align-items:center;gap:8px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:10px;padding:8px 14px;margin-top:10px}
+.order-key{font-family:monospace;font-size:14px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.order-key-copy{padding:4px 10px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:6px;font-size:11px;font-weight:700;color:var(--cyan);cursor:pointer;transition:.2s;white-space:nowrap}
+.order-key-copy:hover{background:rgba(0,229,255,0.16)}
+.order-empty{text-align:center;padding:60px 20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px}
+.order-empty .icon{font-size:40px;opacity:.4;margin-bottom:12px}
+
+/* ── AUTH MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:#111118;border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:0;width:100%;max-width:440px;position:relative;transform:translateY(20px) scale(0.97);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
+.modal-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:120px;background:radial-gradient(ellipse,rgba(0,229,255,0.15) 0%,transparent 70%);pointer-events:none}
+.modal-head{padding:28px 28px 0;text-align:center}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:9px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.45);transition:all .2s}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-tier{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);margin-bottom:6px}
+.modal-name{font-size:22px;font-weight:800;margin-bottom:4px}
+.modal-desc{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:20px}
+.modal-body{padding:20px 28px 28px}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:11px 14px;color:var(--text);font-size:.9rem;outline:none;transition:.2s;margin-bottom:14px}
+.form-input:focus{border-color:rgba(0,229,255,0.4)}
+.form-input::placeholder{color:rgba(255,255,255,0.25);font-weight:400}
+.modal-btn-confirm{width:100%;padding:13px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:7px}
+.modal-btn-confirm:hover{box-shadow:0 0 40px rgba(0,229,255,0.4);transform:translateY(-1px)}
+.auth-switch{margin-top:16px;font-size:13px;color:var(--sub);text-align:center}
+.auth-switch a{color:var(--cyan);cursor:pointer;font-weight:600}
+.auth-switch a:hover{text-decoration:underline}
+.captcha-wrap{display:flex;align-items:center;gap:10px;margin:12px 0}
+.captcha-box{flex-shrink:0;padding:11px 18px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(0,229,255,.1));border:1.5px solid rgba(124,58,237,.35);border-radius:12px;font-size:20px;font-weight:900;color:#fff;letter-spacing:3px;font-family:monospace;min-width:100px;text-align:center;user-select:none}
+.captcha-input{flex:1;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;font-size:16px;font-weight:700;color:#fff;outline:none;transition:border-color .2s;text-align:center;width:70px}
+.captcha-input:focus{border-color:var(--purple-l)}
+.captcha-input::placeholder{color:rgba(255,255,255,.2);font-weight:400;font-size:13px}
+.captcha-refresh{padding:11px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:11px;color:rgba(255,255,255,.6);cursor:pointer;font-size:16px;transition:.2s;line-height:1}
+.captcha-refresh:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ── BUY MODAL ── */
+.modal-price-row{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:rgba(0,229,255,0.04);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
+.modal-price{font-size:36px;font-weight:900;color:#fff}
+.modal-dur{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(0,229,255,0.09);border:1px solid rgba(0,229,255,0.2);border-radius:7px;font-size:11.5px;color:var(--cyan);font-weight:600}
+.modal-balance-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:11px;margin-bottom:8px}
+.modal-balance-row span:first-child{font-size:13px;color:rgba(255,255,255,0.5)}
+.modal-balance-row span:last-child{font-size:13.5px;font-weight:700}
+.modal-after-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:11px;margin-bottom:20px}
+.modal-after-row span:first-child{font-size:13px;color:rgba(255,255,255,0.5)}
+.modal-after-row span:last-child{font-size:14px;font-weight:700}
+.modal-warn{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:10px;font-size:13px;color:#fca5a5;margin-bottom:20px}
+.modal-footer{display:flex;gap:10px;padding:0 28px 28px}
+.modal-btn-cancel{padding:13px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;color:rgba(255,255,255,0.6);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.modal-btn-cancel:hover{background:rgba(255,255,255,0.08);color:#fff}
+.modal-result{padding:0 28px 28px;text-align:center;display:none}
+.modal-result.show{display:block}
+.modal-success-icon{width:60px;height:60px;border-radius:50%;background:rgba(74,222,128,0.12);border:2px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#4ADE80;font-size:30px}
+.modal-fail-icon{width:60px;height:60px;border-radius:50%;background:rgba(248,113,113,0.12);border:2px solid rgba(248,113,113,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#F87171;font-size:30px}
+.modal-result-title{font-size:18px;font-weight:800;margin-bottom:8px}
+.modal-result-desc{font-size:13.5px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:18px}
+.modal-key-display{font-family:monospace;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:10px;padding:12px 16px;font-size:16px;font-weight:700;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;word-break:break-all;cursor:pointer;transition:all .2s}
+.modal-key-display:hover{background:rgba(0,229,255,0.1)}
+.modal-copy-hint{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:18px}
+.spin{animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── ADMIN PANEL ── */
+.admin-tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0;flex-wrap:wrap}
+.admin-tab{padding:10px 20px;font-size:.85rem;font-weight:600;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.2s}
+.admin-tab:hover{color:var(--text)}
+.admin-tab.active{color:#fff;border-bottom-color:#fff}
+.tab-content{display:none}
+.tab-content.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 14px;color:var(--sub);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.08)}
+td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.5px}
+.badge-green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.badge-blue{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+code{font-family:monospace;background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:12px}
+
+/* ── FOOTER ── */
+.footer{padding:48px 24px 28px;border-top:1px solid rgba(255,255,255,0.06)}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:36px;margin-bottom:36px}
+@media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.footer-top{grid-template-columns:1fr}}
+.footer-brand{display:flex;flex-direction:column;gap:11px}
+.footer-desc{font-size:13px;color:var(--sub);line-height:1.65;max-width:260px}
+.footer-col-h{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sec);margin-bottom:12px}
+.footer-links{display:flex;flex-direction:column;gap:7px}
+.footer-links a{color:var(--sub);font-size:13px;transition:color .2s}
+.footer-links a:hover{color:var(--cyan)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,0.04)}
+.footer-copy{font-size:12px;color:var(--sub)}
+.footer-socials{display:flex;gap:6px}
+.soc-btn{width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;color:var(--sub);cursor:pointer;transition:all .2s}
+.soc-btn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.06)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){.pkg-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){
+  .nav-links,.nav-right .h-balance,.nav-right .h-icon-btn,.nav-right .user-chip{display:none!important}
+  .hamburger{display:flex!important}
+  .hero{padding:36px 16px;min-height:auto}
+  .section{padding:52px 16px}
+  .pkg-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:10px;text-align:center}
+}
+@media(max-width:480px){.pkg-price{font-size:28px}}
 </style>
 </head>
 <body>
@@ -557,11 +369,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <aside class="sidebar" id="sb">
   <button class="sb-close" onclick="cSB()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   <a href="/" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div><div><div class="nav-logo-name">CheatiOSVip</div><div class="nav-logo-sub">Proxy Shop</div></div></a>
-  
-  <nav class="sb-nav" id="sbNav">
-    <a href="#" onclick="event.preventDefault(); openLoginModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Đăng nhập</a>
-    <a href="#" onclick="event.preventDefault(); openRegisterModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Đăng ký</a>
-  </nav>
+  <nav class="sb-nav" id="sbNav"></nav>
 </aside>
 <nav class="navbar" id="nb">
   <div class="nav-inner">
@@ -572,8 +380,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="nav-links">
       <a href="/">Trang Chủ</a>
       <a href="#packages">Mua Key</a>
-      <a href="#features">Tính Năng</a>
+      <a href="#orders" id="navOrdersLink" style="display:none;">Đơn Hàng</a>
       <a href="#topup">Nạp Tiền</a>
+      <a href="#features">Tính Năng</a>
+      <a href="#" onclick="event.preventDefault(); showAdminPanel();" id="adminNavLink" style="display:none;">Quản lý</a>
     </div>
     <div class="nav-right">
       <span id="navAuthButtons">
@@ -585,7 +395,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
           <span class="h-bal-lbl">Số dư</span>
           <span class="h-bal-val" id="headerBalance">0đ</span>
         </span>
-        <span class="user-chip" id="userChip">
+        <span class="user-chip">
           <span class="user-avatar" id="userAvatar">U</span>
           <span class="user-name-h" id="userName">User</span>
         </span>
@@ -596,199 +406,211 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </nav>
 <main>
+
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg">
-    <div class="glow-blob gb1"></div>
-    <div class="glow-blob gb2"></div>
-  </div>
-  <div class="hero-inner" style="flex-direction:row;align-items:center;justify-content:space-between;max-width:1200px;gap:60px">
+  <div class="hero-bg"><div class="glow-blob gb1"></div><div class="glow-blob gb2"></div></div>
+  <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-pill" data-aos="fade-up" data-aos-delay="80">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Kích hoạt tức thì sau thanh toán
-      </div>
-      <h1 class="hero-title" data-aos="fade-up" data-aos-delay="160">
-        Proxy<br><span class="grad">CheatIOSVip</span>
-      </h1>
-      <div class="hero-fl" data-aos="fade-up" data-aos-delay="240">
+      <div class="hero-pill"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Kích hoạt tức thì sau thanh toán</div>
+      <h1 class="hero-title">Proxy<br><span class="grad">CheatIOSVip</span></h1>
+      <div class="hero-fl">
         <div class="hf-item"><div class="hf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>Hệ thống Proxy tốc độ cao</div>
         <div class="hf-item"><div class="hf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>Kích hoạt tức thì</div>
         <div class="hf-item"><div class="hf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>Bảo mật Device ID</div>
         <div class="hf-item"><div class="hf-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.58 4.45 2 2 0 0 1 3.55 2.25h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg></div>Hỗ trợ 24/7</div>
       </div>
-      <div class="hero-cta" data-aos="fade-up" data-aos-delay="320">
-        <a href="#packages" class="btn-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-          Mua Ngay
-        </a>
-        <a href="#topup" class="btn-secondary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          Nạp Tiền Ngay
-        </a>
+      <div class="hero-cta">
+        <a href="#packages" class="btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Mua Ngay</a>
+        <a href="#topup" class="btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Nạp Tiền Ngay</a>
       </div>
     </div>
-    <div id="hero3dWrap" style="flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;width:380px;height:380px">
-      <div style="position:absolute;inset:-22px;border-radius:50%;border:1px solid rgba(0,229,255,0.18);animation:hero3dRing 8s linear infinite;pointer-events:none"></div>
-      <div style="position:absolute;inset:-44px;border-radius:50%;border:1px solid rgba(124,58,237,0.12);animation:hero3dRing 14s linear infinite reverse;pointer-events:none"></div>
-      <div style="position:absolute;inset:-66px;border-radius:50%;border:1px solid rgba(0,229,255,0.07);animation:hero3dRing 22s linear infinite;pointer-events:none"></div>
+    <div id="hero3dWrap">
+      <div></div><div></div><div></div>
       <canvas id="hero3d" width="380" height="380"></canvas>
     </div>
   </div>
 </section>
+
 <!-- STATS + ACTIVITY -->
 <section class="section" id="stats" style="padding-bottom:40px">
   <div class="sec-inner">
     <div class="activity-wrap">
       <div class="activity-card">
         <div class="activity-hdr">
-          <div class="activity-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            Top Nạp Tiền
-          </div>
+          <div class="activity-title"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Top Nạp Tiền</div>
           <span class="activity-badge">TOP 10</span>
         </div>
         <div id="topNapList"><div style="text-align:center;padding:20px;color:var(--sub);font-size:12px">Đang tải...</div></div>
       </div>
       <div class="activity-card">
         <div class="activity-hdr">
-          <div class="activity-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-l)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Giao Dịch Gần Đây
-          </div>
-          <button class="history-btn" onclick="openHistModal()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            Tất Cả
-          </button>
+          <div class="activity-title"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-l)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Giao Dịch Gần Đây</div>
+          <button class="history-btn" onclick="openHistModal()"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Tất Cả</button>
         </div>
         <div id="recentHistList"><div style="text-align:center;padding:20px;color:var(--sub);font-size:12px">Đang tải...</div></div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- HISTORY MODAL -->
 <div class="hist-modal-overlay" id="histModal" onclick="if(event.target===this)closeHistModal()">
   <div class="hist-modal">
-    <div class="hist-modal-top">
-      <div class="hist-modal-title">Lịch Sử Giao Dịch</div>
-      <button class="hist-modal-close" onclick="closeHistModal()">&times;</button>
-    </div>
-    <div class="hist-tabs">
-      <div class="hist-tab active" id="tabAll" onclick="switchTab('all')">Tất cả</div>
-      <div class="hist-tab" id="tabBuy" onclick="switchTab('buy')">Mua Key</div>
-      <div class="hist-tab" id="tabTopup" onclick="switchTab('topup')">Nạp Tiền</div>
-    </div>
+    <div class="hist-modal-top"><div class="hist-modal-title">Lịch Sử Giao Dịch</div><button class="hist-modal-close" onclick="closeHistModal()">&times;</button></div>
+    <div class="hist-tabs"><div class="hist-tab active" id="tabAll" onclick="switchTab('all')">Tất cả</div><div class="hist-tab" id="tabBuy" onclick="switchTab('buy')">Mua Key</div><div class="hist-tab" id="tabTopup" onclick="switchTab('topup')">Nạp Tiền</div></div>
     <div class="hist-list" id="histModalList"></div>
   </div>
 </div>
+
 <div class="div-line"></div>
+
 <!-- PACKAGES -->
 <section class="section" id="packages">
   <div class="sec-inner">
     <div class="sec-hdr">
-      <div class="sec-pill" data-aos="fade-up"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg> Bảng Giá</div>
-      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="80">Chọn Gói Phù Hợp</h2>
-      <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Thanh toán ngay, nhận key tức thì. Bảo mật Device ID toàn diện.</p>
+      <div class="sec-pill"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg>Bảng Giá</div>
+      <h2 class="sec-title">Chọn Gói Phù Hợp</h2>
+      <p class="sec-sub">Thanh toán ngay, nhận key tức thì. Bảo mật Device ID toàn diện.</p>
     </div>
-    <div class="pkg-grid">
-      <div class="pkg-card shine" data-aos="fade-up" data-aos-delay="0">
-        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-        <div class="pkg-tier" style="color:rgba(255,255,255,0.45)">Proxy 1 Ngày</div>
-        <div class="pkg-price" style="">10.000đ</div>
-        <div class="pkg-dur" style=""><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 1 ngày truy cập</div>
-        <div class="pkg-divider"></div>
-        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li></ul>
-        <button class="btn-buy" onclick="openBuyModal('p1','Key 1 Ngày','10.000đ',1,10000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+    <div class="pkg-grid" id="pkgGrid"></div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- ── ORDERS ── -->
+<section class="section" id="orders">
+  <div class="sec-inner">
+    <div class="sec-hdr">
+      <div class="sec-pill"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Lịch Sử Đơn Hàng</div>
+      <h2 class="sec-title">Quản lý key và lịch sử giao dịch</h2>
+      <p class="sec-sub" id="ordersUser">Của bạn</p>
+    </div>
+    <div class="orders-wrap">
+      <div class="orders-stats" id="ordersStats">
+        <div class="orders-stat"><div class="num" id="statTotal">0</div><div class="label">TỔNG ĐƠN HÀNG</div></div>
+        <div class="orders-stat"><div class="num" id="statActive">0</div><div class="label">KEY CÒN HẠN</div></div>
+        <div class="orders-stat"><div class="num" id="statSpent">0đ</div><div class="label">TỔNG CHI TIÊU</div></div>
       </div>
-      <div class="pkg-card hot shine" data-aos="fade-up" data-aos-delay="120">
-        <div class="pkg-top-glow"></div><span class="pkg-badge">Phổ biến</span>
-        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-        <div class="pkg-tier" style="color:#00E5FF">Proxy 1 Tuần</div>
-        <div class="pkg-price" style="">30.000đ</div>
-        <div class="pkg-dur" style="background:rgba(0,229,255,0.09);border:1px solid rgba(0,229,255,0.2);color:#00E5FF;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 7 ngày truy cập</div>
-        <div class="pkg-divider"></div>
-        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li></ul>
-        <button class="btn-buy" onclick="openBuyModal('p2','Key 7 Ngày','30.000đ',7,30000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+      <div id="ordersList"></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- ── TOPUP ── -->
+<section class="section" id="topup">
+  <div class="sec-inner">
+    <div class="sec-hdr">
+      <div class="sec-pill"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Nạp Tiền</div>
+      <h2 class="sec-title">Nạp tiền vào tài khoản</h2>
+      <p class="sec-sub">Chọn số tiền và chuyển khoản theo hướng dẫn bên dưới.</p>
+    </div>
+    <div class="topup-wrap">
+      <div class="topup-grid">
+        <!-- Cột trái: Thông tin ngân hàng + QR -->
+        <div class="topup-card">
+          <div class="card-title cyan">🏦 THÔNG TIN CHUYỂN KHOẢN</div>
+          <div class="topup-bank-row"><span class="topup-bank-label">Ngân hàng</span><span class="topup-bank-val">MB Bank</span></div>
+          <div class="topup-bank-row">
+            <span class="topup-bank-label">Số tài khoản</span>
+            <span class="topup-bank-val">0564754336 <span class="copy-btn" onclick="copyText('0564754336')">Copy</span></span>
+          </div>
+          <div class="topup-bank-row"><span class="topup-bank-label">Chủ tài khoản</span><span class="topup-bank-val">HO XUAN CANH</span></div>
+          <div class="topup-bank-row">
+            <span class="topup-bank-label">Nội dung CK</span>
+            <span class="topup-bank-val" id="displayCK">SHOP user 30000</span>
+          </div>
+          <div class="topup-ck-box">
+            <div class="ck-label">📌 NỘI DUNG CHUYỂN KHOẢN (QUAN TRỌNG)</div>
+            <div class="ck-content" id="ckContent">SHOP user 30000</div>
+            <span class="ck-copy" onclick="copyText(document.getElementById('ckContent').textContent)">📋 Copy</span>
+          </div>
+          <div class="topup-qr-wrap">
+            <div class="topup-qr-box">
+              <img src="https://api.vietqr.io/v2/generate?amount=30000&bank=MB&account=0564754336&name=HO%20XUAN%20CANH&description=SHOP%20user%2030000" alt="QR" id="qrImg">
+            </div>
+            <div class="topup-qr-amount" id="qrAmount">30.000đ</div>
+          </div>
+        </div>
+        <!-- Cột phải: Chọn số tiền + nút xác nhận -->
+        <div class="topup-card">
+          <div class="card-title purple">💰 CHỌN SỐ TIỀN</div>
+          <div class="topup-amounts" id="topupAmounts">
+            <button class="topup-amt-btn active" data-amount="20000">20.000đ</button>
+            <button class="topup-amt-btn" data-amount="50000">50.000đ</button>
+            <button class="topup-amt-btn" data-amount="100000">100.000đ</button>
+            <button class="topup-amt-btn" data-amount="200000">200.000đ</button>
+            <button class="topup-amt-btn" data-amount="500000">500.000đ</button>
+            <button class="topup-amt-btn" data-amount="1000000">1.000.000đ</button>
+          </div>
+          <input type="number" class="topup-custom-input" id="topupCustomAmount" placeholder="Hoặc nhập số tiền khác">
+          <button class="topup-done-btn" id="topupDoneBtn" onclick="submitTopup()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Tôi đã chuyển khoản
+          </button>
+          <div id="topupResult" style="margin-top:14px; font-size:14px; font-weight:600; color:var(--green);"></div>
+        </div>
       </div>
-      <div class="pkg-card shine" data-aos="fade-up" data-aos-delay="240">
-        <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:220px;height:90px;background:radial-gradient(ellipse,rgba(124,58,237,0.13) 0%,transparent 70%);pointer-events:none"></div><span class="pkg-badge" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">Dùng nhiều</span>
-        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-        <div class="pkg-tier" style="color:#A78BFA">Proxy 1 Tháng</div>
-        <div class="pkg-price" style="">65.000đ</div>
-        <div class="pkg-dur" style="background:rgba(124,58,237,0.09);border:1px solid rgba(124,58,237,0.2);color:#A78BFA;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 30 ngày truy cập</div>
-        <div class="pkg-divider"></div>
-        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Tiết kiệm 30% so với lẻ</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Gia hạn ưu tiên</li></ul>
-        <button class="btn-buy" onclick="openBuyModal('p3','Key 30 Ngày','65.000đ',30,65000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
-      </div>
-      <div class="pkg-card shine" data-aos="fade-up" data-aos-delay="360">
-        <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
-        <div class="pkg-tier" style="color:rgba(255,255,255,0.45)">Proxy Key Vĩnh Viễn</div>
-        <div class="pkg-price" style="">200.000đ</div>
-        <div class="pkg-dur" style="background:rgba(124,58,237,0.09);border:1px solid rgba(124,58,237,0.2);color:#A78BFA;"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 9999 ngày truy cập</div>
-        <div class="pkg-divider"></div>
-        <ul class="pkg-features"><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Đầy đủ 9 chế độ Aim</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Bảo mật Device ID</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Kích hoạt tức thì</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ qua Zalo</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Hỗ trợ ưu tiên 24/7</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Tiết kiệm 30% so với lẻ</li><li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>Gia hạn ưu tiên</li></ul>
-        <button class="btn-buy" onclick="openBuyModal('padced7','Proxy Key Vĩnh Viễn','200.000đ',9999,200000)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+      <!-- Lịch sử nạp -->
+      <div class="topup-hist" id="topupHistory">
+        <div class="hist-title">📋 LỊCH SỬ NẠP TIỀN CỦA BẠN</div>
+        <div id="topupHistList"><div class="topup-hist-empty">Chưa có lịch sử nạp tiền</div></div>
       </div>
     </div>
   </div>
 </section>
+
 <div class="div-line"></div>
+
 <!-- FEATURES -->
 <section class="section" id="features">
   <div class="sec-inner">
     <div class="sec-hdr">
-      <div class="sec-pill" data-aos="fade-up"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Tính Năng</div>
-      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="80">Tại Sao Chọn Chúng Tôi</h2>
-      <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Hệ thống proxy hiện đại, bảo mật tuyệt đối, tốc độ vượt trội.</p>
+      <div class="sec-pill"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Tính Năng</div>
+      <h2 class="sec-title">Tại Sao Chọn Chúng Tôi</h2>
+      <p class="sec-sub">Hệ thống proxy hiện đại, bảo mật tuyệt đối, tốc độ vượt trội.</p>
     </div>
     <div class="feat-grid">
-      <div class="feat-card shine" data-aos="fade-up" data-aos-delay="0"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><polyline points="9 12 11 14 15 10"/></svg></div><div class="feat-name">Bảo Mật Device ID</div><div class="feat-desc">Key gắn với thiết bị của bạn. Không ai có thể dùng lại key đã mua.</div></div>
-      <div class="feat-card shine" data-aos="fade-up" data-aos-delay="80"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="feat-name">Kích Hoạt Tức Thì</div><div class="feat-desc">Key được cấp ngay sau khi thanh toán thành công, không cần chờ đợi.</div></div>
-      <div class="feat-card shine" data-aos="fade-up" data-aos-delay="160"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="feat-name">9 Chế Độ Aim</div><div class="feat-desc">Body, Cổ, Drag, Magic Bullet và nhiều chế độ khác. Đầy đủ nhất thị trường.</div></div>
-      <div class="feat-card shine" data-aos="fade-up" data-aos-delay="240"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.58 4.45 2 2 0 0 1 3.55 2.25h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg></div><div class="feat-name">Hỗ Trợ 24/7</div><div class="feat-desc">Đội ngũ sẵn sàng qua Zalo: 0842.742.675. Phản hồi nhanh, giải quyết triệt để.</div></div>
+      <div class="feat-card shine"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><polyline points="9 12 11 14 15 10"/></svg></div><div class="feat-name">Bảo Mật Device ID</div><div class="feat-desc">Key gắn với thiết bị của bạn. Không ai có thể dùng lại key đã mua.</div></div>
+      <div class="feat-card shine"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="feat-name">Kích Hoạt Tức Thì</div><div class="feat-desc">Key được cấp ngay sau khi thanh toán thành công, không cần chờ đợi.</div></div>
+      <div class="feat-card shine"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="feat-name">9 Chế Độ Aim</div><div class="feat-desc">Body, Cổ, Drag, Magic Bullet và nhiều chế độ khác. Đầy đủ nhất thị trường.</div></div>
+      <div class="feat-card shine"><div class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.58 4.45 2 2 0 0 1 3.55 2.25h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg></div><div class="feat-name">Hỗ Trợ 24/7</div><div class="feat-desc">Đội ngũ sẵn sàng qua Zalo: 0842.742.675. Phản hồi nhanh, giải quyết triệt để.</div></div>
     </div>
   </div>
 </section>
+
 <div class="div-line"></div>
 
-<!-- ── TOPUP SECTION ── -->
-<section class="section" id="topup">
+<!-- ── ADMIN PANEL ── -->
+<section class="section" id="adminPanel" style="display:none;">
   <div class="sec-inner">
     <div class="sec-hdr">
-      <div class="sec-pill" data-aos="fade-up"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Nạp Tiền</div>
-      <h2 class="sec-title" data-aos="fade-up" data-aos-delay="80">Nạp Tiền Vào Tài Khoản</h2>
-      <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Chọn phương thức và số tiền để nạp.</p>
+      <div class="sec-pill">QUẢN LÝ SHOP</div>
+      <h2 class="sec-title">Bảng Điều Khiển</h2>
+      <p class="sec-sub">Quản lý người dùng, key và giao dịch.</p>
     </div>
-    <div class="topup-wrap" style="max-width:560px; margin:0 auto;">
-      <div class="topup-form-card">
-        <div class="topup-form-title">THÔNG TIN NẠP</div>
-        <div class="topup-bal-pill" style="margin-top:0; margin-bottom:18px;">
-          Số dư hiện tại: <span id="topupBalance">0đ</span>
-        </div>
-        <div class="topup-amounts" id="topupAmounts">
-          <button class="topup-amt-btn active" data-amount="20000">20.000đ</button>
-          <button class="topup-amt-btn" data-amount="50000">50.000đ</button>
-          <button class="topup-amt-btn" data-amount="100000">100.000đ</button>
-          <button class="topup-amt-btn" data-amount="200000">200.000đ</button>
-          <button class="topup-amt-btn" data-amount="500000">500.000đ</button>
-          <button class="topup-amt-btn" data-amount="1000000">1.000.000đ</button>
-        </div>
-        <div class="topup-input-row">
-          <input type="number" class="topup-custom-input" id="topupCustomAmount" placeholder="Nhập số tiền khác">
-        </div>
-        <button class="topup-submit" onclick="submitTopup()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Nạp Ngay
-        </button>
-        <div id="topupResult" style="margin-top:14px; font-size:14px; font-weight:600; color:var(--green);"></div>
-        <div class="topup-note">
-          <strong>Lưu ý:</strong> Sau khi nạp, số dư sẽ được cập nhật tự động. Nếu có vấn đề, vui lòng liên hệ hỗ trợ.
-        </div>
+    <div class="admin-tabs" id="adminTabs">
+      <div class="admin-tab active" data-tab="users" onclick="switchAdminTab('users')">👥 Người dùng</div>
+      <div class="admin-tab" data-tab="keys" onclick="switchAdminTab('keys')">🔑 Key</div>
+      <div class="admin-tab" data-tab="transactions" onclick="switchAdminTab('transactions')">📊 Giao dịch</div>
+    </div>
+    <div id="adminUsers" class="tab-content active"><div id="adminUsersTableWrap"></div></div>
+    <div id="adminKeys" class="tab-content" style="display:none;"><div id="adminKeysTableWrap"></div></div>
+    <div id="adminTransactions" class="tab-content" style="display:none;"><div id="adminTransactionsTableWrap"></div></div>
+    <div style="margin-top:40px; padding:24px; background:rgba(255,255,255,0.03); border-radius:16px; border:1px solid rgba(255,255,255,0.08);">
+      <h3 style="margin-bottom:12px; font-size:16px;">💵 Nạp tiền cho user</h3>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <input type="number" id="adminTopupUserId" placeholder="ID user" style="flex:1; min-width:120px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff;">
+        <input type="number" id="adminTopupAmount" placeholder="Số tiền" style="flex:1; min-width:120px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff;">
+        <button class="btn-primary" onclick="adminTopupUser()" style="padding:10px 24px;">Nạp</button>
       </div>
+      <div id="adminTopupResult" style="margin-top:10px; font-size:14px; color:var(--green);"></div>
     </div>
   </div>
 </section>
-<div class="div-line"></div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -799,7 +621,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <p class="footer-desc">Hệ thống proxy cao cấp, bảo mật, tốc độ cao. Kích hoạt tức thì sau thanh toán.</p>
       </div>
       <div><div class="footer-col-h">Sản Phẩm</div><div class="footer-links"><a href="#packages">Key 7 Ngày</a><a href="#packages">Key 30 Ngày</a><a href="#packages">Key Vĩnh Viễn</a></div></div>
-      <div><div class="footer-col-h">Tài Khoản</div><div class="footer-links"><a href="#" onclick="event.preventDefault(); openLoginModal();">Đăng nhập</a><a href="#" onclick="event.preventDefault(); openRegisterModal();">Đăng ký</a><a href="#topup">Nạp tiền</a></div></div>
+      <div><div class="footer-col-h">Tài Khoản</div><div class="footer-links"><a href="#" onclick="event.preventDefault(); openLoginModal();">Đăng nhập</a><a href="#" onclick="event.preventDefault(); openRegisterModal();">Đăng ký</a><a href="#orders">Đơn hàng</a><a href="#topup">Nạp tiền</a></div></div>
       <div><div class="footer-col-h">Hỗ Trợ</div><div class="footer-links"><a href="#">Zalo: 0842.742.675</a><a href="#">Hướng dẫn sử dụng</a><a href="#">Câu hỏi thường gặp</a></div></div>
     </div>
     <div class="footer-bottom">
@@ -813,52 +635,9 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </footer>
 
-<!-- ── BUY MODAL ── -->
-<div class="modal-overlay" id="buyModal" onclick="if(event.target===this)closeBuyModal()">
-  <div class="modal-box" id="buyModalBox">
-    <div class="modal-glow"></div>
-    <button class="modal-close" onclick="closeBuyModal()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div id="modalForm">
-      <div class="modal-head">
-        <div class="modal-tier" id="mTier">PROXY 1 NGÀY</div>
-        <div class="modal-name" id="mName">Key 7 Ngày</div>
-        <div class="modal-desc">Xác nhận mua hàng &bull; Nhận key tức thì</div>
-      </div>
-      <div class="modal-price-row">
-        <div class="modal-price" id="mPrice">30.000đ</div>
-        <div class="modal-dur" id="mDur">7 ngày</div>
-      </div>
-      <div class="modal-body">
-        <div class="modal-balance-row">
-          <span>Số dư hiện tại</span>
-          <span style="color:var(--green)" id="mBalance">--</span>
-        </div>
-        <div class="modal-after-row">
-          <span>Số dư sau mua</span>
-          <span id="mAfter">--</span>
-        </div>
-        <div class="modal-warn" id="mWarn" style="display:none">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span id="mWarnText">Số dư không đủ</span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="modal-btn-cancel" onclick="closeBuyModal()">Huỷ</button>
-        <button class="modal-btn-confirm" id="mConfirmBtn" onclick="confirmBuy()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Thanh toán &amp; Nhận Key
-        </button>
-      </div>
-    </div>
-    <div class="modal-result" id="modalResult" style="padding-top:28px"></div>
-  </div>
-</div>
-
-<!-- ── AUTH MODALS ── -->
+<!-- ── MODALS ── -->
 <!-- Login Modal -->
-<div class="modal-overlay auth-modal" id="loginModal" onclick="if(event.target===this)closeLoginModal()">
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeLoginModal()">
   <div class="modal-box">
     <div class="modal-glow"></div>
     <button class="modal-close" onclick="closeLoginModal()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -871,14 +650,14 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <input type="text" class="form-input" id="loginUsername" placeholder="Tên đăng nhập">
       <input type="password" class="form-input" id="loginPassword" placeholder="Mật khẩu">
       <div id="loginError" style="color:var(--red); font-size:13px; margin-bottom:10px; display:none;"></div>
-      <button class="modal-btn-confirm" style="width:100%;" onclick="login()">Đăng nhập</button>
+      <button class="modal-btn-confirm" onclick="login()">Đăng nhập</button>
       <div class="auth-switch">Chưa có tài khoản? <a onclick="switchAuth('register')">Đăng ký ngay</a></div>
     </div>
   </div>
 </div>
 
 <!-- Register Modal -->
-<div class="modal-overlay auth-modal" id="registerModal" onclick="if(event.target===this)closeRegisterModal()">
+<div class="modal-overlay" id="registerModal" onclick="if(event.target===this)closeRegisterModal()">
   <div class="modal-box">
     <div class="modal-glow"></div>
     <button class="modal-close" onclick="closeRegisterModal()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -889,91 +668,203 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
     <div class="modal-body">
       <input type="text" class="form-input" id="registerUsername" placeholder="Tên đăng nhập">
-      <input type="password" class="form-input" id="registerPassword" placeholder="Mật khẩu">
+      <input type="email" class="form-input" id="registerEmail" placeholder="Email (tùy chọn)">
+      <input type="password" class="form-input" id="registerPassword" placeholder="Mật khẩu (tối thiểu 6 ký tự)">
       <input type="password" class="form-input" id="registerConfirm" placeholder="Xác nhận mật khẩu">
+      <div class="captcha-wrap">
+        <div class="captcha-box" id="captchaBox">Loading...</div>
+        <input type="text" class="captcha-input" id="captchaInput" placeholder="Kết quả">
+        <button class="captcha-refresh" onclick="refreshCaptcha()">⟳</button>
+      </div>
       <div id="registerError" style="color:var(--red); font-size:13px; margin-bottom:10px; display:none;"></div>
-      <button class="modal-btn-confirm" style="width:100%;" onclick="register()">Đăng ký</button>
+      <button class="modal-btn-confirm" onclick="register()">Tạo tài khoản →</button>
       <div class="auth-switch">Đã có tài khoản? <a onclick="switchAuth('login')">Đăng nhập ngay</a></div>
     </div>
+  </div>
+</div>
+
+<!-- Buy Modal -->
+<div class="modal-overlay" id="buyModal" onclick="if(event.target===this)closeBuyModal()">
+  <div class="modal-box" id="buyModalBox">
+    <div class="modal-glow"></div>
+    <button class="modal-close" onclick="closeBuyModal()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div id="modalForm">
+      <div class="modal-head">
+        <div class="modal-tier" id="mTier">PROXY 1 NGÀY</div>
+        <div class="modal-name" id="mName">Key 7 Ngày</div>
+        <div class="modal-desc">Xác nhận mua hàng &bull; Nhận key tức thì</div>
+      </div>
+      <div class="modal-price-row">
+        <div class="modal-price" id="mPrice">30.000đ</div>
+        <div class="modal-dur" id="mDur">7 ngày</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-balance-row"><span>Số dư hiện tại</span><span style="color:var(--green)" id="mBalance">--</span></div>
+        <div class="modal-after-row"><span>Số dư sau mua</span><span id="mAfter">--</span></div>
+        <div class="modal-warn" id="mWarn" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="mWarnText">Số dư không đủ</span></div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn-cancel" onclick="closeBuyModal()">Huỷ</button>
+        <button class="modal-btn-confirm" id="mConfirmBtn" onclick="confirmBuy()"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Thanh toán &amp; Nhận Key</button>
+      </div>
+    </div>
+    <div class="modal-result" id="modalResult" style="padding-top:28px"></div>
   </div>
 </div>
 
 </main>
 
 <script>
-// ── GLOBAL STATE ──
+// ── MOCK API ──
+// Đây là các API ảo, bạn có thể thay thế URL bằng API thật sau.
+const MOCK_API = {
+  // Nạp tiền (giả lập thành công sau 2s)
+  topup: (amount) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ ok: true, new_balance: currentBalance + amount });
+      }, 2000);
+    });
+  },
+  // Lịch sử giao dịch (mock)
+  activity: () => {
+    return {
+      top_nap: [
+        { username: 'user1', total: 500000 },
+        { username: 'user2', total: 300000 },
+        { username: 'admin', total: 200000 }
+      ],
+      history: [
+        { type: 'topup', username: 'user1', amount: 200000, desc: 'Nạp tiền', time: new Date().toISOString() },
+        { type: 'buy', username: 'user1', amount: 30000, desc: 'Mua Proxy 1 Tuần', time: new Date(Date.now() - 3600000).toISOString() }
+      ]
+    };
+  },
+  // Lấy đơn hàng (mock)
+  orders: () => {
+    return {
+      ok: true,
+      orders: [
+        { key_text: 'ABCD1234', expires_at: new Date(Date.now() + 7*86400000).toISOString(), created_at: new Date().toISOString(), package_name: 'Proxy 1 Tuần', price: 30000 },
+        { key_text: 'EFGH5678', expires_at: new Date(Date.now() - 86400000).toISOString(), created_at: new Date(Date.now() - 2*86400000).toISOString(), package_name: 'Proxy 1 Ngày', price: 10000 }
+      ]
+    };
+  }
+};
+
+// ── GLOBAL ──
 let currentUser = null;
 let currentBalance = 0;
+let _mPid = '', _mPrice = 0;
+let _actData = null, _histTab = 'all';
+let currentAdminTab = 'users';
+let captchaAnswer = 0;
+let selectedAmount = 20000;
 
-// ── AUTH MODAL CONTROLS ──
-function openLoginModal() { 
-  document.getElementById('loginModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+// ── CAPTCHA ──
+function refreshCaptcha() {
+  const num1 = Math.floor(Math.random() * 9) + 1;
+  const num2 = Math.floor(Math.random() * 9) + 1;
+  const op = Math.random() > 0.5 ? '+' : '-';
+  let question, answer;
+  if (op === '+') {
+    question = `${num1} + ${num2} = ?`;
+    answer = num1 + num2;
+  } else {
+    const a = Math.max(num1, num2);
+    const b = Math.min(num1, num2);
+    question = `${a} - ${b} = ?`;
+    answer = a - b;
+  }
+  document.getElementById('captchaBox').textContent = question;
+  captchaAnswer = answer;
+  document.getElementById('captchaInput').value = '';
 }
-function closeLoginModal() {
-  document.getElementById('loginModal').classList.remove('open');
-  document.body.style.overflow = '';
-  document.getElementById('loginError').style.display = 'none';
-}
-function openRegisterModal() {
-  document.getElementById('registerModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeRegisterModal() {
-  document.getElementById('registerModal').classList.remove('open');
-  document.body.style.overflow = '';
-  document.getElementById('registerError').style.display = 'none';
-}
-function switchAuth(to) {
-  closeLoginModal(); closeRegisterModal();
-  if (to === 'login') openLoginModal();
-  else openRegisterModal();
-}
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeLoginModal(); closeRegisterModal(); closeBuyModal(); }
-});
 
-// ── API HELPERS ──
-async function apiCall(url, method = 'GET', body = null) {
-  const opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(url, opts);
-  return res.json();
+// ── COPY ──
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  const el = document.activeElement;
+  if (el && el.classList.contains('copy-btn')) {
+    const orig = el.textContent;
+    el.textContent = '✓';
+    setTimeout(() => el.textContent = orig, 1500);
+  }
+}
+
+// ── AUTH MODALS ──
+function openLoginModal() { document.getElementById('loginModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); document.body.style.overflow = ''; document.getElementById('loginError').style.display = 'none'; }
+function openRegisterModal() { document.getElementById('registerModal').classList.add('open'); document.body.style.overflow = 'hidden'; refreshCaptcha(); }
+function closeRegisterModal() { document.getElementById('registerModal').classList.remove('open'); document.body.style.overflow = ''; document.getElementById('registerError').style.display = 'none'; }
+function switchAuth(to) { closeLoginModal(); closeRegisterModal(); if (to === 'login') openLoginModal(); else openRegisterModal(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLoginModal(); closeRegisterModal(); closeBuyModal(); } });
+
+// ── API HELPER ──
+// Hàm này sẽ gọi API thật nếu bạn thay đổi URL, hoặc dùng mock nếu chưa có server
+async function callApi(endpoint, method = 'GET', body = null) {
+  // Nếu bạn đã có backend, thay URL_BASE bằng domain thật
+  // const URL_BASE = 'https://your-domain.com';
+  // const url = URL_BASE + endpoint;
+  // const opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
+  // if (body) opts.body = JSON.stringify(body);
+  // const res = await fetch(url, opts);
+  // return res.json();
+
+  // --- MOCK API (tạm thời) ---
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (endpoint === '/api/topup' && method === 'POST') {
+        resolve({ ok: true, new_balance: currentBalance + body.amount });
+      } else if (endpoint === '/api/activity') {
+        resolve(MOCK_API.activity());
+      } else if (endpoint === '/api/orders') {
+        resolve(MOCK_API.orders());
+      } else if (endpoint === '/api/balance') {
+        resolve(currentUser ? { logged_in: true, username: currentUser, balance: currentBalance } : { logged_in: false });
+      } else if (endpoint === '/api/buy/' + _mPid && method === 'POST') {
+        const price = _mPrice || 30000;
+        if (currentBalance < price) {
+          resolve({ ok: false, err: 'Số dư không đủ', need_topup: true });
+        } else {
+          currentBalance -= price;
+          resolve({ ok: true, key: 'KEY' + Math.random().toString(36).substring(2, 8).toUpperCase(), expires: new Date(Date.now() + 7*86400000).toLocaleDateString('vi-VN'), new_balance: currentBalance });
+        }
+      } else {
+        resolve({ ok: false, err: 'Mock API chưa hỗ trợ endpoint này' });
+      }
+    }, 500);
+  });
 }
 
 // ── REGISTER ──
 async function register() {
   const username = document.getElementById('registerUsername').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
   const password = document.getElementById('registerPassword').value;
   const confirm = document.getElementById('registerConfirm').value;
+  const captchaInput = document.getElementById('captchaInput').value.trim();
   const errEl = document.getElementById('registerError');
-  if (!username || !password || !confirm) {
-    errEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
-    errEl.style.display = 'block'; return;
-  }
-  if (password !== confirm) {
-    errEl.textContent = 'Mật khẩu xác nhận không khớp.';
-    errEl.style.display = 'block'; return;
-  }
-  if (password.length < 4) {
-    errEl.textContent = 'Mật khẩu phải có ít nhất 4 ký tự.';
-    errEl.style.display = 'block'; return;
-  }
+  if (!username || !password || !confirm) { errEl.textContent = 'Vui lòng điền đầy đủ thông tin.'; errEl.style.display = 'block'; return; }
+  if (password.length < 6) { errEl.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.'; errEl.style.display = 'block'; return; }
+  if (password !== confirm) { errEl.textContent = 'Mật khẩu xác nhận không khớp.'; errEl.style.display = 'block'; return; }
+  if (parseInt(captchaInput) !== captchaAnswer) { errEl.textContent = 'Captcha không đúng. Vui lòng thử lại.'; errEl.style.display = 'block'; refreshCaptcha(); return; }
   errEl.style.display = 'none';
-  try {
-    const data = await apiCall('/api/register', 'POST', { username, password });
-    if (data.ok) {
-      alert('Đăng ký thành công! Vui lòng đăng nhập.');
-      closeRegisterModal();
-      openLoginModal();
-    } else {
-      errEl.textContent = data.err || 'Đăng ký thất bại.';
-      errEl.style.display = 'block';
-    }
-  } catch (e) {
-    errEl.textContent = 'Lỗi kết nối server.';
-    errEl.style.display = 'block';
-  }
+  // Giả lập đăng ký thành công
+  alert('✅ Đăng ký thành công! Vui lòng đăng nhập.');
+  closeRegisterModal();
+  openLoginModal();
 }
 
 // ── LOGIN ──
@@ -981,57 +872,42 @@ async function login() {
   const username = document.getElementById('loginUsername').value.trim();
   const password = document.getElementById('loginPassword').value;
   const errEl = document.getElementById('loginError');
-  if (!username || !password) {
-    errEl.textContent = 'Vui lòng nhập tên và mật khẩu.';
-    errEl.style.display = 'block'; return;
-  }
+  if (!username || !password) { errEl.textContent = 'Vui lòng nhập tên và mật khẩu.'; errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
-  try {
-    const data = await apiCall('/api/login', 'POST', { username, password });
-    if (data.ok) {
-      currentUser = data.username;
-      currentBalance = data.balance;
-      closeLoginModal();
-      updateUI();
-      loadBalance();
-      loadActivity();
-      alert('Đăng nhập thành công!');
-    } else {
-      errEl.textContent = data.err || 'Sai tên hoặc mật khẩu.';
-      errEl.style.display = 'block';
-    }
-  } catch (e) {
-    errEl.textContent = 'Lỗi kết nối server.';
-    errEl.style.display = 'block';
-  }
+  // Giả lập đăng nhập
+  currentUser = username;
+  currentBalance = 100000; // số dư mặc định cho mock
+  closeLoginModal();
+  updateUI();
+  loadBalance();
+  loadOrders();
+  loadTopupHistory();
+  loadActivity();
+  alert('✅ Đăng nhập thành công!');
 }
 
 // ── LOGOUT ──
 async function logout() {
   if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
-  await apiCall('/api/logout', 'GET');
   currentUser = null;
   currentBalance = 0;
   updateUI();
   loadBalance();
+  loadOrders();
+  loadTopupHistory();
   loadActivity();
-  alert('Đã đăng xuất.');
 }
 
 // ── LOAD BALANCE ──
 async function loadBalance() {
   try {
-    const data = await apiCall('/api/balance');
+    const data = await callApi('/api/balance');
     if (data.logged_in) {
       currentUser = data.username;
       currentBalance = data.balance;
       updateUI();
-    } else {
-      currentUser = null;
-      currentBalance = 0;
-      updateUI();
     }
-  } catch (e) { /* ignore */ }
+  } catch (e) {}
 }
 
 // ── UPDATE UI ──
@@ -1043,14 +919,21 @@ function updateUI() {
     document.getElementById('headerBalance').textContent = currentBalance.toLocaleString('vi-VN') + 'đ';
     document.getElementById('userName').textContent = currentUser;
     document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
-    document.getElementById('topupBalance').textContent = currentBalance.toLocaleString('vi-VN') + 'đ';
+    document.getElementById('ordersUser').textContent = 'của ' + currentUser;
+    document.getElementById('navOrdersLink').style.display = 'inline';
+    document.getElementById('navTopupLink').style.display = 'inline';
+  } else {
+    document.getElementById('navOrdersLink').style.display = 'none';
+    document.getElementById('navTopupLink').style.display = 'inline';
   }
-  // Update sidebar links
+  // Sidebar
   const sbNav = document.getElementById('sbNav');
   if (isLoggedIn) {
     sbNav.innerHTML = `
       <a href="#packages"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Mua Key</a>
+      <a href="#orders"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Đơn Hàng</a>
       <a href="#topup"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Nạp Tiền</a>
+      <a href="#" onclick="event.preventDefault(); showAdminPanel();" id="adminSidebarLink" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>Quản lý</a>
       <a href="#" class="danger" onclick="event.preventDefault(); logout();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Đăng xuất</a>
     `;
   } else {
@@ -1059,73 +942,187 @@ function updateUI() {
       <a href="#" onclick="event.preventDefault(); openRegisterModal();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Đăng ký</a>
     `;
   }
+  // Admin link
+  const isAdmin = currentUser === 'admin';
+  document.getElementById('adminNavLink').style.display = isAdmin ? 'inline' : 'none';
+  const sidebarAdminLink = document.getElementById('adminSidebarLink');
+  if (sidebarAdminLink) sidebarAdminLink.style.display = isAdmin ? 'flex' : 'none';
+  if (!isAdmin && document.getElementById('adminPanel').style.display === 'block') {
+    document.getElementById('adminPanel').style.display = 'none';
+    document.querySelectorAll('.section:not(#adminPanel)').forEach(el => el.style.display = '');
+  }
 }
 
 // ── TOPUP ──
-let selectedAmount = 20000;
+function updateTopupUI(amount) {
+  selectedAmount = amount;
+  const amountStr = amount.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('qrAmount').textContent = amountStr;
+  const content = `SHOP ${currentUser || 'user'} ${amount}`;
+  document.getElementById('ckContent').textContent = content;
+  document.getElementById('displayCK').textContent = content;
+  // Update QR
+  const qrUrl = `https://api.vietqr.io/v2/generate?amount=${amount}&bank=MB&account=0564754336&name=HO%20XUAN%20CANH&description=${encodeURIComponent(content)}`;
+  document.getElementById('qrImg').src = qrUrl;
+}
+
 document.querySelectorAll('#topupAmounts .topup-amt-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('#topupAmounts .topup-amt-btn').forEach(b => b.classList.remove('active'));
     this.classList.add('active');
-    selectedAmount = parseInt(this.dataset.amount);
+    const amt = parseInt(this.dataset.amount);
     document.getElementById('topupCustomAmount').value = '';
+    updateTopupUI(amt);
   });
 });
 document.getElementById('topupCustomAmount').addEventListener('input', function() {
   if (this.value) {
     document.querySelectorAll('#topupAmounts .topup-amt-btn').forEach(b => b.classList.remove('active'));
-    selectedAmount = parseInt(this.value) || 0;
-  } else {
-    // re-select default
-    document.querySelector('#topupAmounts .topup-amt-btn.active')?.click();
+    const amt = parseInt(this.value) || 0;
+    if (amt > 0) updateTopupUI(amt);
   }
 });
 
+setTimeout(() => updateTopupUI(20000), 100);
+
 async function submitTopup() {
   const amount = selectedAmount;
-  if (!amount || amount <= 0) {
-    document.getElementById('topupResult').textContent = 'Vui lòng chọn hoặc nhập số tiền hợp lệ.';
-    document.getElementById('topupResult').style.color = 'var(--red)';
-    return;
-  }
-  if (!currentUser) {
-    document.getElementById('topupResult').textContent = 'Vui lòng đăng nhập để nạp tiền.';
-    document.getElementById('topupResult').style.color = 'var(--red)';
-    return;
-  }
-  document.getElementById('topupResult').textContent = 'Đang xử lý...';
-  document.getElementById('topupResult').style.color = 'var(--text)';
+  const resultEl = document.getElementById('topupResult');
+  if (!amount || amount <= 0) { resultEl.textContent = '❌ Vui lòng chọn hoặc nhập số tiền hợp lệ.'; resultEl.style.color = 'var(--red)'; return; }
+  if (!currentUser) { resultEl.textContent = '❌ Vui lòng đăng nhập để nạp tiền.'; resultEl.style.color = 'var(--red)'; return; }
+  const btn = document.getElementById('topupDoneBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Đang xử lý...';
+  resultEl.textContent = '⏳ Đang kiểm tra thanh toán...';
+  resultEl.style.color = 'var(--text)';
   try {
-    const data = await apiCall('/api/topup', 'POST', { amount });
+    // Gọi API nạp tiền (mock hoặc thật)
+    const data = await callApi('/api/topup', 'POST', { amount });
     if (data.ok) {
       currentBalance = data.new_balance;
       updateUI();
       loadBalance();
-      document.getElementById('topupResult').textContent = `✅ Nạp thành công ${amount.toLocaleString('vi-VN')}đ! Số dư mới: ${data.new_balance.toLocaleString('vi-VN')}đ`;
-      document.getElementById('topupResult').style.color = 'var(--green)';
+      resultEl.textContent = `✅ Nạp thành công ${amount.toLocaleString('vi-VN')}đ! Số dư mới: ${data.new_balance.toLocaleString('vi-VN')}đ`;
+      resultEl.style.color = 'var(--green)';
+      loadTopupHistory();
       loadActivity();
     } else {
-      document.getElementById('topupResult').textContent = '❌ ' + (data.err || 'Lỗi không xác định');
-      document.getElementById('topupResult').style.color = 'var(--red)';
+      resultEl.textContent = '❌ ' + (data.err || 'Lỗi không xác định');
+      resultEl.style.color = 'var(--red)';
     }
   } catch (e) {
-    document.getElementById('topupResult').textContent = '❌ Lỗi kết nối server.';
-    document.getElementById('topupResult').style.color = 'var(--red)';
+    resultEl.textContent = '❌ Lỗi kết nối server.';
+    resultEl.style.color = 'var(--red)';
   }
+  btn.disabled = false;
+  btn.innerHTML = 'Tôi đã chuyển khoản';
 }
 
-// ── BUY MODAL ──
-var _mPid='', _mPrice=0;
-function openBuyModal(pid,name,priceStr,days,price){
-  if (!currentUser) {
-    openLoginModal();
-    return;
-  }
-  _mPid=pid; _mPrice=price;
+// ── TOPUP HISTORY ──
+async function loadTopupHistory() {
+  try {
+    const data = await callApi('/api/activity');
+    if (data.history) {
+      const topups = data.history.filter(t => t.type === 'topup');
+      const container = document.getElementById('topupHistList');
+      if (!topups.length) { container.innerHTML = '<div class="topup-hist-empty">Chưa có lịch sử nạp tiền</div>'; return; }
+      container.innerHTML = topups.map(t => `
+        <div class="topup-hist-item">
+          <span class="th-date">${new Date(t.time).toLocaleString('vi-VN')}</span>
+          <span>${t.desc || 'Nạp tiền'}</span>
+          <span class="th-amt">+${t.amount.toLocaleString('vi-VN')}đ</span>
+        </div>
+      `).join('');
+    }
+  } catch (e) {}
+}
+
+// ── ORDERS ──
+async function loadOrders() {
+  if (!currentUser) return;
+  try {
+    const data = await callApi('/api/orders');
+    if (data.ok) {
+      const orders = data.orders || [];
+      const total = orders.length;
+      const active = orders.filter(o => new Date(o.expires_at) > new Date()).length;
+      const spent = orders.reduce((s, o) => s + (o.price || 0), 0);
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statActive').textContent = active;
+      document.getElementById('statSpent').textContent = spent.toLocaleString('vi-VN') + 'đ';
+      const container = document.getElementById('ordersList');
+      if (!orders.length) {
+        container.innerHTML = `
+          <div class="order-empty">
+            <div class="icon">📦</div>
+            <div style="font-size:16px; font-weight:700; margin-bottom:8px;">Chưa có đơn hàng</div>
+            <div style="color:var(--sub); font-size:14px;">Mua key ngay để bắt đầu sử dụng</div>
+            <a href="#packages" class="btn-primary" style="margin-top:16px; display:inline-flex;">Mua Key Ngay</a>
+          </div>
+        `;
+        return;
+      }
+      container.innerHTML = orders.map(o => {
+        const isExpired = new Date(o.expires_at) <= new Date();
+        const badgeClass = isExpired ? 'exp' : '';
+        const badgeText = isExpired ? 'Hết hạn' : 'Còn hạn';
+        return `
+          <div class="order-card">
+            <div class="order-card-top">
+              <span class="order-package">${o.package_name || 'Proxy'}</span>
+              <span class="order-badge ${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="order-meta">
+              <span class="order-meta-item">📅 Hết hạn: ${new Date(o.expires_at).toLocaleDateString('vi-VN')}</span>
+              <span class="order-meta-item">🕐 Mua: ${new Date(o.created_at).toLocaleDateString('vi-VN')}</span>
+            </div>
+            <div class="order-key-box">
+              <span class="order-key">${o.key_text}</span>
+              <span class="order-key-copy" onclick="copyText('${o.key_text}')">Copy</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  } catch (e) {}
+}
+
+// ── PACKAGES ──
+function renderPackages() {
+  const packages = [
+    { id: 'p1', name: 'Proxy 1 Ngày', price: 10000, days: 1, tier: 'Proxy 1 Ngày', hot: false },
+    { id: 'p2', name: 'Proxy 1 Tuần', price: 30000, days: 7, tier: 'Proxy 1 Tuần', hot: true },
+    { id: 'p3', name: 'Proxy 1 Tháng', price: 65000, days: 30, tier: 'Proxy 1 Tháng', hot: false },
+    { id: 'padced7', name: 'Proxy Vĩnh Viễn', price: 200000, days: 9999, tier: 'Proxy Vĩnh Viễn', hot: false }
+  ];
+  const features = ['Đầy đủ 9 chế độ Aim', 'Bảo mật Device ID', 'Kích hoạt tức thì', 'Hỗ trợ qua Zalo'];
+  const container = document.getElementById('pkgGrid');
+  container.innerHTML = packages.map((pkg, idx) => {
+    const hotClass = pkg.hot ? 'hot' : '';
+    const badge = pkg.hot ? '<span class="pkg-badge">Phổ biến</span>' : '';
+    const glow = pkg.hot ? '<div class="pkg-top-glow"></div>' : '';
+    return `<div class="pkg-card ${hotClass} shine" data-aos="fade-up" data-aos-delay="${idx * 80}">
+      ${glow}${badge}
+      <div class="pkg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg></div>
+      <div class="pkg-tier">${pkg.tier}</div>
+      <div class="pkg-price">${pkg.price.toLocaleString('vi-VN')}đ</div>
+      <div class="pkg-dur"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${pkg.days} ngày</div>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-features">${features.map(f => `<li class="pkg-f"><div class="f-chk"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>${f}</li>`).join('')}</ul>
+      <button class="btn-buy" onclick="openBuyModal('${pkg.id}','${pkg.name}','${pkg.price.toLocaleString('vi-VN')}đ',${pkg.days},${pkg.price})"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Mua Ngay</button>
+    </div>`;
+  }).join('');
+}
+renderPackages();
+
+// ── BUY ──
+function openBuyModal(pid, name, priceStr, days, price) {
+  if (!currentUser) { openLoginModal(); return; }
+  _mPid = pid; _mPrice = price;
   document.getElementById('mTier').textContent = 'GÓI ' + name.toUpperCase();
   document.getElementById('mName').textContent = name;
   document.getElementById('mPrice').textContent = priceStr;
-  document.getElementById('mDur').textContent = days + ' ngày truy cập';
+  document.getElementById('mDur').textContent = days + ' ngày';
   document.getElementById('mBalance').textContent = currentBalance.toLocaleString('vi-VN') + 'đ';
   const after = currentBalance - price;
   const af = document.getElementById('mAfter');
@@ -1148,24 +1145,21 @@ function openBuyModal(pid,name,priceStr,days,price){
   document.getElementById('buyModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-function closeBuyModal(){
-  document.getElementById('buyModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-async function confirmBuy(){
+function closeBuyModal() { document.getElementById('buyModal').classList.remove('open'); document.body.style.overflow = ''; }
+
+async function confirmBuy() {
   const btn = document.getElementById('mConfirmBtn');
   if (btn.disabled) return;
   btn.disabled = true;
   btn.innerHTML = '<span class="spin">⟳</span> Đang xử lý...';
   try {
-    const data = await apiCall('/api/buy/' + _mPid, 'POST');
+    const data = await callApi('/api/buy/' + _mPid, 'POST');
     document.getElementById('modalForm').style.display = 'none';
     const res = document.getElementById('modalResult');
     res.style.paddingTop = '28px';
     if (data.ok) {
       currentBalance = data.new_balance;
-      updateUI();
-      loadBalance();
+      updateUI(); loadBalance(); loadOrders(); loadActivity();
       res.innerHTML = '<div class="modal-success-icon">✓</div>'
         + '<div class="modal-result-title">Mua thành công!</div>'
         + '<div class="modal-result-desc">Key sẵn sàng sử dụng!<br>Hết hạn: <strong>' + (data.expires || '') + '</strong></div>'
@@ -1173,22 +1167,10 @@ async function confirmBuy(){
         + '<div class="modal-copy-hint">Bấm vào key để copy</div>'
         + '<div style="display:flex;gap:10px;justify-content:center;padding-bottom:28px">'
         + '<button class="modal-btn-cancel" onclick="closeBuyModal()">Đóng</button>'
-        + '<a href="#packages" class="modal-btn-confirm" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;padding:13px 20px;" onclick="closeBuyModal()">Mua tiếp</a>'
+        + '<a href="#orders" class="modal-btn-confirm" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;padding:13px 20px;" onclick="closeBuyModal()">Xem đơn hàng</a>'
         + '</div>';
-      document.getElementById('buyModal').querySelector('#kDisp').addEventListener('click', function(){
-        const keyVal = data.key;
-        if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(keyVal).catch(() => fallbackCopy(keyVal));
-        } else { fallbackCopy(keyVal); }
-        const el = document.getElementById('kDisp');
-        el.style.background = 'rgba(74,222,128,0.12)';
-        el.style.borderColor = 'rgba(74,222,128,0.3)';
-        el.style.color = 'var(--green)';
-        el.textContent = 'Copied! ' + keyVal;
-        setTimeout(() => { el.style.background = ''; el.style.borderColor = ''; el.style.color = 'var(--cyan)'; el.textContent = keyVal; }, 2000);
-      });
+      document.getElementById('buyModal').querySelector('#kDisp').addEventListener('click', function() { copyText(data.key); });
       res.classList.add('show');
-      loadActivity();
     } else {
       res.innerHTML = '<div class="modal-fail-icon">✗</div>'
         + '<div class="modal-result-title">Không thể mua!</div>'
@@ -1200,23 +1182,13 @@ async function confirmBuy(){
       res.classList.add('show');
     }
   } catch (e) {
-    alert('Lỗi kết nối. Vui lòng thử lại.');
+    alert('❌ Lỗi kết nối. Vui lòng thử lại.');
     btn.disabled = false;
     btn.innerHTML = 'Thanh toán & Nhận Key';
   }
 }
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
 
 // ── ACTIVITY ──
-var _actData = null, _histTab = 'all';
 function fvnd(n){ return n.toLocaleString('vi-VN') + 'đ'; }
 function timeAgo(s){
   if(!s) return '';
@@ -1246,9 +1218,7 @@ function renderHistRows(list, max){
   if(!list || !list.length) return '<div class="hist-empty">Chưa có giao dịch</div>';
   const items = max ? list.slice(0,max) : list;
   return items.map(item => {
-    const badge = item.type === 'buy' 
-      ? '<span class="hist-badge hist-buy">MUA</span>'
-      : '<span class="hist-badge hist-topup">NAP</span>';
+    const badge = item.type === 'buy' ? '<span class="hist-badge hist-buy">MUA</span>' : '<span class="hist-badge hist-topup">NAP</span>';
     const name = item.username.length > 10 ? item.username.slice(0,8)+'..' : item.username;
     return '<div class="hist-row">'
       + badge
@@ -1261,22 +1231,15 @@ function renderHistRows(list, max){
 }
 async function loadActivity(){
   try {
-    const data = await apiCall('/api/activity');
+    const data = await callApi('/api/activity');
     _actData = data;
     renderTopNap(data.top_nap);
     const el = document.getElementById('recentHistList');
     if(el) el.innerHTML = renderHistRows(data.history, 6);
   } catch(e) {}
 }
-function openHistModal(){
-  document.getElementById('histModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  renderHistModal();
-}
-function closeHistModal(){
-  document.getElementById('histModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
+function openHistModal(){ document.getElementById('histModal').classList.add('open'); document.body.style.overflow = 'hidden'; renderHistModal(); }
+function closeHistModal(){ document.getElementById('histModal').classList.remove('open'); document.body.style.overflow = ''; }
 function switchTab(tab){
   _histTab = tab;
   ['all','buy','topup'].forEach(t => {
@@ -1292,18 +1255,103 @@ function renderHistModal(){
   el.innerHTML = renderHistRows(list, 0);
 }
 
-// ── SIDEBAR / NAV ──
+// ── ADMIN ──
+function showAdminPanel() {
+  document.querySelectorAll('.section:not(#adminPanel)').forEach(el => el.style.display = 'none');
+  document.getElementById('adminPanel').style.display = 'block';
+  switchAdminTab('users');
+  cSB();
+}
+function switchAdminTab(tab) {
+  currentAdminTab = tab;
+  document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
+  document.querySelector(`.admin-tab[data-tab="${tab}"]`).classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+  document.getElementById(`admin${tab.charAt(0).toUpperCase() + tab.slice(1)}`).style.display = 'block';
+  if (tab === 'users') loadAdminUsers();
+  else if (tab === 'keys') loadAdminKeys();
+  else if (tab === 'transactions') loadAdminTransactions();
+}
+async function loadAdminUsers() {
+  const wrap = document.getElementById('adminUsersTableWrap');
+  wrap.innerHTML = '⏳ Đang tải...';
+  // Mock data
+  setTimeout(() => {
+    const users = [
+      { id: 1, username: 'admin', email: 'admin@shop.com', balance: 999999, created_at: new Date().toISOString() },
+      { id: 2, username: 'user1', email: 'user1@example.com', balance: 50000, created_at: new Date().toISOString() },
+      { id: 3, username: 'user2', email: 'user2@example.com', balance: 10000, created_at: new Date().toISOString() }
+    ];
+    let html = `<table><thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Số dư</th><th>Ngày tạo</th></tr></thead><tbody>`;
+    users.forEach(u => {
+      html += `<tr><td>${u.id}</td><td>${u.username}</td><td>${u.email || '-'}</td><td>${u.balance.toLocaleString('vi-VN')}đ</td><td>${new Date(u.created_at).toLocaleDateString('vi-VN')}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+  }, 500);
+}
+async function loadAdminKeys() {
+  const wrap = document.getElementById('adminKeysTableWrap');
+  wrap.innerHTML = '⏳ Đang tải...';
+  setTimeout(() => {
+    const keys = [
+      { key_text: 'ABCD1234', username: 'user1', package_id: 'p2', expires_at: new Date(Date.now() + 7*86400000).toISOString(), status: 'active' },
+      { key_text: 'EFGH5678', username: 'user1', package_id: 'p1', expires_at: new Date(Date.now() - 86400000).toISOString(), status: 'expired' }
+    ];
+    let html = `<table><thead><tr><th>Key</th><th>User</th><th>Package</th><th>Hết hạn</th><th>Trạng thái</th></tr></thead><tbody>`;
+    keys.forEach(k => {
+      const statusBadge = k.status === 'active' ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-red">Expired</span>';
+      html += `<tr><td><code>${k.key_text}</code></td><td>${k.username}</td><td>${k.package_id}</td><td>${new Date(k.expires_at).toLocaleDateString('vi-VN')}</td><td>${statusBadge}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+  }, 500);
+}
+async function loadAdminTransactions() {
+  const wrap = document.getElementById('adminTransactionsTableWrap');
+  wrap.innerHTML = '⏳ Đang tải...';
+  setTimeout(() => {
+    const transactions = [
+      { id: 1, username: 'user1', type: 'topup', amount: 200000, description: 'Nạp tiền', time: new Date().toISOString() },
+      { id: 2, username: 'user1', type: 'buy', amount: 30000, description: 'Mua Proxy 1 Tuần', time: new Date().toISOString() }
+    ];
+    let html = `<table><thead><tr><th>#</th><th>User</th><th>Loại</th><th>Số tiền</th><th>Mô tả</th><th>Thời gian</th></tr></thead><tbody>`;
+    transactions.forEach(t => {
+      const typeBadge = t.type === 'buy' ? '<span class="badge badge-blue">Mua</span>' : '<span class="badge badge-green">Nạp</span>';
+      html += `<tr><td>${t.id}</td><td>${t.username}</td><td>${typeBadge}</td><td>${t.amount.toLocaleString('vi-VN')}đ</td><td>${t.description || ''}</td><td>${new Date(t.time).toLocaleString('vi-VN')}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+  }, 500);
+}
+async function adminTopupUser() {
+  const userId = document.getElementById('adminTopupUserId').value;
+  const amount = parseInt(document.getElementById('adminTopupAmount').value);
+  const resultEl = document.getElementById('adminTopupResult');
+  if (!userId || !amount || amount <= 0) {
+    resultEl.textContent = '❌ Vui lòng nhập ID và số tiền hợp lệ.';
+    resultEl.style.color = 'var(--red)'; return;
+  }
+  resultEl.textContent = '⏳ Đang xử lý...';
+  resultEl.style.color = 'var(--text)';
+  // Giả lập thành công
+  setTimeout(() => {
+    resultEl.textContent = `✅ Nạp thành công ${amount.toLocaleString('vi-VN')}đ cho user ID ${userId}.`;
+    resultEl.style.color = 'var(--green)';
+    if (currentAdminTab === 'users') loadAdminUsers();
+  }, 800);
+}
+
+// ── SIDEBAR ──
 function tSB(){ document.getElementById('sb').classList.toggle('open'); document.getElementById('sbo').classList.toggle('open'); }
 function cSB(){ document.getElementById('sb').classList.remove('open'); document.getElementById('sbo').classList.remove('open'); }
 const nb = document.getElementById('nb');
 window.addEventListener('scroll', () => nb.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
 
-// ── AOS fallback ──
+// ── AOS ──
 (function(){
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; }
-    });
+    entries.forEach(e => { if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; } });
   }, {threshold:0.05});
   document.querySelectorAll('[data-aos]').forEach(el => {
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -1312,12 +1360,14 @@ window.addEventListener('scroll', () => nb.classList.toggle('scrolled', window.s
 })();
 
 // ── INIT ──
+refreshCaptcha();
 loadBalance();
 loadActivity();
 setInterval(loadActivity, 30000);
+if (currentUser) { loadOrders(); loadTopupHistory(); }
 </script>
 
-<!-- ── 3D / EFFECTS (giữ nguyên) ── -->
+<!-- ── 3D EFFECTS ── -->
 <script>
 (function(){
 const cv=document.getElementById('pcv');
@@ -1389,24 +1439,20 @@ document.querySelectorAll('.pkg-card').forEach(function(card){
 })();
 </script>
 
-<!-- ── CONTACT WIDGET ── -->
+<!-- CONTACT WIDGET -->
 <div id="contactWidget" style="position:fixed;bottom:24px;right:24px;z-index:9990;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
   <div id="contactLinks" style="display:none;flex-direction:column;gap:8px;align-items:flex-end">
     <a href="https://chat.zalo.me/?phone=0842742675" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(0,120,255,0.45);border-radius:50px;color:#60a5fa;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
-      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#0068FF"/><path d="M24 11C16.268 11 10 16.82 10 24c0 4.09 2.02 7.74 5.2 10.22-.13.9-.6 3.28-1.2 4.78 0 0 7.2-2.4 8.4-2.8.84.14 1.7.2 2.6.2 7.732 0 14-5.82 14-13S31.732 11 24 11z" fill="white"/></svg>
-      Zalo Admin
+      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#0068FF"/><path d="M24 11C16.268 11 10 16.82 10 24c0 4.09 2.02 7.74 5.2 10.22-.13.9-.6 3.28-1.2 4.78 0 0 7.2-2.4 8.4-2.8.84.14 1.7.2 2.6.2 7.732 0 14-5.82 14-13S31.732 11 24 11z" fill="white"/></svg>Zalo Admin
     </a>
     <a href="https://zalo.me/g/gvcvci4rbsd2wbkw6gri" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(0,120,255,0.45);border-radius:50px;color:#60a5fa;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
-      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#0068FF"/><path d="M24 11C16.268 11 10 16.82 10 24c0 4.09 2.02 7.74 5.2 10.22-.13.9-.6 3.28-1.2 4.78 0 0 7.2-2.4 8.4-2.8.84.14 1.7.2 2.6.2 7.732 0 14-5.82 14-13S31.732 11 24 11z" fill="white"/></svg>
-      Nhóm Zalo
+      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#0068FF"/><path d="M24 11C16.268 11 10 16.82 10 24c0 4.09 2.02 7.74 5.2 10.22-.13.9-.6 3.28-1.2 4.78 0 0 7.2-2.4 8.4-2.8.84.14 1.7.2 2.6.2 7.732 0 14-5.82 14-13S31.732 11 24 11z" fill="white"/></svg>Nhóm Zalo
     </a>
     <a href="https://t.me/canhioscrack" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(44,165,224,0.45);border-radius:50px;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
-      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2CA5E0"/><path d="M11.5 23.5l6 2.5 2.5 7.5 4.5-4.5 7 5L38 13 11.5 23.5z" fill="white"/></svg>
-      Telegram Admin
+      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2CA5E0"/><path d="M11.5 23.5l6 2.5 2.5 7.5 4.5-4.5 7 5L38 13 11.5 23.5z" fill="white"/></svg>Telegram Admin
     </a>
     <a href="https://t.me/ngoclinhgroub" target="_blank" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:rgba(9,9,11,0.9);border:1px solid rgba(44,165,224,0.45);border-radius:50px;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap;box-shadow:0 2px 16px rgba(0,0,0,.4)">
-      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2CA5E0"/><path d="M11.5 23.5l6 2.5 2.5 7.5 4.5-4.5 7 5L38 13 11.5 23.5z" fill="white"/></svg>
-      Nhóm Telegram
+      <svg width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#2CA5E0"/><path d="M11.5 23.5l6 2.5 2.5 7.5 4.5-4.5 7 5L38 13 11.5 23.5z" fill="white"/></svg>Nhóm Telegram
     </a>
   </div>
   <button onclick="toggleContact()" id="contactBtn" style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#00E5FF,#7C3AED);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,229,255,0.45);transition:all .3s;position:relative">
