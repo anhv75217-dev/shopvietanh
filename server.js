@@ -21,8 +21,7 @@ app.use(session({
 }));
 
 // Phục vụ file tĩnh (frontend)
-app.use(express.static(path.join(__dirname, 'public')));
-
+app. use (express. static(__dirname)) ;
 // Khởi tạo database
 const db = new sqlite3.Database('./database.sqlite');
 
@@ -265,7 +264,7 @@ app.get('*', (req, res) => {
 });
 
 // Khởi động server
-app.listen(PORT, () => {
-  console.log(`✅ Server chạy tại http://localhost:${PORT}`);
-  console.log(`📁 Phục vụ file HTML từ public/index.html`);
-});
+app.get ('*', (req, res) => {
+  res. sendFile(path.join(__dirname,
+'index.html'));
+}) ;
