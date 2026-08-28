@@ -304,3 +304,92 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server chạy tại http://localhost:${PORT}`);
 });
+// server.js - Tích hợp website + API thanh toán
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const PayOS = require('@payos/node');
+const path = require('path');
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public')); // Thư mục chứa website
+
+// PayOS config
+const payOS = new PayOS(
+  process.env.PAYOS_CLIENT_ID,
+  process.env.PAYOS_API_KEY,
+  process.env.PAYOS_CHECKSUM_KEY
+);
+
+// ============ SERVE WEBSITE ============
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// ============ API THANH TOÁN ============
+app.post('/api/payment/create', async (req, res) => {
+  try {
+    const { amount, description, buyerName, buyerEmail, buyerPhone } = req.body;
+    
+    const orderCode = Date.now();
+    
+    const paymentData = {
+      orderCode: orderCode,
+      amount: amount,
+      description: description,
+      returnUrl: `${process.env.WEBSITE_URL}/payment/success`,
+      cancelUrl: `${process.env.WEBSITE_URL}/payment/cancel`,
+      buyerName: buyerName || 'Khách hàng',
+      buyerEmail: buyerEmail || '',
+      buyerPhone: buyerPhone || ''
+    };
+    
+    const paymentLink = await payOS.createPaymentLink(paymentData);
+    
+    res.json({
+      success: true,
+      paymentUrl: paymentLink.checkoutUrl,
+      orderCode: orderCode
+    });
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Webhook
+app.post('/api/payment/webhook', async (req, res) => {
+  try {
+    const { data, signature } = req.body;
+    const isValid = payOS.verifyPaymentWebhookData(signature);
+    
+    if (isValid && data.status === 'PAID') {
+      console.log('✅ Thanh toán thành công:', data.orderCode);
+      // Xử lý tự động tại đây
+    }
+    
+    res.json({ code: "00", message: "Success" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Trang success
+app.get('/payment/success', (req, res) => {
+  res.send('<h1>✅ Thanh toán thành công!</h1><a href="/">Về trang chủ</a>');
+});
+
+// Trang cancel
+app.get('/payment/cancel', (req, res) => {
+  res.send('<h1>❌ Thanh toán bị hủy</h1><a href="/">Về trang chủ</a>');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Website + API chạy tại: http://localhost:${PORT}`);
+});
