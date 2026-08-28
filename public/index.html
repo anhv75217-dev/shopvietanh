@@ -1481,4 +1481,33 @@ document.addEventListener('click',function(e){
 });
 </script>
 </body>
+<script>
+    async function payWithPayOS(amount, description, buyerInfo = {}) {
+        try {
+            const response = await fetch('YOUR_SERVER_URL/api/payment/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: amount,
+                    description: description,
+                    buyerName: buyerInfo.name || '',
+                    buyerEmail: buyerInfo.email || '',
+                    buyerPhone: buyerInfo.phone || ''
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Chuyển đến trang thanh toán
+                window.location.href = data.paymentUrl;
+            } else {
+                alert('Lỗi tạo thanh toán: ' + data.error);
+            }
+            
+        } catch (error) {
+            alert('Lỗi kết nối: ' + error.message);
+        }
+    }
+</script>
 </html>
