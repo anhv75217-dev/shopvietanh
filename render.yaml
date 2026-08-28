@@ -1,0 +1,8 @@
+# render.yaml
+services:
+  - type: web
+    name: proxy-shop
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
